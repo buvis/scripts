@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# slugren.py
+# slugren
 
 # This is my file renamer. It slugifies, extracts timestamp from emails, etc.
 # to get the filename compliant with my conventions.
