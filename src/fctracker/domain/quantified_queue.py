@@ -1,4 +1,5 @@
 import queue
+from copy import copy
 from decimal import Decimal
 from .quantified_item import QuantifiedItem
 
@@ -8,12 +9,11 @@ class QuantifiedQueue:
     def __init__(self):
         self._queue = queue.Queue()
 
-    def put(self, quantity: float, payload):
-        self._queue.put(QuantifiedItem(Decimal(f"{quantity}"), payload))
+    def put(self, item: QuantifiedItem):
+        self._queue.put(item)
 
-    def put_first(self, quantity: float, payload):
-        self._queue.queue.insert(
-            0, QuantifiedItem(Decimal(f"{quantity}"), payload))
+    def put_first(self, item: QuantifiedItem):
+        self._queue.queue.insert(0, item)
 
     def get(self, quantity: float):
         quantity_left = Decimal(f"{quantity}")
@@ -26,14 +26,18 @@ class QuantifiedQueue:
                 raise queue.Empty
 
             if item.quantity >= quantity_left:
-                quantity_return = item.quantity - quantity_left
+                quantity_remainder = item.quantity - quantity_left
 
-                if quantity_return > 0:
-                    self.put_first(quantity_return, item.payload)
-                popped.append((float(quantity_left), item.payload))
+                if quantity_remainder > 0:
+                    item_remainder = copy(item)
+                    item_remainder.quantity = quantity_remainder
+                    self.put_first(item_remainder)
+                item_taken = copy(item)
+                item_taken.quantity = quantity_left
+                popped.append(item_taken)
                 quantity_left = 0
             else:
-                popped.append((float(item.quantity), item.payload))
+                popped.append(item)
                 quantity_left -= item.quantity
 
         return popped
@@ -42,8 +46,9 @@ class QuantifiedQueue:
         return self._queue.empty()
 
     def __repr__(self):
-        repr_items = [
-            f"({item.quantity}, {item.payload})" for item in self._queue.queue
-        ]
+        repr_items = [f"{item}" for item in self._queue.queue]
 
         return f"[{", ".join(repr_items)}]"
+
+    def __iter__(self):
+        return iter(self._queue.queue)
