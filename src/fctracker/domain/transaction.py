@@ -5,6 +5,6 @@ class Transaction:
 
     def __init__(self, date, amount, currency, rate):
         self.date = date
-        self._amount = amount
+        self.amount = Decimal(f"{amount}")
         self.currency = currency
         self.rate = Decimal(f"{rate}")

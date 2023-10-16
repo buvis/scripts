@@ -7,8 +7,14 @@ from fctracker.domain import QuantifiedQueue, QuantifiedItem
 class NumberedItem(QuantifiedItem):
 
     def __init__(self, quantity, number):
-        super().__init__(quantity)
+        self.quantity = Decimal(f"{quantity}")
         self.number = number
+
+    def _get_quantity(self):
+        return self.quantity
+
+    def _set_quantity(self, value):
+        self.quantity = value
 
     def __copy__(self):
         return type(self)(self.quantity, self.number)

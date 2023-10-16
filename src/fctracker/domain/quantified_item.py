@@ -1,13 +1,20 @@
-from decimal import Decimal
+from abc import ABC, abstractmethod
 
 
-class QuantifiedItem:
+class QuantifiedItem(ABC):
 
+    @abstractmethod
     def __init__(self, quantity):
-        self.quantity = Decimal(f"{quantity}")
+        pass
 
+    @abstractmethod
+    def _get_quantity(self):
+        pass
+
+    @abstractmethod
     def __copy__(self):
-        return type(self)(self.quantity)
+        pass
 
+    @abstractmethod
     def __repr__(self):
-        return f"{self.quantity}"
+        pass

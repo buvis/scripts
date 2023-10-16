@@ -1,25 +1,24 @@
 from decimal import Decimal
 from .quantified_item import QuantifiedItem
 from .transaction import Transaction
+from fctracker.adapters.config.config import cfg
 
 
 class Deposit(Transaction, QuantifiedItem):
 
     def __init__(self, date, amount, currency, rate):
-        Transaction.__init__(self, date, amount, currency, rate)
-        QuantifiedItem.__init__(self, amount)
+        Transaction.__init__(self, date, Decimal(f"{amount}"), currency,
+                             Decimal(f"{rate}"))
+        self.currency_symbol = cfg.currency[currency]["symbol"]
 
-    @property
-    def amount(self):
-        return self.quantity
+    def _get_quantity(self):
+        return self.amount
 
-    @amount.setter
-    def amount(self, value):
-        self.quantity = Decimal(f"{value}")
-        self._amount = Decimal(f"{value}")
+    def _set_quantity(self, value):
+        self.amount = value
 
     def __copy__(self):
         return type(self)(self.date, self.amount, self.currency, self.rate)
 
     def __repr__(self):
-        return f"{self.amount} {self.currency} per {self.rate} on {self.date}"
+        return f"{self.amount} {self.currency_symbol} per {self.rate} on {self.date}"

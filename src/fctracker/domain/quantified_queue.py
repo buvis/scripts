@@ -25,20 +25,20 @@ class QuantifiedQueue:
             else:
                 raise queue.Empty
 
-            if item.quantity >= quantity_left:
-                quantity_remainder = item.quantity - quantity_left
+            if item._get_quantity() >= quantity_left:
+                quantity_remainder = item._get_quantity() - quantity_left
 
                 if quantity_remainder > 0:
                     item_remainder = copy(item)
-                    item_remainder.quantity = quantity_remainder
+                    item_remainder._set_quantity(quantity_remainder)
                     self.put_first(item_remainder)
                 item_taken = copy(item)
-                item_taken.quantity = quantity_left
+                item_taken._set_quantity(quantity_left)
                 popped.append(item_taken)
                 quantity_left = 0
             else:
                 popped.append(item)
-                quantity_left -= item.quantity
+                quantity_left -= item._get_quantity()
 
         return popped
 
