@@ -1,6 +1,7 @@
 from buvis.adapters import console
-from fctracker.domain import Account
-from fctracker.adapters import TransactionsReader, TransactionsDirScanner
+from fctracker.domain import Account, Deposit
+from fctracker.adapters import TransactionsReader, TransactionsDirScanner, cfg
+from rich.table import Table
 
 
 class CommandTransactions:
@@ -20,10 +21,6 @@ class CommandTransactions:
                         account = Account(account_name, currency)
                         reader = TransactionsReader(account)
                         reader.get_transactions()
-                        console.print(
-                            f"{account.name}[{account.currency}] transactions:"
-                        )
-                        console.nl()
 
                         filtered_transactions = [
                             t for t in reversed(account.transactions)
@@ -31,10 +28,50 @@ class CommandTransactions:
                                 or t.is_in_month(self.month) is True)
                         ]
 
+                        table = Table(
+                            show_header=True,
+                            header_style="bold #268bd2",
+                            show_lines=True,
+                            title=f"{account}, transactions",
+                        )
+                        table.add_column("Seq.", style="italic #6c71c4")
+                        table.add_column("Date", style="bold #839496")
+                        table.add_column("Description")
+                        table.add_column("Amount",
+                                         justify="right",
+                                         style="bold #2aa198")
+                        table.add_column("Rate",
+                                         justify="right",
+                                         style="italic")
+                        table.add_column("Outflow",
+                                         justify="right",
+                                         style="bold #dc322f")
+                        table.add_column("Inflow",
+                                         justify="right",
+                                         style="bold #859900")
+
                         index = len(filtered_transactions)
 
                         for transaction in filtered_transactions:
-                            console.print(f"{index}. {transaction}")
+                            if isinstance(transaction, Deposit):
+                                description = "Deposit"
+                                outflow = ""
+                                inflow = f"{transaction.get_local_cost()} {cfg.local_currency['symbol']}"
+
+                            else:
+                                description = transaction.description
+                                outflow = f"{transaction.get_local_cost()} {cfg.local_currency['symbol']}"
+                                inflow = ""
+                            table.add_row(
+                                f"{index}",
+                                transaction.date.strftime("%Y-%m-%d"),
+                                description,
+                                f"{transaction.amount} {transaction.currency_symbol}",
+                                f"{transaction.rate:.{cfg.local_currency['precision'] *2}f} {cfg.local_currency['symbol']}/{transaction.currency_symbol}",
+                                outflow,
+                                inflow,
+                            )
                             index -= 1
+                        console.print(table)
 
                         console.nl()
