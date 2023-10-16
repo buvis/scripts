@@ -38,5 +38,12 @@ class FCTrackerConfig:
 
         return currency_dict
 
+    @property
+    def transactions_dir(self):
+        res = self._config.get_key_value("transactions_dir")
+
+        if res.is_ok() is True:
+            return Path(res.payload.replace("~", f"{Path.home()}"))
+
 
 cfg = FCTrackerConfig()

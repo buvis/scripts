@@ -9,6 +9,7 @@ beautifulsoup4 = "*"
 python-slugify = "*"
 pyyaml = "*"
 rich = "*"
+click = "*"
 
 [dev-packages]
 pytest = "*"

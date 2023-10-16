@@ -14,7 +14,7 @@ class Withdrawal(Transaction):
         return type(self)(self.date, self.amount, self.currency, self.rate)
 
     def __repr__(self):
-        return f"{self.description} for {self.amount} {self.currency_symbol} per {self.rate} (total {self.get_local_cost()} {cfg.local_currency['symbol']}) on {self.date}"
+        return f"{self.description} for {self.amount} {self.currency_symbol} per {self.rate:.{cfg.local_currency['precision'] *2}f} {cfg.local_currency['symbol']}/{self.currency_symbol} (total {self.get_local_cost()} {cfg.local_currency['symbol']}) on {self.date.strftime('%Y-%m-%d')}"
 
     def get_local_cost(self):
         return Decimal(

@@ -30,3 +30,9 @@ ifeq ("$(wildcard $(parrent_path)/Pipfile.lock)","")
 	make install
 endif
 	pipenv run pytest -v
+
+run:
+ifeq ("$(wildcard $(parrent_path)/Pipfile.lock)","")
+	make install
+endif
+	pipenv run python cli.py $(ARGS)

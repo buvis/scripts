@@ -79,8 +79,12 @@ def test_print():
     qq.put(Deposit(now, 10.42, "EUR", 24.4988))
     qq.put(Deposit(now, 207.63, "EUR", 24.5847))
     qq.get(200)
-    assert f"{qq}" == f"[18.05 € per 24.5847 on {now}]"
+    assert (
+        f"{qq}" ==
+        f"[Added 18.05 € per 24.5847 Kč/€ (total 443.75 Kč) on {now.strftime('%Y-%m-%d')}]"
+    )
     qq.put(Deposit(now, 18.05, "EUR", 24.6368))
     assert (
         f"{qq}" ==
-        f"[18.05 € per 24.5847 on {now}, 18.05 € per 24.6368 on {now}]")
+        f"[Added 18.05 € per 24.5847 Kč/€ (total 443.75 Kč) on {now.strftime('%Y-%m-%d')}, Added 18.05 € per 24.6368 Kč/€ (total 444.69 Kč) on {now.strftime('%Y-%m-%d')}]"
+    )
