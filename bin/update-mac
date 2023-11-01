@@ -61,6 +61,6 @@ runwait "yarn" "yarn global upgrade --latest"
 runwait "rust" "rustup update"
 
 # Update pip
-runwait "pip" "/Users/bob/bin/update-pip"
+runwait "pip" "update-pip"
 
 attach
