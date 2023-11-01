@@ -58,7 +58,7 @@ runwait "npm" "npm-check -gy"
 runwait "yarn" "yarn global upgrade --latest"
 
 # Update rust installation
-runwait "rust" "rustup update"
+runwait "rust" "cargo install-update -a"
 
 # Update pip
 runwait "pip" "update-pip"
