@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+import os
+from pathlib import Path
+
+cwd = Path.cwd()
+
+for item in cwd.glob("**/*"):
+    if item.is_dir():
+        covers = []
+
+        for file in item.iterdir():
+            # print(os.path.splitext(os.path.basename(file))[0])
+            basename = file.name[:-len("".join(file.suffixes))]
+
+            if basename == "cover" and file.suffix in [
+                    ".jpg",
+                    ".png",
+            ]:
+                covers.append(file)
+
+        newest_cover = None
+
+        if len(covers) > 1:
+            for cover in covers:
+                if newest_cover is None:
+                    newest_cover = cover
+
+                if os.path.getmtime(cover) > os.path.getmtime(newest_cover):
+                    newest_cover = cover
+
+            covers_delete = []
+            covers_delete_names = []
+
+            for cover in covers:
+                if cover != newest_cover:
+                    covers_delete.append(cover)
+                    covers_delete_names.append(cover.stem)
+
+            print(
+                f"{item} contains multiple cover images. Will remove {', '.join(covers_delete_names)} and keep {newest_cover.stem}"
+            )
+
+            for cover_delete in covers_delete:
+                cover_delete.unlink()
+
+            newest_cover.rename(
+                newest_cover.parent.joinpath(f"cover{newest_cover.suffix}"))
