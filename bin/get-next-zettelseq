@@ -34,9 +34,9 @@ def get_seq_from_zettelseq(zettelseq):
 
 if args.path:
     if args.path == ".":
-        args.path = Path.cwd()
-
-    path_dir = args.path
+        path_dir = Path.cwd()
+    else:
+        path_dir = Path(args.path)
 
     if path_dir.is_dir() is False:
         print(f"{path_dir} isn't a directory")
