@@ -29,7 +29,7 @@ def is_zettelseq(filename):
 
 
 def get_seq_from_zettelseq(zettelseq):
-    return int(str(zettelseq[-4:]))
+    return int(str(zettelseq[15:19]))
 
 
 if args.path:
