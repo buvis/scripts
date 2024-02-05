@@ -16,6 +16,13 @@ parser.add_argument(
     dest="path",
     help="path to directory to check",
 )
+parser.add_argument(
+    "-m",
+    "--misnamed",
+    dest="is_reporting_misnamed",
+    help="List files not following zettelseq naming scheme",
+    action="store_true",
+)
 args = parser.parse_args()
 
 
@@ -23,6 +30,9 @@ def is_zettelseq(filename):
     try:
         datetime.datetime.strptime(filename.stem[:14], "%Y%m%d%H%M%S").date()
     except ValueError:
+        if args.is_reporting_misnamed:
+            print(f"{filename} is not in zettelseq scheme")
+
         return False
 
     return True
