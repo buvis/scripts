@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+echo $1
+SVG_PARENTDIR=$(dirname "$1")
+SVG_FILENAME=$(basename -- "$1")
+STEM="${SVG_FILENAME%.*}"
+HEIGHT=$2
+
+rsvg-convert -h $HEIGHT $1 > $SVG_PARENTDIR/$STEM-$HEIGHT.png
