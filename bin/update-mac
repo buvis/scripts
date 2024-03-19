@@ -50,6 +50,9 @@ runwait "tmux-tpm" "/Users/bob/.tmux/plugins/tpm/scripts/update_plugin_prompt_ha
 # Update asdf plugins
 runwait "asdf" "asdf plugin update --all"
 
+# Update asdf managed tools
+runwait "asdf-tools" "update-tools"
+
 # Update helm repos
 runwait "helm" "helm repo update"
 

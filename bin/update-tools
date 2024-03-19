@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+while IFS="" read -r p || [ -n "$p" ]
+do
+  # printf '%s\n' "$p"
+  TOOL=$(printf '%s\n' "$p" | cut -d ' ' -f 1 -)
+  asdf install $TOOL latest
+  asdf global $TOOL latest
+done <$HOME/.tool-versions
