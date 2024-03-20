@@ -49,7 +49,7 @@ def normalize(text):
 
 
 if args.path:
-    paths = args.path.replace("\ ", "!@#")
+    paths = args.path.replace(r"\ ", "!@#")
     paths = paths.split(" ")
 
     for path in paths:
@@ -72,7 +72,7 @@ if args.path:
             local = datetime.fromtimestamp(mktime_tz(parsedate_tz(date)))
             utc = local.astimezone(timezone.utc)
             received = utc.strftime("%Y%m%d%H%M%S")
-            filename_time = re.match("20\d+", old.stem)
+            filename_time = re.match(r"20\d+", old.stem)
 
             if filename_time:
                 remainder = old.stem[filename_time.end(0):]
