@@ -11,8 +11,12 @@ class ConfigAdapter:
 
         if file_path:
             self.path_config_file = Path(file_path).absolute()
-            with open(self.path_config_file, "r") as file:
-                self.config_dict = yaml.safe_load(file)
+
+            if self.path_config_file.exists():
+                with open(self.path_config_file, "r") as file:
+                    self.config_dict = yaml.safe_load(file)
+            else:
+                raise FileNotFoundError
 
     def set_key_value(self, key, value):
         self.config_dict[key] = value
