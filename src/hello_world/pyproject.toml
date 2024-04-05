@@ -2,7 +2,7 @@
 name = "hello-world"
 version = "0.1.0"
 description = "Standard B.U.V.I.S script sample"
-authors = ["Tomáš Bouška <tomas@buvis.net"]
+authors = ["Tomáš Bouška <tomas@buvis.net>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
