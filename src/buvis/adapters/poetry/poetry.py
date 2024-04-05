@@ -15,6 +15,8 @@ class PoetryAdapter:
 
         venv_activator = Path(venv_dir, "Scripts", "activate_this.py")
 
+        # TODO: if venv not found, then I need to run poetry install
+
         exec(open(venv_activator).read(), {'__file__': venv_activator})
 
         launcher = importlib.import_module(f"{pkg_name}.cli")
