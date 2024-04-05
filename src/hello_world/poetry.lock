@@ -7,7 +7,7 @@ description = ""
 optional = false
 python-versions = "*"
 files = []
-develop = false
+develop = true
 
 [package.dependencies]
 pyyaml = "*"
@@ -247,4 +247,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "59deb2cf7d7951b98a68efd08c60eef8df89cda005d74916ecb0338a44cd0b94"
+content-hash = "aa4e2b4c8b5b7281563186a33c27c3c0bd606f7fae1e35cf599c3c18352cf6ca"
