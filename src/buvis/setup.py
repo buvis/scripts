@@ -4,5 +4,5 @@ setup(
     name="buvis",
     version="0.1.0",
     packages=find_packages(include=["buvis", "buvis.*"]),
-    install_requires=["pyyaml", "rich", "virtualenv"],
+    install_requires=["pyyaml", "rich"],
 )
