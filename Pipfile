@@ -12,6 +12,7 @@ pyyaml = "*"
 rich = "*"
 click = "*"
 cyclopts = "*"
+pywin32 = {version = "*", markers="sys_platform == 'win32'"}
 
 [dev-packages]
 pytest = "*"

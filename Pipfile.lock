@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3ef37a64a83d1c8f1d68abc272481d41afc7de340e07a18dee1277f40f46fc25"
+            "sha256": "9e1ffe0aa7175528dd8fd81925c17b67284e244ac75549d879e3dce2430fae94"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -108,6 +108,10 @@
             "markers": "python_version >= '3.7'",
             "version": "==8.0.4"
         },
+        "pywin32": {
+            "markers": "sys_platform == 'win32'",
+            "version": "*"
+        },
         "pyyaml": {
             "hashes": [
                 "sha256:01179a4a8559ab5de078078f37e5c1a30d76bb88519906844fd7bdea1b7729ff",
@@ -190,7 +194,7 @@
                 "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926",
                 "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==1.16.0"
         },
         "soupsieve": {

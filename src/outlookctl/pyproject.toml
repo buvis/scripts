@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "outlookctl"
+version = "0.1.0"
+description = "CLI to Outlook"
+authors = ["Tomáš Bouška <tomas@buvis.net>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+click = "^8.1.7"
+buvis = {path = "../buvis",develop=true}
+pywin32 = "^306"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

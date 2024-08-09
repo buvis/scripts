@@ -3,3 +3,4 @@ from .response import AdapterResponse
 from .config.config import cfg, ConfigAdapter
 from .console.console import console
 from .poetry.poetry import PoetryAdapter
+from .outlook_local.outlook_local import OutlookLocalAdapter
