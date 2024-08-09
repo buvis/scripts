@@ -46,6 +46,7 @@ class PoetryAdapter:
 
         # TODO: if venv not found, then I need to run poetry install
 
+        print(f"Launching {pkg_name} in {os.environ}")
         launcher = importlib.import_module(f"{pkg_name}.cli")
 
         launcher.cli(arguments)
