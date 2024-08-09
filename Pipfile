@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 unidecode = "*"
 beautifulsoup4 = "*"
+markdownify = "*"
 python-slugify = "*"
 pyyaml = "*"
 rich = "*"

@@ -12,5 +12,5 @@ click = "^8.1.7"
 buvis = {path = "../buvis",develop=true}
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core", "pynvim"]
 build-backend = "poetry.core.masonry.api"

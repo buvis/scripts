@@ -1,11 +1,16 @@
 from buvis.adapters import console
+
+from fctracker.adapters import TransactionsDirScanner, TransactionsReader
 from fctracker.domain import Account
-from fctracker.adapters import TransactionsReader, TransactionsDirScanner
+
+import datetime
 
 
 class CommandBalance:
-
     def __init__(self) -> None:
+        print(
+            "Something terribly losafnadsfl kajdfl kajdsfl aksjdflkajsd flaksd jf lkasdjf lasdjfl ajsdf"
+        )
         pass
 
     def execute(self):

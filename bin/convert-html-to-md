@@ -1,0 +1,89 @@
+#!/usr/bin/env python
+
+import os
+import sys
+from markdownify import markdownify as md
+
+
+# Custom function to replace list item markers
+def custom_markdownify(html_content):
+    # Convert HTML to Markdown
+    md_content = md(
+        html_content,
+        heading_style="ATX",
+        escape_asterisks=False,
+        escape_underscores=False,
+    )
+    # Replace asterisks with dashes for list items
+    md_content = md_content.replace("\* ", "- ")
+    # Remove trailing whitespace characters
+    md_content = "\n".join(line.rstrip() for line in md_content.split("\n"))
+    # Remove blank lines at the beginning and end of the file
+    md_content = md_content.lstrip()
+    md_content = md_content.rstrip()
+    # Ensure h1 heading is denoted with # and appears only once
+    lines = md_content.split("\n")
+    new_lines = []
+    h1_seen = False
+
+    for line in lines:
+        if line.startswith("# "):
+            h1_content = line[2:]
+
+            for line in lines:
+                if line.rstrip() == h1_content:
+                    continue
+
+                if not h1_seen and line == "":
+                    continue
+
+                if line.startswith("# "):
+                    h1_seen = True
+
+                if line.startswith(" * "):
+                    line = "- " + line[3:]
+
+                if line.startswith("* "):
+                    line = "- " + line[2:]
+                new_lines.append(line)
+            break
+
+    md_content = "\n".join(new_lines)
+    return md_content
+
+
+# Check if the input directory is provided
+if len(sys.argv) != 2:
+    print("Usage: python convert_html_to_md.py <input_directory>")
+    sys.exit(1)
+
+# Directory containing HTML files
+input_dir = sys.argv[1]
+
+# Check if the input directory exists
+if not os.path.isdir(input_dir):
+    print(f"Error: Directory {input_dir} does not exist.")
+    sys.exit(1)
+
+# Iterate over all HTML files in the input directory
+for html_file in os.listdir(input_dir):
+    if html_file.endswith(".html"):
+        # Get the full path of the HTML file
+        html_file_path = os.path.join(input_dir, html_file)
+        # Get the base name of the file (without directory and extension)
+        base_name = os.path.splitext(html_file)[0]
+        # Define the output Markdown file path
+        md_file_path = os.path.join(input_dir, f"{base_name}.md")
+
+        # Read the HTML file
+        with open(html_file_path, "r", encoding="utf-8") as f:
+            html_content = f.read()
+
+        # Convert HTML to Markdown with custom settings
+        md_content = custom_markdownify(html_content)
+
+        # Write the Markdown content to the output file
+        with open(md_file_path, "w", encoding="utf-8") as f:
+            f.write(md_content)
+
+        print(f"Converted {html_file_path} to {md_file_path}")
