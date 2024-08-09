@@ -34,15 +34,30 @@ DEFAULT_TEXT = "World"
     default=False,
     help="List available fonts",
 )
+@click.option(
+    "-r",
+    "--random-font",
+    is_flag=True,
+    show_default=True,
+    default=False,
+    help="Pick random font",
+)
 @click.argument("text", default=DEFAULT_TEXT)
 def cli(
     text: str = DEFAULT_TEXT,
     font: str = DEFAULT_FONT,
     list_fonts: bool = False,
+    random_font: bool = False,
 ):
     if list_fonts:
         print("\n".join(sorted(pyfiglet.FigletFont.getFonts())))
     else:
+        if random_font:
+            import random
+
+            font = random.choice(pyfiglet.FigletFont.getFonts())
+            print(f"Random font selected: {font}")
+
         if font in pyfiglet.FigletFont.getFonts():
             cfg.set_key_value("font", font)
         else:
