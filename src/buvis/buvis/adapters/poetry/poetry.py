@@ -41,4 +41,13 @@ class PoetryAdapter:
             stdout=subprocess.PIPE,
         )
         venv_dir = Path(venv_dir_stdout.stdout.decode("utf-8").strip())
-        return Path(venv_dir, "bin", "activate_this.py")
+        activator_posix = Path(venv_dir, "bin", "activate_this.py")
+        activator_win = Path(venv_dir, "Scripts", "activate_this.py")
+
+        if activator_posix.is_file():
+            return activator_posix
+
+        if activator_win.is_file():
+            return activator_win
+
+        return Path.cwd()
