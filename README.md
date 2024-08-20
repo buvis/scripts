@@ -12,6 +12,7 @@ I always appreciate any opportunity to learn. Thank you!
 Run the command below from repository's root directory to install the dependencies required by scripts runner and scripts that aren't using poetry managed virtual environments (yet).
 
 ```bash
+pipenv lock
 pipenv install --system
 ```
 
