@@ -20,25 +20,20 @@ pipenv install --system
 
 This can be automated if you create a post-checkout hook:
 
-1. Create `post-checkout` in `.git/hooks`
+1. Create `post-merge` in `.git/hooks`
 
 ```bash
 #!/bin/bash
-# Post-checkout hook to run pipenv lock and pipenv install --system
 
-# Fetch the flag indicating whether it was a branch checkout (1) or not (0)
-CHECKOUT_TYPE=$3
-
-# Only run pipenv commands if it was a branch checkout
-if [ "$CHECKOUT_TYPE" -eq 1 ]; then
-    echo "Running pipenv lock..."
-    cd scripts && pipenv lock
-    echo "Installing dependencies system-wide..."
-    cd scripts && pipenv install --system
-fi
+cd ~/scripts
+echo "Running pipenv lock in ~/scripts"
+pipenv lock
+echo "Installing dependencies system-wide"
+pipenv install --system
+cd -
 ```
 
-2. Make it executable: `chmod +x .git/hooks/post-checkout`
+2. Make it executable: `chmod +x .git/hooks/post-merge`
 
 ## Develop
 
