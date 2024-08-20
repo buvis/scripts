@@ -8,6 +8,7 @@ inflection = "*"
 pywin32 = {version = "*", markers="sys_platform == 'win32'"}
 pyyaml = "*"
 rich = "*"
+tzlocal = "*"
 
 [dev-packages]
 beautifulsoup4 = "*"
@@ -16,7 +17,6 @@ cyclopts = "*"
 markdownify = "*"
 pytest = "*"
 python-slugify = "*"
-tzlocal = "*"
 unidecode = "*"
 
 [requires]
