@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "notes-linter"
+version = "0.1.0"
+description = "Bob's notes linter"
+authors = ["Tomáš Bouška <tomas@buvis.net>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+click = "^8.1.7"
+buvis = {path = "../buvis",develop=true}
+
+[build-system]
+requires = ["poetry-core", "pynvim"]
+build-backend = "poetry.core.masonry.api"

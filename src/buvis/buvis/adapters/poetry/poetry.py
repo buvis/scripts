@@ -7,7 +7,7 @@ from pathlib import Path
 
 class PoetryAdapter:
     @staticmethod
-    def run_script(launcher, arguments):
+    def run_script(launcher: Path, arguments: list) -> None:
         pkg_name = Path(launcher).stem.replace("-", "_")
         pkg_src = Path(launcher, "../../src/", pkg_name).resolve()
 
@@ -17,9 +17,9 @@ class PoetryAdapter:
 
         if not venv_activator.is_file():
             subprocess.run(
-                ["poetry", "--directory", pkg_src, "install"],
-                stderr=subprocess.PIPE,
-                stdout=subprocess.PIPE,
+                ["poetry", "--directory", pkg_src, "install"],  # noqa: S607, S603
+                capture_output=True,
+                check=False,
             )
             venv_activator = PoetryAdapter.get_activator_path(pkg_src)
 
@@ -27,18 +27,19 @@ class PoetryAdapter:
             # Activate package's virtual environment
             runpy.run_path(str(venv_activator))
 
-            launcher = importlib.import_module(f"{pkg_name}.cli")
-            launcher.cli(arguments)
+            launcher_module = importlib.import_module(f"{pkg_name}.cli")
+            launcher_module.cli(arguments)
         else:
             print(
-                f"Script preparation failed. Make sure `poetry install` can complete successfully in {pkg_src}."
+                f"Script preparation failed. Make sure `poetry install` can complete successfully in {pkg_src}.",
             )
 
     @staticmethod
-    def get_activator_path(directory):
+    def get_activator_path(directory: Path) -> Path:
         venv_dir_stdout = subprocess.run(
-            ["poetry", "--directory", directory, "env", "info", "--path"],
+            ["poetry", "--directory", directory, "env", "info", "--path"],  # noqa: S607, S603
             stdout=subprocess.PIPE,
+            check=False,
         )
         venv_dir = Path(venv_dir_stdout.stdout.decode("utf-8").strip())
         activator_posix = Path(venv_dir, "bin", "activate_this.py")

@@ -1,7 +1,8 @@
 import os
+
 from setuptools import find_packages, setup
 
-dependencies=["pyyam", "rich"]
+dependencies = ["PyYAML", "rich", "tzlocal", "inflection"]
 
 if os.name == "nt":
     dependencies.extend(["pywin32"])

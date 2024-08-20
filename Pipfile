@@ -4,18 +4,20 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-unidecode = "*"
-beautifulsoup4 = "*"
-markdownify = "*"
-python-slugify = "*"
+inflection = "*"
+pywin32 = {version = "*", markers="sys_platform == 'win32'"}
 pyyaml = "*"
 rich = "*"
-click = "*"
-cyclopts = "*"
-pywin32 = {version = "*", markers="sys_platform == 'win32'"}
 
 [dev-packages]
+beautifulsoup4 = "*"
+click = "*"
+cyclopts = "*"
+markdownify = "*"
 pytest = "*"
+python-slugify = "*"
+tzlocal = "*"
+unidecode = "*"
 
 [requires]
 python_version = "3.12"
