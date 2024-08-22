@@ -22,7 +22,7 @@ class StrConv:
     ) -> str:
         # Check if the passed list is None or empty, then use the default list
         if abbreviations is None or len(abbreviations) == 0:
-            res = cfg.get_key_value("abbreviations")
+            res = cfg.get_configuration_item("abbreviations")
             abbreviations = res.payload if res.is_ok() else []
 
         replacements = _get_abbreviations_replacements(abbreviations)

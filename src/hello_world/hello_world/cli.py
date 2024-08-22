@@ -2,19 +2,18 @@ from pathlib import Path
 
 import click
 import pyfiglet
-
 from buvis.adapters import ConfigAdapter
 
 from hello_world.commands import CommandPrintFiglet
 
+DEFAULT_FONT = "doom"
+
 try:
     cfg = ConfigAdapter(Path(__file__, "../../config.yaml"))
-    res = cfg.get_key_value("figlet_font")
+    res = cfg.get_configuration_item("figlet_font", DEFAULT_FONT)
 
     if res.is_ok():
         DEFAULT_FONT = res.payload
-    else:
-        DEFAULT_FONT = "doom"
 except FileNotFoundError:
     cfg = ConfigAdapter()
     DEFAULT_FONT = "doom"
@@ -59,11 +58,11 @@ def cli(
             print(f"Random font selected: {font}")
 
         if font in pyfiglet.FigletFont.getFonts():
-            cfg.set_key_value("font", font)
+            cfg.set_configuration_item("font", font)
         else:
-            cfg.set_key_value("font", DEFAULT_FONT)
+            cfg.set_configuration_item("font", DEFAULT_FONT)
 
-        cfg.set_key_value("text", text)
+        cfg.set_configuration_item("text", text)
 
         cmd = CommandPrintFiglet(cfg)
         cmd.execute()

@@ -6,7 +6,7 @@ from buvis.domain import Zettel
 
 class CommandPreview:
     def __init__(self: "CommandPreview", cfg: ConfigAdapter) -> None:
-        res = cfg.get_key_value("path_note")
+        res = cfg.get_configuration_item("path_note")
 
         if res.is_ok() and Path(str(res.payload)).is_file():
             self.path_note = Path(str(res.payload))

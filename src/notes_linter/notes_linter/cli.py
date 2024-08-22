@@ -15,7 +15,7 @@ except FileNotFoundError:
 @click.argument("path_to_note")
 def cli(path_to_note: Path):
     if Path(path_to_note).is_file():
-        cfg.set_key_value("path_note", path_to_note)
+        cfg.set_configuration_item("path_note", path_to_note)
         cmd = CommandPreview(cfg)
         cmd.execute()
     else:

@@ -18,6 +18,7 @@ markdownify = "*"
 pytest = "*"
 python-slugify = "*"
 unidecode = "*"
+sphinx = "*"
 
 [requires]
 python_version = "3.12"

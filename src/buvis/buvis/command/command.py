@@ -21,7 +21,7 @@ class BuvisCommand:
             input_spec = yaml.safe_load(input_spec_file)
 
         for key, spec in input_spec.items():
-            res = cfg.get_key_value(key)
+            res = cfg.get_configuration_item(key)
 
             if res.is_ok():
                 self.__setattr__(key, res.payload)

@@ -1,11 +1,11 @@
 from buvis.adapters import cfg, console
+
 from readerctl.adapters import ReaderAPIAdapter
 
 
 class CommandAdd:
-
     def __init__(self):
-        res = cfg.get_key_value("token")
+        res = cfg.get_configuration_item("token")
 
         if res.is_ok():
             token = res.message

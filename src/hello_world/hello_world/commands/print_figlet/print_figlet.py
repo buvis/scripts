@@ -1,26 +1,19 @@
-DEFAULT_FONT = 'doom'
-DEFAULT_TEXT = 'World'
+DEFAULT_FONT = "doom"
+DEFAULT_TEXT = "World"
+
 
 class CommandPrintFiglet:
-
     def __init__(self, cfg):
-        res = cfg.get_key_value("font")
+        res = cfg.get_configuration_item("font", DEFAULT_FONT)
+        self.font = res.payload if res.is_ok() else DEFAULT_FONT
 
-        if res.is_ok():
-            self.font = res.payload
-        else:
-            self.font = DEFAULT_FONT
-
-        res = cfg.get_key_value("text")
-
-        if res.is_ok():
-            self.text = res.payload
-        else:
-            self.text = DEFAULT_TEXT
+        res = cfg.get_configuration_item("text", DEFAULT_TEXT)
+        self.text = res.payload if res.is_ok() else DEFAULT_TEXT
 
     def execute(self):
         try:
             from pyfiglet import Figlet
+
             f = Figlet(font=self.font)
         except ImportError:
             f = None
