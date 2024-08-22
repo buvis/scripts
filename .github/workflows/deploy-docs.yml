@@ -31,4 +31,5 @@ jobs:
         uses: sphinx-notes/pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          documentation_path: ./docs/source
           publish_dir: "./docs/build/html"
