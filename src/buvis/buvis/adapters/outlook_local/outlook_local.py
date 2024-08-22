@@ -1,12 +1,16 @@
 from __future__ import annotations
 
+import os
 from datetime import datetime, timedelta
 from typing import Any
 
 import tzlocal
-import win32com.client
 
-from buvis.adapters import AdapterResponse, console
+if os.name == "nt":
+    import win32com.client
+
+from buvis.adapter_response import AdapterResponse
+from buvis.adapters import console
 
 
 class OutlookLocalAdapter:
