@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "scripts"
+version = "0.1.0"
+description = ""
+authors = ["Tomáš Bouška <tomas@buvis.net>"]
+readme = "README.md"
+packages = [
+  { include = "buvis", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pywin32 = {version = "^306", platform = "win32"}
+inflection = "^0.5.1"
+pyyaml = "^6.0.2"
+rich = "^13.8.0"
+tzlocal = "^5.2"
+
+
+[tool.poetry.group.dev.dependencies]
+pyfiglet = "^1.0.2"
+click = "^8.1.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
