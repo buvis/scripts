@@ -5,7 +5,7 @@ description = ""
 authors = ["Tomáš Bouška <tomas@buvis.net>"]
 readme = "README.md"
 packages = [
-  { include = "buvis", from = "src" }
+  { include = "buvis_scripts", from = "src" }
 ]
 
 [tool.poetry.dependencies]
