@@ -1,5 +1,5 @@
-from buvis.domain.entity.zettel.zettel_raw_data import ZettelRawData
+from buvis.domain.entity.zettel.zettel_data import ZettelData
 
 
-def set_default_publish(zettel_raw_data: ZettelRawData) -> None:
-    zettel_raw_data.metadata["publish"] = False
+def set_default_publish(zettel_data: ZettelData) -> None:
+    zettel_data.metadata["publish"] = False

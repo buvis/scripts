@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from buvis.adapters import ConfigAdapter
-from buvis.domain import Zettel
+from buvis.domain import ZettelFactory, ZettelFormatterMarkdown
 
 
 class CommandPreview:
@@ -14,6 +14,6 @@ class CommandPreview:
             raise FileNotFoundError
 
     def execute(self: "CommandPreview") -> None:
-        note = Zettel.create_from_file(self.path_note)
-        formatted_md = note.to_formatted_markdown()
+        note = ZettelFactory.create_from_file(self.path_note)
+        formatted_md = note.format(ZettelFormatterMarkdown)
         print(formatted_md)

@@ -2,6 +2,7 @@ from .align_h1_to_title import align_h1_to_title
 from .fix_title_format import fix_title_format
 from .move_tag_to_tags import move_tag_to_tags
 from .move_zkn_id_to_id import move_zkn_id_to_id
+from .normalize_type import normalize_type
 from .remove_duplicate_tags import remove_duplicate_tags
 from .set_default_date import set_default_date
 from .set_default_id import set_default_id
@@ -17,6 +18,7 @@ __all__ = [
     "fix_title_format",
     "move_tag_to_tags",
     "move_zkn_id_to_id",
+    "normalize_type",
     "remove_duplicate_tags",
     "set_default_date",
     "set_default_id",

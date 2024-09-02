@@ -16,8 +16,8 @@ class PoetryAdapter:
         venv_activator = PoetryAdapter.get_activator_path(pkg_src)
 
         if not venv_activator.is_file():
-            subprocess.run(
-                ["poetry", "--directory", pkg_src, "install"],  # noqa: S607, S603
+            subprocess.run(  # noqa: S603
+                ["poetry", "--directory", pkg_src, "install"],  # noqa: S607
                 capture_output=True,
                 check=False,
             )
@@ -36,8 +36,8 @@ class PoetryAdapter:
 
     @staticmethod
     def get_activator_path(directory: Path) -> Path:
-        venv_dir_stdout = subprocess.run(
-            ["poetry", "--directory", directory, "env", "info", "--path"],  # noqa: S607, S603
+        venv_dir_stdout = subprocess.run(  # noqa: S603
+            ["poetry", "--directory", directory, "env", "info", "--path"],  # noqa: S607
             stdout=subprocess.PIPE,
             check=False,
         )

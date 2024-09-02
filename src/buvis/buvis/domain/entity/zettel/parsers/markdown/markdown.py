@@ -1,4 +1,4 @@
-from buvis.domain.entity.zettel.zettel_raw_data import ZettelRawData
+from buvis.domain.entity.zettel.zettel_data import ZettelData
 
 from .helpers import (
     extract_metadata,
@@ -10,8 +10,8 @@ from .helpers import (
 
 class ZettelParserMarkdown:
     @staticmethod
-    def parse(content: str) -> ZettelRawData:
-        zettel_raw_data = ZettelRawData()
+    def parse(content: str) -> ZettelData:
+        zettel_raw_data = ZettelData()
 
         metadata, content = extract_metadata(content)
         zettel_raw_data.metadata = normalize_dict_keys(metadata) if metadata else {}

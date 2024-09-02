@@ -16,6 +16,14 @@ class ZettelParserMarkdownFrontMatterPreprocessor:
             # Extract the matched group (the tags part)
             tags_part = match.group(1)
 
+            # Remove unsafe characters
+            tags_part = (
+                tags_part.replace("[", "")
+                .replace("]", "")
+                .replace(", ", " ")
+                .replace(",", " ")
+            )
+
             # Remove hashes and split tags into a list
             tags_list = [tag.replace("#", "") for tag in tags_part.split()]
 

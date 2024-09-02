@@ -31,7 +31,7 @@ class ZettelParserMarkdownBackMatterPreprocessor:
             if ":" in line:
                 key, value = line.split(": ", 1)
                 if (
-                    ":" in value
+                    (":" in value or "[" in value or "]" in value)
                     and not value.startswith('"')
                     and not value.endswith('"')
                 ):

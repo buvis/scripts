@@ -45,8 +45,8 @@ def get_file_first_commit_date(file_path: Path) -> datetime | None:
     try:
         file_path_obj = Path(file_path)
         git_repo_path = file_path_obj.parent
-        output = subprocess.check_output(
-            [  # noqa: S607, S603
+        output = subprocess.check_output(  # noqa: S603
+            [  # noqa: S607
                 "git",
                 "log",
                 "--pretty=format:%ad",

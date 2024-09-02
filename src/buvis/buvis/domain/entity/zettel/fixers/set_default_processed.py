@@ -1,5 +1,5 @@
-from buvis.domain.entity.zettel.zettel_raw_data import ZettelRawData
+from buvis.domain.entity.zettel.zettel_data import ZettelData
 
 
-def set_default_processed(zettel_raw_data: ZettelRawData) -> None:
-    zettel_raw_data.metadata["processed"] = False
+def set_default_processed(zettel_data: ZettelData) -> None:
+    zettel_data.metadata["processed"] = False

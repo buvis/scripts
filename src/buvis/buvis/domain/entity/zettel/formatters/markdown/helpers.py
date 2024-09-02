@@ -68,7 +68,7 @@ def format_metadata(metadata: dict, first_keys: tuple) -> str:
     )
 
 
-def format_references(reference: dict) -> str:
+def format_reference(reference: dict) -> str:
     return "\n".join(f"{k}:: {v.lstrip()}" for k, v in reference.items())
 
 
