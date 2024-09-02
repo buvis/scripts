@@ -7,6 +7,11 @@ Feel free to reuse anything, but proceed with caution.
 If you find something I could be doing a better way, please drop me an email at tomas@buvis.net.
 I always appreciate any opportunity to learn. Thank you!
 
+## Prerequisites
+
+1. python
+2. poetry
+
 ## Install
 
 Run the command below from repository's root directory to install the dependencies required by scripts runner and scripts that aren't using poetry managed virtual environments (yet).
@@ -38,6 +43,10 @@ cd -
 ```
 
 2. Make it executable: `chmod +x .git/hooks/post-merge`
+
+## Use
+
+Anything in `./bin` folder can be executed and ideally provides usage instructions. It is a good idea to add the `bin` folder to your system path to make the scripts available anywhere.
 
 ## Develop
 
