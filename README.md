@@ -12,8 +12,10 @@ I always appreciate any opportunity to learn. Thank you!
 Run the command below from repository's root directory to install the dependencies required by scripts runner and scripts that aren't using poetry managed virtual environments (yet).
 
 ```bash
-pipenv lock
-pipenv install --system
+poetry lock
+poetry config virtualenvs.create false
+poetry install --without dev
+poetry config virtualenvs.create true
 ```
 
 ## Update
@@ -26,10 +28,12 @@ This can be automated if you create a post-checkout hook:
 #!/bin/bash
 
 cd ~/scripts
-echo "Running pipenv lock in ~/scripts"
-pipenv lock
+echo "Running poetry lock in ~/scripts"
+poetry lock
 echo "Installing dependencies system-wide"
-pipenv install --system
+poetry config virtualenvs.create false
+poetry install --without dev
+poetry config virtualenvs.create true
 cd -
 ```
 
@@ -40,10 +44,10 @@ cd -
 ### Activate virtual environment
 
 ```bash
-pipenv shell
+poetry shell
 ```
 
-It was done automatically by direnv, but in some cases I needed to work with system python inside this repository, so I'm rather activating it on demand.
+It used to be done automatically by direnv, but in some cases I needed to work with system python inside this repository, so I'm rather activating it on demand.
 
 ### Add new dependencies
 
@@ -51,21 +55,32 @@ If these are specific to a script, then use poetry within script's source direct
 
 If these are BUVIS-wide, then:
 
-1. Add it to `src/buvis/setup.py` in `dependencies` list
-2. Install for as runtime dependency in repository root: `pipenv install <dependency>`
-3. Add it to `~/.default-python-packages` (if using `buvis/home` dotfiles)
+1. Add it to `src/buvis`: `cd src/buvis; poetry add <package_name>; cd -`
+2. Install for as runtime dependency in repository root: `poetry install <dependency>`
 
 ### Update dependencies
 
 ```bash
-pipenv update
+poetry update
 ```
 
 ### Update python version
 
-Replace `xx.y` below by target version you want to use. Make sure you exited `pipenv shell` before running the command.
+1. Make sure to exit virtual environment launched by `poetry shell` previously
+2. Point poetry to python you want to use: `poetry env use /usr/bin/python3`; alternatively, you can use asdf to set local python version
+3. Refresh the environment: `poetry env remove --all; poetry install; poetry shell`
 
-```bash
-export PYTHON_VERSION=3.xx.y
-pipenv --rm; pipenv install --dev --python $PYTHON_VERSION; pipenv shell
-```
+### Concurrent development of prerequisite projects
+
+The scripts are using `doogat-core` which I'm also developing. Unfortunately, there is currently no easy way to use editable and non-editable packages in same `pyproject.toml` (see: https://github.com/python-poetry/poetry/issues/8219). So I need to modify `pyproject.toml`.
+
+1. Uncomment `# doogat-core = {path = "../../doogat/doogat-core", develop = true}` in `pyproject.toml`
+2. Update dependencies: `poetry update`
+3. Do the work in both projects
+4. When done, you push to `doogat-core` project first
+5. Comment the line uncommented in step 1, and uncomment: `# doogat-core = {version = "*", source = "test-pypi"}`
+6. Update dependencies: `poetry update`
+7. Verify everything still works
+8. Create release of `doogat-core`
+9. Comment the line uncommented in step 5, and uncomment: `# doogat-core = "*"`
+10. Now you can push the changes in this repository

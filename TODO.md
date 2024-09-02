@@ -1,5 +1,9 @@
 # BUVIS scripts todo
 
+## Workflow
+
+- [ ] prevent commits using editable or test versions of my other projects in pyproject.toml
+
 ## Core
 
 ### ZettelParser

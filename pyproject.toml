@@ -15,17 +15,18 @@ pywin32 = {version = "^306", platform = "win32"}
 pyyaml = "^6.0.2"
 rich = "^13.8.0"
 tzlocal = "^5.2"
-
+doogat-core = "*"
+# doogat-core = {version = "*", source = "test-pypi"}
+# doogat-core = {path = "../../doogat/doogat-core", develop = true}
 
 [tool.poetry.group.dev.dependencies]
 click = "^8.1.7"
 pyfiglet = "^1.0.2"
 
-[tool.poetry.group.local]
-optional = true
-
-[tool.poetry.group.local.dependencies]
-doogat-core = {path = "../../doogat/doogat-core", develop = true}
+[[tool.poetry.source]]
+name = "test-pypi"
+url = "https://test.pypi.org/simple/"
+priority = "explicit"
 
 [build-system]
 requires = ["poetry-core"]
