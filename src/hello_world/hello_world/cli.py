@@ -2,7 +2,7 @@ from pathlib import Path
 
 import click
 import pyfiglet
-from buvis.adapters import ConfigAdapter
+from buvis_scripts.core.adapters import ConfigAdapter
 
 from hello_world.commands import CommandPrintFiglet
 

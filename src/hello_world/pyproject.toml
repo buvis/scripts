@@ -9,7 +9,6 @@ readme = "README.md"
 python = "^3.12"
 pyfiglet = "^1.0.2"
 click = "^8.1.7"
-buvis = {path = "../buvis",develop=true}
 
 [build-system]
 requires = ["poetry-core", "pynvim"]

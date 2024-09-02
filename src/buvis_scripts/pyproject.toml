@@ -1,35 +1,22 @@
 [tool.poetry]
-name = "scripts"
+name = "buvis-scripts-core"
 version = "0.1.0"
 description = ""
 authors = ["Tomáš Bouška <tomas@buvis.net>"]
 readme = "README.md"
-packages = [
-  { include = "buvis", from = "src" }
-]
 
 [tool.poetry.dependencies]
-inflection = "^0.5.1"
 python = "^3.12"
-pywin32 = {version = "^306", platform = "win32"}
 pyyaml = "^6.0.2"
 rich = "^13.8.0"
 tzlocal = "^5.2"
-doogat-core = "^0.1.0"
+inflection = "^0.5.1"
+# doogat-core = "^0.1.0"
 # doogat-core = {version = "*", source = "test-pypi"}
 # doogat-core = {path = "../../doogat/doogat-core", develop = true}
-buvis-pybase = "^0.1.0"
+# buvis-pybase = "^0.1.0"
 # buvis-pybase = {version = "*", source = "test-pypi"}
-# buvis-pybase = {path = "../buvis-pybase", develop = true}
-
-[tool.poetry.group.dev.dependencies]
-click = "^8.1.7"
-pyfiglet = "^1.0.2"
-
-[[tool.poetry.source]]
-name = "test-pypi"
-url = "https://test.pypi.org/simple/"
-priority = "explicit"
+# buvis-pybase = {path = "../../../buvis-pybase", develop = true}
 
 [build-system]
 requires = ["poetry-core"]

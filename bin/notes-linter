@@ -6,7 +6,7 @@ from _set_buvispath import set_buvispath
 set_buvispath()
 
 
-from buvis.adapters import PoetryAdapter
+from buvis_scripts.core.adapters import PoetryAdapter
 
 if __name__ == "__main__":
     PoetryAdapter.run_script(__file__, sys.argv[1:])

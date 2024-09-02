@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import click
-from buvis.adapters import ConfigAdapter, console
+from buvis_scripts.core.adapters import ConfigAdapter, console
 
 from notes_linter.commands import CommandPreview
 
