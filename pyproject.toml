@@ -9,18 +9,19 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
+doogat-core = "*"
+inflection = "^0.5.1"
 python = "^3.12"
 pywin32 = {version = "^306", platform = "win32"}
-inflection = "^0.5.1"
 pyyaml = "^6.0.2"
 rich = "^13.8.0"
 tzlocal = "^5.2"
 
 
 [tool.poetry.group.dev.dependencies]
-pyfiglet = "^1.0.2"
 click = "^8.1.7"
-doogat-core = {path = "../../doogat/doogat-core", develop = true}
+doogat-core = {path = "../../doogat/doogat-core", optional = true, develop = true}
+pyfiglet = "^1.0.2"
 
 [build-system]
 requires = ["poetry-core"]
