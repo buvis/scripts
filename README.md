@@ -33,11 +33,16 @@ This can be automated if you create a post-checkout hook:
 #!/bin/bash
 
 cd ~/scripts
-echo "Running poetry lock in ~/scripts"
-poetry lock
-echo "Installing dependencies system-wide"
+echo "Cleaning virtualenvs"
+poetry env remove --all
+echo "Switching to system-wide operations"
 poetry config virtualenvs.create false
+echo "Running poetry lock in ~/scripts"
+rm poetry.lock
+poetry lock
+echo "Installing dependencies"
 poetry install --without dev
+echo "Switching to project-specific operations"
 poetry config virtualenvs.create true
 cd -
 ```
