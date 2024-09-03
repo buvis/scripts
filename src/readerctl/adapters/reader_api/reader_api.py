@@ -1,17 +1,18 @@
 import time
 
 import requests
-from buvis.adapters import AdapterResponse, console
+from buvis_scripts.core.adapter_response import AdapterResponse
+from buvis_scripts.core.adapters import console
 
 BASE_URL = "https://readwise.io/api"
 
 
 class ReaderAPIAdapter:
-
     @classmethod
     def check_token(cls, token):
-        res = requests.get(url=f"{BASE_URL}/v2/auth/",
-                           headers={"Authorization": f"Token {token}"})
+        res = requests.get(
+            url=f"{BASE_URL}/v2/auth/", headers={"Authorization": f"Token {token}"}
+        )
 
         if res.status_code == 204:
             return AdapterResponse(message="Token is valid")
@@ -45,10 +46,8 @@ class ReaderAPIAdapter:
             json = res.json()
             reader_url = json["url"]
 
-            return AdapterResponse(
-                message=f"{url} added to Reader as {reader_url}")
+            return AdapterResponse(message=f"{url} added to Reader as {reader_url}")
         else:
             json = res.json()
 
-            return AdapterResponse(code=res.status_code,
-                                   message=json["url"][0])
+            return AdapterResponse(code=res.status_code, message=json["url"][0])

@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import click
-from buvis.adapters import ConfigAdapter
+from buvis_scripts.core.adapters import ConfigAdapter
 
 from outlookctl.commands import CommandCreateTimeblock
 

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from buvis.adapters import cfg, console
+from buvis_scripts.core.adapters import cfg, console
 
 from readerctl.adapters import ReaderAPIAdapter
 

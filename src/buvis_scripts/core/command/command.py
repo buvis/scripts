@@ -1,8 +1,7 @@
 from pathlib import Path
 
 import yaml
-
-from buvis.adapters import ConfigAdapter, console
+from buvis_scripts.core.adapters import ConfigAdapter, console
 
 FILENAME_COMMAND_INPUT_SPECIFICATION = "command_input_spec.yaml"
 

@@ -1,9 +1,8 @@
-from buvis.adapters import console
+import datetime
 
+from buvis_scripts.core.adapters import console
 from fctracker.adapters import TransactionsDirScanner, TransactionsReader
 from fctracker.domain import Account
-
-import datetime
 
 
 class CommandBalance:

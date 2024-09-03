@@ -1,4 +1,4 @@
-from buvis.adapters import console
+from buvis_scripts.core.adapters import console
 
 from zseq.shared import ZseqFilename
 

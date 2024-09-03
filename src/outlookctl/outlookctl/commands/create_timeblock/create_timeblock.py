@@ -1,7 +1,7 @@
-from buvis.adapters import console, OutlookLocalAdapter
+from buvis_scripts.core.adapters import OutlookLocalAdapter, console
+
 
 class CommandCreateTimeblock:
-
     def __init__(self, cfg):
         try:
             self.outlook = OutlookLocalAdapter()

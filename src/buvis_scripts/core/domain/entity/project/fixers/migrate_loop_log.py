@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from buvis.domain.entity.zettel.zettel_data import ZettelData
+    from buvis_scripts.core.domain.entity.zettel.zettel_data import ZettelData
 
 
 import re

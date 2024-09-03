@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import click
-from buvis.adapters import console
+from buvis_scripts.core.adapters import console
 
 from readerctl.commands import CommandAdd, CommandLogin
 
@@ -19,10 +19,7 @@ def login():
 
 @cli.command("add")
 @click.option("-u", "--url", default="NONE", help="URL to add to Reader")
-@click.option("-f",
-              "--file",
-              default="NONE",
-              help="File with URLs to add to Reader")
+@click.option("-f", "--file", default="NONE", help="File with URLs to add to Reader")
 def add(url, file):
     if url or file:
         cmd = CommandLogin()

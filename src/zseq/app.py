@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Annotated
 
-from buvis.adapters import cfg
+from buvis_scripts.core.adapters import cfg
 from cyclopts import App, Parameter, validators
 
 from zseq.commands import CommandGetLast

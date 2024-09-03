@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from buvis.domain.entity.zettel.zettel_raw_data import ZettelRawData
+    from buvis_scripts.core.domain.entity.zettel.zettel_data import ZettelData
 from buvis.pybase.filesystem import (
     get_file_creation_datetime,
     get_file_first_commit_datetime,
@@ -31,7 +31,7 @@ class ZettelParser:
     """
 
     @staticmethod
-    def from_file(file_path: Path) -> ZettelRawData:
+    def from_file(file_path: Path) -> ZettelData:
         """
         Parses a zettel file from a given path and returns the raw data with enriched metadata.
 

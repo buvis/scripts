@@ -13,3 +13,7 @@
 ### notes_linter
 
 - [ ] check if id collides with vault content
+
+## All
+
+- [ ] I think that commands shouldn't write to console

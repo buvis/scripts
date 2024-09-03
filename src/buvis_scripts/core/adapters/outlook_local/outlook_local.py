@@ -9,8 +9,8 @@ import tzlocal
 if os.name == "nt":
     import win32com.client
 
-from buvis.adapter_response import AdapterResponse
-from buvis.adapters import console
+from buvis_scripts.core.adapter_response import AdapterResponse
+from buvis_scripts.core.adapters import console
 
 
 class OutlookLocalAdapter:

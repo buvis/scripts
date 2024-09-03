@@ -1,11 +1,10 @@
-from buvis.adapters import console
+from buvis_scripts.core.adapters import console
+from fctracker.adapters import TransactionsDirScanner, TransactionsReader, cfg
 from fctracker.domain import Account, Deposit
-from fctracker.adapters import TransactionsReader, TransactionsDirScanner, cfg
 from rich.table import Table
 
 
 class CommandTransactions:
-
     def __init__(self, account="", currency="", month="") -> None:
         self.account = account.capitalize()
         self.currency = currency.upper()
@@ -23,9 +22,9 @@ class CommandTransactions:
                         reader.get_transactions()
 
                         filtered_transactions = [
-                            t for t in reversed(account.transactions)
-                            if (self.month == ""
-                                or t.is_in_month(self.month) is True)
+                            t
+                            for t in reversed(account.transactions)
+                            if (self.month == "" or t.is_in_month(self.month) is True)
                         ]
 
                         table = Table(
@@ -37,18 +36,16 @@ class CommandTransactions:
                         table.add_column("Seq.", style="italic #6c71c4")
                         table.add_column("Date", style="bold #839496")
                         table.add_column("Description")
-                        table.add_column("Amount",
-                                         justify="right",
-                                         style="bold #2aa198")
-                        table.add_column("Rate",
-                                         justify="right",
-                                         style="italic")
-                        table.add_column("Outflow",
-                                         justify="right",
-                                         style="bold #dc322f")
-                        table.add_column("Inflow",
-                                         justify="right",
-                                         style="bold #859900")
+                        table.add_column(
+                            "Amount", justify="right", style="bold #2aa198"
+                        )
+                        table.add_column("Rate", justify="right", style="italic")
+                        table.add_column(
+                            "Outflow", justify="right", style="bold #dc322f"
+                        )
+                        table.add_column(
+                            "Inflow", justify="right", style="bold #859900"
+                        )
 
                         index = len(filtered_transactions)
 

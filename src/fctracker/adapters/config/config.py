@@ -1,9 +1,9 @@
 from pathlib import Path
-from buvis.adapters.config.config import ConfigAdapter
+
+from buvis_scripts.core.adapters.config.config import ConfigAdapter
 
 
 class FCTrackerConfig:
-
     def __init__(
         self,
         file_path=Path.joinpath(Path.home(), ".config/fctracker/config.yml"),
