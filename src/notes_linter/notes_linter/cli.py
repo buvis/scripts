@@ -1,19 +1,20 @@
 from pathlib import Path
 
 import click
-from buvis_scripts.core.adapters import ConfigAdapter, console
+from buvis.pybase.configuration import Configuration
+from buvis_scripts.core.adapters import console
 
 from notes_linter.commands import CommandPreview
 
 try:
-    cfg = ConfigAdapter(Path(__file__, "../../config.yaml"))
+    cfg = Configuration(Path(__file__, "../../config.yaml"))
 except FileNotFoundError:
-    cfg = ConfigAdapter()
+    cfg = Configuration()
 
 
 @click.group(help="CLI tool to lint my notes", invoke_without_command=True)
 @click.argument("path_to_note")
-def cli(path_to_note: Path):
+def cli(path_to_note: Path) -> None:
     if Path(path_to_note).is_file():
         cfg.set_configuration_item("path_note", path_to_note)
         cmd = CommandPreview(cfg)

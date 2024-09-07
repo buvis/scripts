@@ -12,10 +12,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from buvis_scripts.core.domain.entity.zettel.zettel_data import ZettelData
-from buvis.pybase.filesystem import (
-    get_file_creation_datetime,
-    get_file_first_commit_datetime,
-)
+from buvis.pybase.filesystem import FileMetadataReader
 
 from .parsers import ZettelParserMarkdown
 
@@ -79,8 +76,8 @@ def _get_date_from_file(file_path: Path) -> datetime | None:
             except ValueError:
                 pass
 
-    fs_creation_date = get_file_creation_datetime(file_path)
-    git_first_commit_date = get_file_first_commit_datetime(file_path)
+    fs_creation_date = FileMetadataReader.get_creation_datetime(file_path)
+    git_first_commit_date = FileMetadataReader.get_first_commit_datetime(file_path)
 
     if fs_creation_date is not None and git_first_commit_date is not None:
         return min(fs_creation_date, git_first_commit_date)

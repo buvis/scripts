@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 
-from buvis_scripts.core.adapters import cfg
+from buvis.pybase.configuration import ConfigurationKeyNotFoundError, cfg
 from inflection import camelize as infl_camelize
 from inflection import humanize as infl_humanize
 from inflection import pluralize as infl_pluralize
@@ -21,8 +21,10 @@ class StrConv:
     ) -> str:
         # Check if the passed list is None or empty, then use the default list
         if abbreviations is None or len(abbreviations) == 0:
-            res = cfg.get_configuration_item("abbreviations")
-            abbreviations = res.payload if res.is_ok() else []
+            try:
+                abbreviations = cfg.get_configuration_item("abbreviations")
+            except ConfigurationKeyNotFoundError as _:
+                abbreviations = []
 
         replacements = _get_abbreviations_replacements(abbreviations)
 

@@ -2,28 +2,32 @@ from pathlib import Path
 
 import click
 import pyfiglet
-from buvis_scripts.core.adapters import ConfigAdapter
+from buvis.pybase.configuration import Configuration, ConfigurationKeyNotFoundError
 
 from hello_world.commands import CommandPrintFiglet
 
 DEFAULT_FONT = "doom"
 
 try:
-    cfg = ConfigAdapter(Path(__file__, "../../config.yaml"))
-    res = cfg.get_configuration_item("figlet_font", DEFAULT_FONT)
-
-    if res.is_ok():
-        DEFAULT_FONT = res.payload
+    cfg = Configuration(Path(__file__, "../../config.yaml"))
 except FileNotFoundError:
-    cfg = ConfigAdapter()
+    cfg = Configuration()
     DEFAULT_FONT = "doom"
+else:
+    try:
+        DEFAULT_FONT = str(cfg.get_configuration_item("figlet_font", DEFAULT_FONT))
+    except ConfigurationKeyNotFoundError as _:
+        DEFAULT_FONT = "doom"
 
 DEFAULT_TEXT = "World"
 
 
 @click.group(help="CLI tool as script proof of concept", invoke_without_command=True)
 @click.option(
-    "-f", "--font", default=DEFAULT_FONT, help="Font to use for stylized printing."
+    "-f",
+    "--font",
+    default=DEFAULT_FONT,
+    help="Font to use for stylized printing.",
 )
 @click.option(
     "-l",

@@ -1,22 +1,23 @@
-from buvis_scripts.core.adapters import cfg, console
+from buvis.pybase.configuration import ConfigurationKeyNotFoundError, cfg
+from buvis_scripts.core.adapters import console
 
 from readerctl.adapters import ReaderAPIAdapter
 
 
 class CommandAdd:
-    def __init__(self):
-        res = cfg.get_configuration_item("token")
-
-        if res.is_ok():
-            token = res.message
+    def __init__(self: "CommandAdd") -> None:
+        try:
+            token = cfg.get_configuration_item("token")
+        except ConfigurationKeyNotFoundError as e:
+            console.panic(str(e))
         else:
-            console.panic(res.message)
-        self.api = ReaderAPIAdapter(token)
+            self.api = ReaderAPIAdapter(token)
 
-    def execute(self, url):
-        res = self.api.add_url(url)
+    def execute(self: "CommandAdd", url: str) -> None:
+        if self.api:
+            res = self.api.add_url(url)
 
-        if res.is_ok():
-            console.success(res.message)
-        else:
-            console.failure(res.message)
+            if res.is_ok():
+                console.success(res.payload)
+            else:
+                console.failure(res.payload)

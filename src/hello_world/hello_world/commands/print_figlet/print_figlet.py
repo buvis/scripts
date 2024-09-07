@@ -1,14 +1,20 @@
+from buvis.pybase.configuration import ConfigurationKeyNotFoundError
+
 DEFAULT_FONT = "doom"
 DEFAULT_TEXT = "World"
 
 
 class CommandPrintFiglet:
     def __init__(self, cfg):
-        res = cfg.get_configuration_item("font", DEFAULT_FONT)
-        self.font = res.payload if res.is_ok() else DEFAULT_FONT
+        try:
+            self.font = cfg.get_configuration_item("font", DEFAULT_FONT)
+        except ConfigurationKeyNotFoundError as _:
+            self.font = DEFAULT_FONT
 
-        res = cfg.get_configuration_item("text", DEFAULT_TEXT)
-        self.text = res.payload if res.is_ok() else DEFAULT_TEXT
+        try:
+            self.text = cfg.get_configuration_item("text", DEFAULT_TEXT)
+        except ConfigurationKeyNotFoundError as _:
+            self.text = DEFAULT_TEXT
 
     def execute(self):
         try:
