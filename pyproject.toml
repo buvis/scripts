@@ -18,7 +18,7 @@ tzlocal = "^5.2"
 doogat-core = "^0.1.0"
 # doogat-core = {version = "*", source = "test-pypi"}
 # doogat-core = {path = "../../doogat/doogat-core", develop = true}
-buvis-pybase = "^0.1.1"
+buvis-pybase = "^0.1.2"
 # buvis-pybase = {version = "*", source = "test-pypi"}
 # buvis-pybase = {path = "../buvis-pybase", develop = true}
 
