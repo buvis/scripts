@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import click
-from buvis_scripts.core.adapters import console
+from buvis.pybase.adapters import console
 
 from readerctl.commands import CommandAdd, CommandLogin
 

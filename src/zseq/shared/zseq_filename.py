@@ -1,7 +1,7 @@
 import datetime
 from pathlib import Path
 
-from buvis_scripts.core.adapters import console
+from buvis.pybase.adapters import console
 
 
 class ZseqFilename:

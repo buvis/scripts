@@ -1,4 +1,4 @@
-from buvis_scripts.core.adapters import console
+from buvis.pybase.adapters import console
 from fctracker.adapters import TransactionsDirScanner, TransactionsReader, cfg
 from fctracker.domain import Account, Deposit
 from rich.table import Table

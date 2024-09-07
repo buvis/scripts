@@ -1,6 +1,6 @@
 import datetime
 
-from buvis_scripts.core.adapters import console
+from buvis.pybase.adapters import console
 from fctracker.adapters import TransactionsDirScanner, TransactionsReader
 from fctracker.domain import Account
 

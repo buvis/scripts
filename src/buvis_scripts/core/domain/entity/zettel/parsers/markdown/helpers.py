@@ -1,7 +1,7 @@
 import re
 
 import yaml
-from buvis_scripts.core.shared import StrConv
+from buvis.pybase.formatting import StringOperator
 
 from .back_matter_preprocessor import (
     ZettelParserMarkdownBackMatterPreprocessor as BMPreprocessor,
@@ -55,7 +55,9 @@ def extract_reference(content: str) -> tuple:
 
 
 def normalize_dict_keys(data: dict) -> dict:
-    return {StrConv.as_note_field_name(key): value for key, value in data.items()}
+    return {
+        StringOperator.as_note_field_name(key): value for key, value in data.items()
+    }
 
 
 def split_content_into_sections(content: str) -> list:

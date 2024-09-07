@@ -1,8 +1,8 @@
 from pathlib import Path
 
 import click
+from buvis.pybase.adapters import console
 from buvis.pybase.configuration import Configuration
-from buvis_scripts.core.adapters import console
 
 from notes_linter.commands import CommandPreview
 

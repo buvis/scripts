@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import buvis_scripts.core.domain as entities
-from buvis_scripts.core.shared import StrConv
+from buvis.pybase.formatting import StringOperator
 
 from .zettel_parser import ZettelParser
 
@@ -18,7 +18,7 @@ class ZettelFactory:
             return zettel
 
         # try downcasting to more specific Zettel type
-        class_name = StrConv.camelize(zettel_type) + "Zettel"
+        class_name = StringOperator.camelize(zettel_type) + "Zettel"
 
         try:
             entity_class = getattr(entities, class_name)

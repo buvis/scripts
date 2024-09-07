@@ -1,8 +1,8 @@
 import time
 
 import requests
-from buvis_scripts.core.adapter_response import AdapterResponse
-from buvis_scripts.core.adapters import console
+from buvis.pybase.adapters import console
+from readerctl.adapters.response import AdapterResponse
 
 BASE_URL = "https://readwise.io/api"
 

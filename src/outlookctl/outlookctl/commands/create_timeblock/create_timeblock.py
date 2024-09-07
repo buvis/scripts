@@ -1,4 +1,4 @@
-from buvis_scripts.core.adapters import OutlookLocalAdapter, console
+from buvis.pybase.adapters import OutlookLocalAdapter, console
 
 
 class CommandCreateTimeblock:
