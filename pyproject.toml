@@ -9,12 +9,8 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-inflection = "^0.5.1"
 python = "^3.12"
-pywin32 = {version = "^306", platform = "win32"}
 pyyaml = "^6.0.2"
-rich = "^13.8.0"
-tzlocal = "^5.2"
 doogat-core = "^0.1.0"
 # doogat-core = {version = "*", source = "test-pypi"}
 # doogat-core = {path = "../../doogat/doogat-core", develop = true}
