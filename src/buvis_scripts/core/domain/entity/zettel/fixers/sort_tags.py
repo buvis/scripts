@@ -1,6 +1,0 @@
-from buvis_scripts.core.domain.entity.zettel.zettel_data import ZettelData
-
-
-def sort_tags(zettel_data: ZettelData) -> None:
-    if zettel_data.metadata.get("tags", None) is not None:
-        zettel_data.metadata["tags"] = sorted(zettel_data.metadata["tags"])

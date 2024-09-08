@@ -1,7 +1,12 @@
 from pathlib import Path
 
 from buvis.pybase.configuration import Configuration, ConfigurationKeyNotFoundError
-from buvis_scripts.core.domain import ZettelFactory, ZettelFormatterMarkdown
+from doogat.core import (
+    MarkdownZettelFormatter,
+    MarkdownZettelRepository,
+    PrintZettelUseCase,
+    ReadDoogatUseCase,
+)
 
 
 class CommandPreview:
@@ -15,6 +20,9 @@ class CommandPreview:
             raise FileNotFoundError from e
 
     def execute(self: "CommandPreview") -> None:
-        note = ZettelFactory.create_from_file(self.path_note)
-        formatted_md = note.format(ZettelFormatterMarkdown)
-        print(formatted_md)
+        repo = MarkdownZettelRepository()
+        reader = ReadDoogatUseCase(repo)
+        formatter = MarkdownZettelFormatter()
+        printer = PrintZettelUseCase(formatter)
+        note = reader.execute(str(self.path_note))
+        printer.execute(note.get_data())
