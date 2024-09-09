@@ -19,6 +19,11 @@ doogat-core = "0.1.1"
 # doogat-core = {path = "../../doogat/doogat-core", develop = true}
 pyfiglet = "1.0.2"
 
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "8.0.2"
+sphinx-rtd-theme = "3.0.0rc1"
+
 [[tool.poetry.source]]
 name = "test-pypi"
 url = "https://test.pypi.org/simple/"
