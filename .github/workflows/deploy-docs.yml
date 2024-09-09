@@ -18,17 +18,29 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install Pipenv
-        run: pip install pipenv
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v3
 
-      - name: Install Dependencies
-        run: pipenv install --dev --ignore-pipfile
+      - name: Setup a local virtual environment (if no poetry.toml file)
+        run: |
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+
+      - uses: actions/cache@v4
+        name: Define a cache for the virtual environment based on the dependencies lock file
+        with:
+          path: ./.venv
+          key: venv-${{ hashFiles('poetry.lock') }}
+
+      - name: Install the project dependencies
+        run: poetry install
 
       - name: Build and Deploy Sphinx Documentation
-        run: pipenv run sphinx-build -b html ./docs/source ./docs/build/html
+        run: poetry run sphinx-build -b html ./docs/source ./docs/build/html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
+          publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: "./docs/build/html"
