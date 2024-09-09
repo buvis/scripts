@@ -8,17 +8,16 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
-pyyaml = "^6.0.2"
-buvis-pybase = "^0.1.2"
+buvis-pybase = "0.1.2"
 # buvis-pybase = {version = "*", source = "test-pypi"}
 # buvis-pybase = {path = "../buvis-pybase", develop = true}
 
 [tool.poetry.group.dev.dependencies]
-click = "^8.1.7"
-doogat-core = "^0.1.1"
+click = "8.1.7"
+doogat-core = "0.1.1"
 # doogat-core = {version = "*", source = "test-pypi"}
 # doogat-core = {path = "../../doogat/doogat-core", develop = true}
-pyfiglet = "^1.0.2"
+pyfiglet = "1.0.2"
 
 [[tool.poetry.source]]
 name = "test-pypi"
