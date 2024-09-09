@@ -14,7 +14,7 @@ buvis-pybase = "0.1.3"
 
 [tool.poetry.group.dev.dependencies]
 click = "8.1.7"
-doogat-core = "0.1.1"
+doogat-core = "0.1.2"
 # doogat-core = {version = "*", source = "test-pypi"}
 # doogat-core = {path = "../../doogat/doogat-core", develop = true}
 pyfiglet = "1.0.2"
