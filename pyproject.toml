@@ -8,7 +8,7 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
-buvis-pybase = "0.1.2"
+buvis-pybase = "0.1.3"
 # buvis-pybase = {version = "*", source = "test-pypi"}
 # buvis-pybase = {path = "../buvis-pybase", develop = true}
 
