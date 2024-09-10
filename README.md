@@ -71,15 +71,15 @@ It used to be done automatically by direnv, but in some cases I needed to work w
 
 ### Concurrent development of prerequisite projects
 
-The scripts are using `doogat-core` which I'm also developing. Unfortunately, there is currently no easy way to use editable and non-editable packages in same `pyproject.toml` (see: https://github.com/python-poetry/poetry/issues/8219). So I need to modify `pyproject.toml`.
+The scripts are using `buvis-pybase` and `doogat-core` which I'm also developing. Unfortunately, there is currently no easy way to use editable and non-editable packages in same `pyproject.toml` (see: https://github.com/python-poetry/poetry/issues/8219). So I need to modify `pyproject.toml`.
 
-1. Uncomment `# doogat-core = {path = "../../doogat/doogat-core", develop = true}` in `pyproject.toml`
+1. Uncomment `# buvis-pybase = {path = "../buvis-pybase", develop = true}` in `pyproject.toml`
 2. Update dependencies: `poetry update`
 3. Do the work in both projects
 4. When done, you push to `doogat-core` project first
-5. Comment the line uncommented in step 1, and uncomment: `# doogat-core = {version = "*", source = "test-pypi"}`
+5. Comment out the line uncommented in step 1, and uncomment: `# buvis-pybase = {version = "*", source = "test-pypi"}`
 6. Update dependencies: `poetry update`
 7. Verify everything still works
-8. Create release of `doogat-core`
-9. Comment the line uncommented in step 5, and uncomment: `# doogat-core = "*"`
+8. Release `buvis-pybase`
+9. Comment the line uncommented in step 5, update `<NEW_VERSION>` and uncomment: `# buvis-pybase = "<NEW_VERSION>"`
 10. Now you can push the changes in this repository
