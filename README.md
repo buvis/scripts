@@ -63,21 +63,6 @@ poetry shell
 
 It used to be done automatically by direnv, but in some cases I needed to work with system python inside this repository, so I'm rather activating it on demand.
 
-### Add new dependencies
-
-If these are specific to a script, then use poetry within script's source directory to manage that.
-
-If these are BUVIS-wide, then:
-
-1. Add it to `src/buvis`: `cd src/buvis; poetry add <package_name>; cd -`
-2. Install for as runtime dependency in repository root: `poetry install <dependency>`
-
-### Update dependencies
-
-```bash
-poetry update
-```
-
 ### Update python version
 
 1. Make sure to exit virtual environment launched by `poetry shell` previously
