@@ -41,7 +41,7 @@ echo "Running poetry lock in ~/scripts"
 rm poetry.lock
 poetry lock
 echo "Installing dependencies"
-poetry install --without dev
+poetry install --without dev,docs
 echo "Switching to project-specific operations"
 poetry config virtualenvs.create true
 cd -
