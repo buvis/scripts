@@ -25,7 +25,7 @@ poetry config virtualenvs.create true
 
 ## Update
 
-This can be automated if you create a post-checkout hook:
+This can be automated if you create a post-merge hook:
 
 1. Create `post-merge` in `.git/hooks`
 
