@@ -19,7 +19,7 @@ Run the command below from repository's root directory to install the dependenci
 ```bash
 poetry lock
 poetry config virtualenvs.create false
-poetry install --without dev
+poetry install --without dev,docs,test
 poetry config virtualenvs.create true
 ```
 
@@ -41,7 +41,7 @@ echo "Running poetry lock in ~/scripts"
 rm poetry.lock
 poetry lock
 echo "Installing dependencies"
-poetry install --without dev,docs
+poetry install --without dev,docs,test
 echo "Switching to project-specific operations"
 poetry config virtualenvs.create true
 cd -
