@@ -21,7 +21,7 @@ pre-commit = "3.8.0"
 pyfiglet = "1.0.2"
 
 [tool.poetry.group.test.dependencies]
-pytest = "8.3.2"
+pytest = "8.3.3"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "8.0.2"
