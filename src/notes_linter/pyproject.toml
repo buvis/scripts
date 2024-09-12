@@ -8,7 +8,10 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 click = "8.1.7"
-doogat-core = "0.1.2"
+# doogat-core = "0.1.2"
+doogat-core = {version = "0.1.3a4", source = "test-pypi"}
+# doogat-core = {path = "../../../../doogat/doogat-core", develop = true}
+
 
 [build-system]
 requires = ["poetry-core", "pynvim"]
