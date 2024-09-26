@@ -49,16 +49,17 @@ DEFAULT_TEXT = "World"
 def cli(
     text: str = DEFAULT_TEXT,
     font: str = DEFAULT_FONT,
+    *,
     list_fonts: bool = False,
     random_font: bool = False,
-):
+) -> None:
     if list_fonts:
         print("\n".join(sorted(pyfiglet.FigletFont.getFonts())))
     else:
         if random_font:
             import random
 
-            font = random.choice(pyfiglet.FigletFont.getFonts())
+            font = random.choice(pyfiglet.FigletFont.getFonts())  # noqa: S311
             print(f"Random font selected: {font}")
 
         if font in pyfiglet.FigletFont.getFonts():

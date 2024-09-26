@@ -5,9 +5,13 @@ from buvis.pybase.adapters import console
 
 
 class ZseqFilename:
-    def is_zettelseq(filename: Path, is_reporting_fails: bool = False):
+    @staticmethod
+    def is_zettelseq(filename: Path, *, is_reporting_fails: bool = False) -> bool:
         try:
-            datetime.datetime.strptime(filename.stem[:14], "%Y%m%d%H%M%S").date()
+            datetime.datetime.strptime(
+                filename.stem[:14],
+                "%Y%m%d%H%M%S",
+            ).astimezone().date()
         except ValueError:
             if is_reporting_fails:
                 console.failure(f"{filename.absolute()} is not in zettelseq scheme")
@@ -16,5 +20,6 @@ class ZseqFilename:
 
         return True
 
-    def get_seq_from_zettelseq(zettelseq):
+    @staticmethod
+    def get_seq_from_zettelseq(zettelseq: str) -> int:
         return int(str(zettelseq[15:19]))
