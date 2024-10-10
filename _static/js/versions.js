@@ -132,15 +132,7 @@ if (themeFlyoutDisplay === "attached") {
         const event = new CustomEvent("readthedocs-search-show");
         document.dispatchEvent(event);
       });
-
-    // Trigger the Read the Docs Addons Search modal when clicking on "Search docs" input from the topnav.
-    document
-      .querySelector("[role='search'] input")
-      .addEventListener("focusin", () => {
-        const event = new CustomEvent("readthedocs-search-show");
-        document.dispatchEvent(event);
-      });
-  });
+  })
 }
 
 if (themeLanguageSelector || themeVersionSelector) {
@@ -158,7 +150,7 @@ if (themeLanguageSelector || themeVersionSelector) {
     );
     if (themeVersionSelector) {
       let versions = config.versions.active;
-      if (config.versions.current.type === "external") {
+      if (config.versions.current.hidden || config.versions.current.type === "external") {
         versions.unshift(config.versions.current);
       }
       const versionSelect = `
@@ -220,3 +212,13 @@ if (themeLanguageSelector || themeVersionSelector) {
     }
   });
 }
+
+document.addEventListener("readthedocs-addons-data-ready", function (event) {
+  // Trigger the Read the Docs Addons Search modal when clicking on "Search docs" input from the topnav.
+  document
+    .querySelector("[role='search'] input")
+    .addEventListener("focusin", () => {
+      const event = new CustomEvent("readthedocs-search-show");
+      document.dispatchEvent(event);
+    });
+});
