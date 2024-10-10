@@ -19,6 +19,7 @@ click = "8.1.7"
 doogat-core = {path = "../../doogat/doogat-core", develop = true}
 pre-commit = "4.0.1"
 pyfiglet = "1.0.2"
+ping3 = "4.0.8"
 
 [tool.poetry.group.test.dependencies]
 pytest = "8.3.3"
