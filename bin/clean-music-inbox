@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+find ~/media/music/0-unprocessed/1-match \( -name "*.cue" -o -name "*.db" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.log" -o -name "*.lrc" -o -name "*.m3u" -o -name "*.m3u8" -o -name "*.md" -o -name "*.nfo" -o -name "*.png" -o -name "*.sfv" -o -name "*.txt" -o -name "*.url" \) -type f -delete 2> >(grep -v "No such file or directory" >&2)
+dot_clean -mn ~/media/music/0-unprocessed/1-match
+find ~/media/music/0-unprocessed/1-match -type d -empty -delete
