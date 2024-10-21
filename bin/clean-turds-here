@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+from pathlib import Path
+
+import xattr
+
+cwd = Path.cwd()
+
+for apple_double_path in cwd.glob("**/.\_*"):
+    parent_path = apple_double_path.with_name(apple_double_path.name[2:])
+
+    if parent_path.exists():
+        # Read metadata from Apple Double file
+        try:
+            ad_attrs = xattr.xattr(apple_double_path)
+        except OSError:
+            continue
+
+        # Set metadata on parent file
+        parent_attrs = xattr.xattr(parent_path)
+        for key, value in ad_attrs.items():
+            parent_attrs[key] = value
+
+        # Delete the Apple Double file
+        apple_double_path.unlink()
