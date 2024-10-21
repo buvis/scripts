@@ -5,10 +5,11 @@ import xattr
 
 cwd = Path.cwd()
 
-for apple_double_path in cwd.glob(r"**/.\_*"):
+for apple_double_path in cwd.glob(r"**/._*"):
     parent_path = apple_double_path.with_name(apple_double_path.name[2:])
 
     if parent_path.exists():
+        print(f"{parent_path.resolve()} has Apple Double {apple_double_path.resolve()}")
         # Read metadata from Apple Double file
         try:
             ad_attrs = xattr.xattr(apple_double_path)
@@ -22,3 +23,4 @@ for apple_double_path in cwd.glob(r"**/.\_*"):
 
         # Delete the Apple Double file
         apple_double_path.unlink()
+        print(f"Apple Double {apple_double_path.resolve()} merged successfully")
