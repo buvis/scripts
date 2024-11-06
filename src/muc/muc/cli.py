@@ -3,8 +3,12 @@ from pathlib import Path
 import click
 from buvis.pybase.adapters import console
 from buvis.pybase.configuration import Configuration
+from buvis.pybase.filesystem import DirTree
 
 from muc.commands import CommandLimit, CommandTidy
+
+ALERT_FILE_COUNT = 100
+ALERT_DIR_DEPTH = 3
 
 path_cfg = Path(__file__, "../../config.yaml").resolve()
 
@@ -52,8 +56,38 @@ def tidy(directory: Path) -> None:
     else:
         console.panic(f"{path_directory} isn't a directory")
 
+    file_count = DirTree.count_files(path_directory)
+    max_depth = DirTree.get_max_depth(path_directory)
+
+    if file_count > ALERT_FILE_COUNT or max_depth > ALERT_DIR_DEPTH:
+        message = (
+            f"Warning: The directory contains {file_count} files "
+            f"and has a maximum depth of {max_depth}. "
+            "Do you want to proceed?"
+        )
+        if not user_confirmation(message):
+            console.panic("Operation cancelled by user.")
+
     cmd = CommandTidy(cfg)
     cmd.execute()
+
+
+def user_confirmation(message: str) -> bool:
+    """
+    Ask for user confirmation.
+
+    :param message: Message to display to the user
+    :type message: str
+    :return: True if user confirms, False otherwise
+    :rtype: bool
+    """
+    while True:
+        response = input(f"{message} (y/n): ").lower().strip()
+        if response in ["y", "yes"]:
+            return True
+        if response in ["n", "no"]:
+            return False
+        print("Please answer with 'y' or 'n'.")
 
 
 if __name__ == "__main__":
