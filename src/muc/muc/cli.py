@@ -4,7 +4,7 @@ import click
 from buvis.pybase.adapters import console
 from buvis.pybase.configuration import Configuration
 
-from muc.commands import CommandLimit
+from muc.commands import CommandLimit, CommandTidy
 
 path_cfg = Path(__file__, "../../config.yaml").resolve()
 
@@ -39,6 +39,20 @@ def limit(source_directory: Path, output: Path) -> None:
     path_output.mkdir(exist_ok=True)
     cfg.set_configuration_item("limit_path_output", path_output)
     cmd = CommandLimit(cfg)
+    cmd.execute()
+
+
+@cli.command("tidy", help="Tidy directory")
+@click.argument("directory")
+def tidy(directory: Path) -> None:
+    path_directory = Path(directory).resolve()
+
+    if path_directory.is_dir():
+        cfg.set_configuration_item("tidy_directory", path_directory)
+    else:
+        console.panic(f"{path_directory} isn't a directory")
+
+    cmd = CommandTidy(cfg)
     cmd.execute()
 
 
