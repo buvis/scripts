@@ -42,8 +42,10 @@ def limit(source_directory: Path, output: Path) -> None:
     path_output = Path(output).resolve()
     path_output.mkdir(exist_ok=True)
     cfg.set_configuration_item("limit_path_output", path_output)
-    cmd = CommandLimit(cfg)
-    cmd.execute()
+
+    with logging_to_console():
+        cmd = CommandLimit(cfg)
+        cmd.execute()
 
 
 @cli.command("tidy", help="Tidy directory")
