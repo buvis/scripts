@@ -35,6 +35,8 @@ This can be automated if you create a post-merge hook:
 cd ~/scripts
 echo "Cleaning virtualenvs"
 poetry env remove --all
+echo "Cleaning development cache"
+poetry cache clear test-pypi --all -q
 echo "Switching to system-wide operations"
 poetry config virtualenvs.create false
 echo "Running poetry lock in ~/scripts"
