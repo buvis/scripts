@@ -83,3 +83,7 @@ The scripts are using `buvis-pybase` and `doogat-core` which I'm also developing
 8. Release `buvis-pybase`
 9. Comment the line uncommented in step 5, update `<NEW_VERSION>` and uncomment: `# buvis-pybase = "<NEW_VERSION>"`
 10. Now you can push the changes in this repository
+
+### Run tests
+
+While you are in `scripts` directory with `poetry shell` activated, run: `poetry run pytest src/<script_name>`.
