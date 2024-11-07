@@ -1,3 +1,4 @@
+import logging
 import shutil
 from pathlib import Path
 
@@ -11,15 +12,15 @@ DEFAULT_LIMIT_SAMPLING_RATE = 44100
 
 class CommandLimit:
     def __init__(self: "CommandLimit", cfg: Configuration) -> None:
-        self.bitrate = cfg.get_configuration_item_or_default(
+        self.bitrate: int = cfg.get_configuration_item_or_default(
             "limit_flac_bitrate",
             DEFAULT_LIMIT_BITRATE,
         )
-        self.bit_depth = cfg.get_configuration_item_or_default(
+        self.bit_depth: int = cfg.get_configuration_item_or_default(
             "limit_flac_bit_depth",
             DEFAULT_LIMIT_BIT_DEPTH,
         )
-        self.sampling_rate = cfg.get_configuration_item_or_default(
+        self.sampling_rate: int = cfg.get_configuration_item_or_default(
             "limit_flac_sampling_rate",
             DEFAULT_LIMIT_SAMPLING_RATE,
         )
@@ -84,12 +85,13 @@ class CommandLimit:
                     )
                     ffmpeg.run(stream, overwrite_output=True)
 
-                    print(f"Transcoded: {file_path} -> {output_path}")
+                    logging.info("Transcoded: %s  -> %s", file_path, output_path)
                 else:
                     # Copy the FLAC file to the output directory
                     shutil.copy2(file_path, output_path)
+                    logging.info("Copied: %s  -> %s", file_path, output_path)
                     print(f"Copied: {file_path} -> {output_path}")
             else:
-                print(f"Skipped: {file_path} (no audio stream found)")
+                logging.warning("Skipped (no audio stream found): %s", file_path)
         except ffmpeg.Error as e:
-            print(f"Error processing {file_path}: {e.stderr}")
+            logging.exception("Error processing %s: %s", file_path, e.stderr)

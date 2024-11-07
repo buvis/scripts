@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import click
-from buvis.pybase.adapters import console
+from buvis.pybase.adapters import console, logging_to_console
 from buvis.pybase.configuration import Configuration
 from buvis.pybase.filesystem import DirTree
 
@@ -68,8 +68,9 @@ def tidy(directory: Path) -> None:
         if not user_confirmation(message):
             console.panic("Operation cancelled by user.")
 
-    cmd = CommandTidy(cfg)
-    cmd.execute()
+    with logging_to_console():
+        cmd = CommandTidy(cfg)
+        cmd.execute()
 
 
 def user_confirmation(message: str) -> bool:
