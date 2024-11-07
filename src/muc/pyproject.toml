@@ -7,20 +7,9 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-# buvis-pybase = "0.1.3"
-buvis-pybase = {version = "0.1.4a7", source = "test-pypi"}
-# buvis-pybase = {path = "../../../buvis-pybase", develop = true}
 pyfiglet = "1.0.2"
 click = "8.1.7"
 ffmpeg-python = "0.2.0"
-
-[tool.poetry.group.test.dependencies]
-pytest = "8.3.3"
-
-[[tool.poetry.source]]
-name = "test-pypi"
-url = "https://test.pypi.org/simple/"
-priority = "explicit"
 
 [build-system]
 requires = ["poetry-core", "pynvim"]
