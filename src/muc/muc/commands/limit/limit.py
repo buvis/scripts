@@ -90,7 +90,6 @@ class CommandLimit:
                     # Copy the FLAC file to the output directory
                     shutil.copy2(file_path, output_path)
                     logging.info("Copied: %s  -> %s", file_path, output_path)
-                    print(f"Copied: {file_path} -> {output_path}")
             else:
                 logging.warning("Skipped (no audio stream found): %s", file_path)
         except ffmpeg.Error as e:
