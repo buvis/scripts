@@ -76,7 +76,7 @@ The scripts are using `buvis-pybase` and `doogat-core` which I'm also developing
 1. Uncomment `# buvis-pybase = {path = "../buvis-pybase", develop = true}` in `pyproject.toml`
 2. Update dependencies: `poetry update`
 3. Do the work in both projects
-4. When done, you push to `doogat-core` project first
+4. When done, you push to `buvis-pybase` project first
 5. Comment out the line uncommented in step 1, and uncomment: `# buvis-pybase = {version = "*", source = "test-pypi"}`
 6. Update dependencies: `poetry update`
 7. Verify everything still works
