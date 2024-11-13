@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "muc"
+version = "0.1.0"
+description = "Tools to manage music collection"
+authors = ["Tomáš Bouška <tomas@buvis.net>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pyfiglet = "1.0.2"
+click = "8.1.7"
+ffmpeg-python = "0.2.0"
+
+[build-system]
+requires = ["poetry-core", "pynvim"]
+build-backend = "poetry.core.masonry.api"
