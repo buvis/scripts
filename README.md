@@ -46,6 +46,8 @@ echo "Installing dependencies"
 poetry install --without dev,docs,test
 echo "Switching to project-specific operations"
 poetry config virtualenvs.create true
+echo "Updating scripts dependencies"
+update-scripts
 cd -
 ```
 
