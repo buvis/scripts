@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "notes-linter"
+name = "bim"
 version = "0.1.0"
-description = "Bob's notes linter"
+description = "BUVIS InfoMesh CLI"
 authors = ["Tomáš Bouška <tomas@buvis.net>"]
 readme = "README.md"
 
