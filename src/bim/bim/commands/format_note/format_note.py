@@ -61,8 +61,10 @@ class CommandFormatNote:
                 original_content,
                 "Formatted",
                 formatted_content,
+                mode_left="raw",
+                mode_right="markdown_with_frontmatter",
             )
         elif self.is_highlighting:
-            console.print_markdown_with_yaml_header(formatted_content)
+            console.print(formatted_content, mode="markdown_with_frontmatter")
         else:
-            console.print_raw(formatted_content)
+            console.print(formatted_content, mode="raw")
