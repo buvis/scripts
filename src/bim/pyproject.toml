@@ -9,7 +9,7 @@ readme = "README.md"
 python = "^3.12"
 click = "8.1.7"
 # doogat-core = "0.1.2"
-doogat-core = {version = "0.1.3a18", source = "test-pypi"}
+doogat-core = {version = "0.1.3a19", source = "test-pypi"}
 # doogat-core = {path = "../../../../doogat/doogat-core", develop = true}
 
 [[tool.poetry.source]]
