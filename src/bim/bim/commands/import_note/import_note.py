@@ -39,6 +39,12 @@ class CommandImportNote:
         reader = ReadDoogatUseCase(repo)
         formatter = MarkdownZettelFormatter()
         note = reader.execute(str(self.path_note))
+
+        if note.type == "project":
+            note._data.metadata["resources"] = (
+                f"[project resources]({self.path_note.parent.resolve().as_uri()})"
+            )
+
         path_output = self.path_zettelkasten / f"{note.id}.md"
         formatted_content = formatter.format(note.get_data())
         _, _, markdown_content = formatted_content.partition("\n---\n")
@@ -56,7 +62,7 @@ class CommandImportNote:
         while path_output.is_file() and not overwrite_confirmed:
             console.failure(f"{path_output} already exists")
             console.nl()
-            console.print_raw(path_output.read_text())
+            console.print(path_output.read_text(), mode="raw")
             console.nl()
             overwrite_file = console.confirm("Overwrite file?")
 
