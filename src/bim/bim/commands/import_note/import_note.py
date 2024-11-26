@@ -57,6 +57,14 @@ class CommandImportNote:
         )
         console.nl()
 
+        is_import_approved = console.confirm(
+            "Check the resulting note and compare to original. Should I continue importing?"
+        )
+
+        if not is_import_approved:
+            console.warning("Import cancelled by user")
+            return
+
         overwrite_confirmed = False
 
         while path_output.is_file() and not overwrite_confirmed:
