@@ -54,6 +54,8 @@ class CommandImportNote:
             original_content,
             "Formatted",
             formatted_content,
+            mode_left="raw",
+            mode_right="raw",
         )
         console.nl()
 
