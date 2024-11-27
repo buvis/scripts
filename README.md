@@ -70,8 +70,13 @@ It used to be done automatically by direnv, but in some cases I needed to work w
 ### Update python version
 
 1. Make sure to exit virtual environment launched by `poetry shell` previously
-2. Point poetry to python you want to use: `poetry env use /usr/bin/python3`; alternatively, you can use asdf to set local python version
-3. Refresh the environment: `poetry env remove --all; poetry install; poetry shell`
+2. Install latest python available:
+   - macOS: `asdf install python $(asdf latest python)`
+   - Windows:
+     1. Get available versions: `pyenv install -l`
+     2. Install the latest one: `pyenv install X.Y.Z`
+3. Point poetry to python you want to use: `poetry env use /usr/bin/python3`; alternatively, you can use asdf to set local python version
+4. Refresh the environment: `poetry env remove --all; poetry install; poetry shell`
 
 ### Concurrent development of prerequisite projects
 
