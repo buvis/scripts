@@ -9,9 +9,10 @@ readme = "README.md"
 python = "^3.12"
 click = "8.1.7"
 # doogat-core = "0.1.2"
-buvis-pybase = {version = "0.1.5a5", source = "test-pypi"}  # doogat-core from test-pypi won't install this
-doogat-core = {version = "0.1.3a26", source = "test-pypi"}
-# doogat-core = {path = "../../../../doogat/doogat-core", develop = true}
+# buvis-pybase = {version = "0.1.5a5", source = "test-pypi"}  # doogat-core from test-pypi won't install this
+buvis-pybase = {path = "../../../buvis-pybase", develop = true}
+# doogat-core = {version = "0.1.3a26", source = "test-pypi"}
+doogat-core = {path = "../../../../doogat/doogat-core", develop = true}
 
 [[tool.poetry.source]]
 name = "test-pypi"

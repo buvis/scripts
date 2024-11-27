@@ -77,7 +77,11 @@ It used to be done automatically by direnv, but in some cases I needed to work w
 
 The scripts are using `buvis-pybase` and `doogat-core` which I'm also developing. Unfortunately, there is currently no easy way to use editable and non-editable packages in same `pyproject.toml` (see: https://github.com/python-poetry/poetry/issues/8219). So I need to modify `pyproject.toml`.
 
-1. Uncomment `# buvis-pybase = {path = "../buvis-pybase", develop = true}` in `pyproject.toml`
+1. Switch to local files:
+   - macOS: Uncomment `# buvis-pybase = {path = "../buvis-pybase", develop = true}` or `# doogat-core = {path = "../../doogat/doogat-core", develop = true}` in `pyproject.toml`
+   - Windows (there is an issue in Poetry in Windows causing it to be unable to resolve pth files):
+     - in scripts root: `pip install -e ../buvis-pybase/` or `pip install -e ..\..\doogat\doogat-core\`
+     - in script's root (like `src/bim` for example): `pip install -e ../../../buvis-pybase/` or `pip install -e ..\..\..\..\doogat\doogat-core\`
 2. Update dependencies: `poetry update`
 3. Do the work in both projects
 4. When done, you push to `buvis-pybase` project first
