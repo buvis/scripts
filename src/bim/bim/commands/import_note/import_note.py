@@ -54,6 +54,8 @@ class CommandImportNote:
             original_content,
             "Formatted",
             formatted_content,
+            mode_left="raw",
+            mode_right="raw",
         )
         console.nl()
 
@@ -109,7 +111,7 @@ class CommandImportNote:
             note.tags = new_tags
             formatted_content = formatter.format(note.get_data())
 
-        path_output.write_text(formatted_content)
+        path_output.write_bytes(formatted_content.encode("utf-8"))
         console.success(f"Note imported as {path_output}")
         remove_file = console.confirm("Do you want to remove the original?")
 

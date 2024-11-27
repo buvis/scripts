@@ -6,7 +6,7 @@ import click
 from buvis.pybase.adapters import console
 from buvis.pybase.configuration import Configuration
 
-from bim.commands import CommandFormatNote, CommandImportNote, CommandParseTags
+from bim.commands import CommandFormatNote, CommandImportNote, CommandParseTags, CommandSyncNote
 
 try:
     cfg = Configuration(Path(__file__, "../../config.yaml"))
@@ -14,7 +14,7 @@ except FileNotFoundError:
     cfg = Configuration()
 
 
-@click.group(help="CLI to BUVIS InforMesh")
+@click.group(help="CLI to BUVIS InfoMesh")
 def cli() -> None:
     pass
 
@@ -74,6 +74,23 @@ def format_note(
     else:
         console.failure(f"{path_to_note} doesn't exist")
 
+
+@cli.command("sync", help="Synchronize note with external system")
+@click.argument("path_to_note")
+@click.argument("target_system")
+def sync_note(
+    path_to_note: Path,
+    target_system: str,
+) -> None:
+    if Path(path_to_note).is_file():
+        cfg.set_configuration_item("path_note", path_to_note)
+        cfg.set_configuration_item("target_system", target_system)
+        buvis_cfg = Configuration()
+        cfg.set_configuration_item("jira_adapter", buvis_cfg.get_configuration_item("jira_adapter"))
+        cmd = CommandSyncNote(cfg)
+        cmd.execute()
+    else:
+        console.failure(f"{path_to_note} doesn't exist")
 
 @cli.command("parse_tags", help="Parse Obsidian Metadata Extractor tags.json")
 @click.argument("path_to_tags_json")
