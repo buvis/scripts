@@ -1,12 +1,16 @@
 from pathlib import Path
 from datetime import datetime
-from buvis.pybase.adapters import console, JiraAdapter, ProjectZettelJiraIssueDTOAssembler
+from buvis.pybase.adapters import (
+    console,
+    JiraAdapter,
+)
 from buvis.pybase.configuration import Configuration, ConfigurationKeyNotFoundError
 from doogat.core import (
     MarkdownZettelFormatter,
     MarkdownZettelRepository,
     ReadDoogatUseCase,
 )
+from doogat.integrations import ProjectZettelJiraIssueDTOAssembler
 
 
 class CommandSyncNote:
@@ -37,12 +41,16 @@ class CommandSyncNote:
             return None
 
         if not hasattr(note, "us") or not note.us:
-            assembler = ProjectZettelJiraIssueDTOAssembler(defaults = self._cfg.get_configuration_item("jira_adapter")["defaults"])
+            assembler = ProjectZettelJiraIssueDTOAssembler(
+                defaults=self._cfg.get_configuration_item("jira_adapter")["defaults"]
+            )
             dto = assembler.to_dto(note)
             new_issue = self._target.create(dto)
             md_style_link = f"[{new_issue.id}]({new_issue.link})"
             note._data.reference["us"] = md_style_link
-            note.add_log_entry(f"- [i] {datetime.now().strftime("%Y-%m-%d %H:%M")} - Jira Issue created: {md_style_link}")
+            note.add_log_entry(
+                f"- [i] {datetime.now().strftime("%Y-%m-%d %H:%M")} - Jira Issue created: {md_style_link}"
+            )
             formatted_content = formatter.format(note.get_data())
             self.path_note.write_bytes(formatted_content.encode("utf-8"))
             console.success(f"Jira Issue {new_issue.id} created from {self.path_note}")

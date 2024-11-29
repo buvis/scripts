@@ -9,14 +9,17 @@ package-mode = false
 [tool.poetry.dependencies]
 python = "^3.12"
 # buvis-pybase = "0.1.3"
-buvis-pybase = {version = "0.1.5a6", source = "test-pypi"}
+buvis-pybase = {version = "0.1.5a7", source = "test-pypi"}
 # buvis-pybase = {path = "../buvis-pybase", develop = true}
 
 [tool.poetry.group.dev.dependencies]
 click = "8.1.7"
 # doogat-core = "0.1.2"
-doogat-core = {version = "0.1.3a28", source = "test-pypi"}
+doogat-core = {version = "0.1.3a29", source = "test-pypi"}
 # doogat-core = {path = "../../../../doogat/doogat-core", develop = true}
+# doogat-integrations = "0.1.0"
+doogat-integrations = {version = "0.1.0a3", source = "test-pypi"}
+# doogat-integrations = {path = "../../../../doogat/doogat-integrations", develop = true}
 pre-commit = "4.0.1"
 pyfiglet = "1.0.2"
 ping3 = "4.0.8"
