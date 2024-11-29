@@ -1,6 +1,6 @@
 from pathlib import Path
-
-from buvis.pybase.adapters import console, JiraAdapter
+from datetime import datetime
+from buvis.pybase.adapters import console, JiraAdapter, ProjectZettelJiraIssueDTOAssembler
 from buvis.pybase.configuration import Configuration, ConfigurationKeyNotFoundError
 from doogat.core import (
     MarkdownZettelFormatter,
@@ -26,51 +26,27 @@ class CommandSyncNote:
                 raise NotImplementedError
         self._cfg = cfg
 
-
     def execute(self: "CommandSyncNote") -> None:
         repo = MarkdownZettelRepository()
         reader = ReadDoogatUseCase(repo)
         formatter = MarkdownZettelFormatter()
         note = reader.execute(str(self.path_note))
 
-        defaults = self._cfg.get_configuration_item("jira_adapter")["defaults"]
         if note.type != "project":
             console.failure(f"{self.path_note} is not a project")
             return None
 
         if not hasattr(note, "us") or not note.us:
-            if note.deliverable == "enhancement":
-                issue_type = {"name": defaults["enhancements"]["issue_type"]}
-                feature = defaults["enhancements"]["feature"]
-                labels = defaults["enhancements"]["labels"].split(",")
-                priority = {"name": defaults["enhancements"]["priority"]}
-            else:
-                issue_type = {"name": defaults["bugs"]["issue_type"]}
-                feature = defaults["bugs"]["feature"]
-                labels = defaults["bugs"]["labels"].split(",")
-                priority = {"name": defaults["bugs"]["priority"]}
-
-            description = "No description provided"
-
-            for section in note._data.sections:
-                title, content = section
-                if title == "## Description":
-                    description = content
-
-            new_issue = self._target.create_issue(
-                title = note.title,
-                description = description,
-                feature = feature,
-                issue_type = issue_type,
-                labels = labels,
-                priority = priority,
-                ticket = note.ticket,
-            )
-            note._data.reference["us"] = new_issue.link
-
+            assembler = ProjectZettelJiraIssueDTOAssembler(defaults = self._cfg.get_configuration_item("jira_adapter")["defaults"])
+            dto = assembler.to_dto(note)
+            new_issue = self._target.create(dto)
+            md_style_link = f"[{new_issue.id}]({new_issue.link})"
+            note._data.reference["us"] = md_style_link
+            note.add_log_entry(f"- [i] {datetime.now().strftime("%Y-%m-%d %H:%M")} - Jira Issue created: {md_style_link}")
             formatted_content = formatter.format(note.get_data())
-
             self.path_note.write_bytes(formatted_content.encode("utf-8"))
-            console.success(f"Jira Issue {new_issue.key} created from {self.path_note}")
+            console.success(f"Jira Issue {new_issue.id} created from {self.path_note}")
+        elif note.us == self._defaults["ignore"]:
+            console.warning("Project is set to ignore Jira")
         else:
-            console.success("No Jira Issue creation necessary")
+            console.success(f"Already linked to {note.us}")
