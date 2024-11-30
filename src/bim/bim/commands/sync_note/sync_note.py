@@ -1,8 +1,9 @@
+import tzlocal
+
 from pathlib import Path
 from datetime import datetime
 from buvis.pybase.adapters import (
     console,
-    JiraAdapter,
 )
 from buvis.pybase.configuration import Configuration, ConfigurationKeyNotFoundError
 from doogat.core import (
@@ -10,7 +11,12 @@ from doogat.core import (
     MarkdownZettelRepository,
     ReadDoogatUseCase,
 )
-from doogat.integrations import ProjectZettelJiraIssueDTOAssembler
+from doogat.core.domain.entities import ProjectZettel
+from doogat.integrations.jira import (
+    JiraAdapter,
+)
+
+DEFAULT_JIRA_IGNORE_US_LABEL = "do-not-track"
 
 
 class CommandSyncNote:
@@ -25,7 +31,8 @@ class CommandSyncNote:
 
         match cfg.get_configuration_item("target_system"):
             case "jira":
-                self._target = JiraAdapter(cfg.get_configuration_item("jira_adapter"))
+                jira_cfg = cfg.copy("jira_adapter")
+                self._target = JiraAdapter(jira_cfg)
             case _:
                 raise NotImplementedError
         self._cfg = cfg
@@ -36,25 +43,34 @@ class CommandSyncNote:
         formatter = MarkdownZettelFormatter()
         note = reader.execute(str(self.path_note))
 
-        if note.type != "project":
+        if isinstance(note, ProjectZettel):
+            project: ProjectZettel = note
+        else:
             console.failure(f"{self.path_note} is not a project")
-            return None
+            return
 
-        if not hasattr(note, "us") or not note.us:
-            assembler = ProjectZettelJiraIssueDTOAssembler(
-                defaults=self._cfg.get_configuration_item("jira_adapter")["defaults"]
+        cfg_jira_adapter = self._cfg.get_configuration_item("jira_adapter")
+
+        if isinstance(cfg_jira_adapter, dict):
+            cfg_dict_jira_adapter = cfg_jira_adapter.copy()
+            ignore_flag = cfg_dict_jira_adapter.get(
+                "ignore",
+                DEFAULT_JIRA_IGNORE_US_LABEL,
             )
-            dto = assembler.to_dto(note)
-            new_issue = self._target.create(dto)
+        else:
+            ignore_flag = DEFAULT_JIRA_IGNORE_US_LABEL
+
+        if not hasattr(project, "us") or not project.us:
+            new_issue = self._target.create_from_project(project)
             md_style_link = f"[{new_issue.id}]({new_issue.link})"
-            note._data.reference["us"] = md_style_link
-            note.add_log_entry(
-                f"- [i] {datetime.now().strftime("%Y-%m-%d %H:%M")} - Jira Issue created: {md_style_link}"
+            project.us = md_style_link
+            project.add_log_entry(
+                f"- [i] {datetime.now(tzlocal.get_localzone()).strftime("%Y-%m-%d %H:%M")} - Jira Issue created: {md_style_link}",
             )
-            formatted_content = formatter.format(note.get_data())
+            formatted_content = formatter.format(project.get_data())
             self.path_note.write_bytes(formatted_content.encode("utf-8"))
             console.success(f"Jira Issue {new_issue.id} created from {self.path_note}")
-        elif note.us == self._defaults["ignore"]:
+        elif note.us == ignore_flag:
             console.warning("Project is set to ignore Jira")
         else:
             console.success(f"Already linked to {note.us}")
