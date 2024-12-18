@@ -40,7 +40,8 @@ class CommandGetLast:
         seqs = [
             ZseqFilename.get_seq_from_zettelseq(f.stem)
             for f in self.path_dir.iterdir()
-            if ZseqFilename.is_zettelseq(
+            if f.is_file()
+            and ZseqFilename.is_zettelseq(
                 f,
                 is_reporting_fails=self.is_reporting_misnamed,
             )
