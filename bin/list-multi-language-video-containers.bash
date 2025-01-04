@@ -16,54 +16,34 @@ if [[ ! -d "$directory_path" ]]; then
     exit 1
 fi
 
+# Ensure mediainfo is installed
+if ! command -v mediainfo &> /dev/null; then
+    echo "Error: 'mediainfo' is not installed. Please install it and try again."
+    exit 1
+fi
+
 # Initialize the CSV file with headers
 echo "File Path,Audio Track 1 Language,Audio Track 2 Language,..." > "$output_file"
 
 # List of common video file extensions (case-insensitive)
 video_extensions="mkv|mp4|avi|mov|wmv|flv|webm|m4v"
 
-# Function to extract language from a line of mkvinfo output
-extract_language() {
-    local line="$1"
-    local language="und"
-
-    # Match "Language:" key-value pair
-    if [[ "$line" =~ [[:space:]]Language:[[:space:]]*([a-z]{3}) ]]; then
-        language="${BASH_REMATCH[1]}"
-    fi
-
-    # Match "Language (IETF BCP 47):" key-value pair
-    if [[ "$line" =~ [[:space:]]Language\ \(IETF\ BCP\ 47\):[[:space:]]*([a-zA-Z\-]+) ]]; then
-        language="${BASH_REMATCH[1]}"
-    fi
-
-    echo "$language"
-}
-
-# Function to process each video file
+# Function to extract audio track languages using mediainfo
 process_video() {
     local file="$1"
     local languages=()
     local track_count=0
-    local reading_audio_track=false
 
     echo "Scanning: $file"  # Progress feedback
 
-    # Extract audio track information using mkvinfo with verbosity
+    # Use mediainfo to extract audio track information
     while IFS= read -r line; do
-        if [[ "$line" =~ Track\ type:\ audio ]]; then
+        if [[ "$line" =~ ^Audio ]]; then
             track_count=$((track_count + 1))
-            reading_audio_track=true # Start looking for language info in subsequent lines
-        elif $reading_audio_track; then
-            # Extract language from subsequent lines after "Track type: audio"
-            local language
-            language=$(extract_language "$line")
-            if [[ "$language" != "und" ]]; then
-                languages+=("$language")
-                reading_audio_track=false # Stop looking after finding language info
-            fi
+        elif [[ "$line" =~ Language[[:space:]]*:[[:space:]]*([a-zA-Z\-]+) ]]; then
+            languages+=("${BASH_REMATCH[1]}")
         fi
-    done < <(mkvinfo -v "$file" 2>/dev/null) # Suppress errors but scan entire file
+    done < <(mediainfo --Output=JSON "$file" | jq -r '.media.track[] | select(.["@type"] == "Audio") | "Audio\nLanguage: \(.Language // "und")"')
 
     # Only report files with more than one audio track
     if (( track_count > 1 )); then
@@ -82,7 +62,7 @@ process_video() {
 }
 
 # Export functions and variables for use with find's subprocesses
-export -f process_video extract_language
+export -f process_video
 export output_file
 
 # Find all files in the specified directory and filter by extension based on the last dot in their name
