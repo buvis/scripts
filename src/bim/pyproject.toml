@@ -9,7 +9,7 @@ readme = "README.md"
 python = "^3.12"
 click = "8.1.8"
 # buvis-pybase = "0.1.4"
-buvis-pybase = {version = "0.1.5a8", source = "test-pypi"}  # doogat-core from test-pypi won't install this
+buvis-pybase = {version = "0.1.5a9", source = "test-pypi"}  # doogat-core from test-pypi won't install this
 # buvis-pybase = {path = "../../../buvis-pybase", develop = true}
 # doogat-core = "0.1.2"
 doogat-core = {version = "0.1.3a33", source = "test-pypi"}
