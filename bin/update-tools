@@ -1,9 +1,103 @@
 #!/usr/bin/env bash
+# IMPORTANT: Back up your global .tool-versions file (typically at $HOME/.tool-versions)
+# before running this script.
 
-while IFS="" read -r p || [ -n "$p" ]
-do
-  # printf '%s\n' "$p"
-  TOOL=$(printf '%s\n' "$p" | cut -d ' ' -f 1 -)
-  asdf install $TOOL latest
-  asdf global $TOOL latest
-done <$HOME/.tool-versions
+OLDIFS=$IFS
+IFS=$'\n'
+
+# Update all asdf plugins so that we have the latest version information.
+echo "Updating asdf plugins..."
+asdf plugin update --all
+
+# Path to your global tool-versions file; adjust as needed.
+TOOL_VERSIONS_FILE="$HOME/.tool-versions"
+
+# Determine if the script is running in interactive mode.
+INTERACTIVE=false
+for arg in "$@"; do
+    if [ "$arg" == "--interactive" ]; then
+        INTERACTIVE=true
+        break
+    fi
+done
+
+# Process each tool and version defined in your global .tool-versions file.
+while read -r line; do
+    # Skip empty lines.
+    if [ -z "$line" ]; then
+        continue
+    fi
+
+    # Extract tool name and current version (assumes space-separated values).
+    tool=$(echo "$line" | awk '{print $1}')
+    current_version=$(echo "$line" | awk '{print $2}')
+
+    # Assume version format "major.minor.patch" (e.g., 3.9.5) and extract the major version.
+    current_major=$(echo "$current_version" | cut -d'.' -f1)
+
+    # Retrieve all available versions for the tool.
+    available_versions=$(asdf list-all "$tool")
+
+    # Determine the latest version available in the same major series.
+    same_major_candidate=$(echo "$available_versions" | grep "^${current_major}\." | tail -n 1)
+
+    # Determine the overall latest available version (this may belong to a new major series).
+    latest_overall=$(echo "$available_versions" | tail -n 1)
+    latest_overall_major=$(echo "$latest_overall" | cut -d'.' -f1)
+
+    echo ""
+    echo "Tool: $tool"
+    echo "Current version: $current_version"
+
+    option1_available=false
+    option2_available=false
+
+    # If a later version in the same major series is available, offer it.
+    if [ "$same_major_candidate" != "$current_version" ]; then
+        echo " Option 1: Upgrade within the same major version to $same_major_candidate"
+        option1_available=true
+    fi
+
+    # If a version with a higher major number is available, offer it.
+    if [ "$latest_overall_major" -gt "$current_major" ]; then
+        echo " Option 2: Upgrade to new major version $latest_overall"
+        option2_available=true
+    fi
+
+    if [ "$INTERACTIVE" = true ]; then
+        # In interactive mode, prompt the user if any upgrade option is available.
+        if [ "$option1_available" = false ] && [ "$option2_available" = false ]; then
+            echo " No upgrades available for $tool."
+            continue
+        fi
+
+        echo -n "Select option (1/2, or press enter to skip): "
+        read choice
+
+        if [ "$choice" = "1" ] && [ "$option1_available" = true ]; then
+            echo "Upgrading $tool within the same major version to $same_major_candidate..."
+            asdf install "$tool" "$same_major_candidate"
+            asdf set --home "$tool" "$same_major_candidate"
+        elif [ "$choice" = "2" ] && [ "$option2_available" = true ]; then
+            echo "Upgrading $tool to new major version $latest_overall..."
+            asdf install "$tool" "$latest_overall"
+            asdf set --home "$tool" "$latest_overall"
+        else
+            echo "Skipping upgrade for $tool."
+        fi
+    else
+        # Non-interactive: automatically upgrade to same-major candidate if available.
+        if [ "$option1_available" = true ]; then
+            echo "Automatically upgrading $tool within the same major version to $same_major_candidate..."
+            asdf install "$tool" "$same_major_candidate"
+            asdf set --home "$tool" "$same_major_candidate"
+        else
+            echo "No upgrade available for $tool (staying on $current_version)."
+        fi
+    fi
+
+done < "$TOOL_VERSIONS_FILE"
+
+IFS=$OLDIFS
+echo ""
+echo "Upgrade process complete. Please verify the versions in '$TOOL_VERSIONS_FILE'."
