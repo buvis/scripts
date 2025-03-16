@@ -29,7 +29,7 @@ ffmpeg-python = "0.2.0"
 pytest = "8.3.5"
 
 [tool.poetry.group.docs.dependencies]
-sphinx = "8.2.1"
+sphinx = "8.2.3"
 sphinx-rtd-theme = "3.0.2"
 
 [[tool.poetry.source]]
