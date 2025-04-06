@@ -47,7 +47,7 @@ This can be automated if you create a post-merge hook:
     echo "Switching to project-specific operations"
     poetry config virtualenvs.create true
     echo "Updating scripts dependencies"
-    update-scripts
+    update-scripts-depencencies
     cd -
     ```
 
