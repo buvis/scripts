@@ -14,6 +14,8 @@ echo "Installing dependencies"
 poetry install --without dev,docs,test
 echo "Switching to project-specific operations"
 poetry config virtualenvs.create true
+echo "Install system python packages"
+pip install -r ~/.default-python-packages
 echo "Updating scripts dependencies"
 update-scripts-dependencies
 cd -
