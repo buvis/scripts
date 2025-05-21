@@ -13,7 +13,7 @@ buvis-pybase = {version = "0.1.5a9", source = "test-pypi"}
 # buvis-pybase = {path = "../buvis-pybase", develop = true}
 
 [tool.poetry.group.dev.dependencies]
-click = "8.2.0"
+click = "8.2.1"
 # doogat-core = "0.1.2"
 doogat-core = {version = "0.1.3a33", source = "test-pypi"}
 # doogat-core = {path = "../../doogat/doogat-core", develop = true}

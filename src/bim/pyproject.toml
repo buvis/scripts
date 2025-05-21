@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-click = "8.2.0"
+click = "8.2.1"
 # buvis-pybase = "0.1.4"
 buvis-pybase = {version = "0.1.5a9", source = "test-pypi"}  # doogat-core from test-pypi won't install this
 # buvis-pybase = {path = "../../../buvis-pybase", develop = true}
