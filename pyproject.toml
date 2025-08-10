@@ -22,7 +22,7 @@ doogat-integrations = {version = "0.1.0a7", source = "test-pypi"}
 # doogat-integrations = {path = "../../doogat/doogat-integrations", develop = true}
 pre-commit = "4.2.0"
 pyfiglet = "1.0.3"
-ping3 = "4.0.8"
+ping3 = "5.1.5"
 ffmpeg-python = "0.2.0"
 
 [tool.poetry.group.test.dependencies]
