@@ -7,8 +7,8 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-click = "8.1.8"
-ping3 = "4.0.8"
+click = "8.2.1"
+ping3 = "5.1.5"
 buvis-pybase = "0.1.4"
 # buvis-pybase = {version = "0.1.4a2", source = "test-pypi"}
 # buvis-pybase = {path = "../../../buvis-pybase", develop = true}
