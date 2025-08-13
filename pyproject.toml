@@ -22,7 +22,7 @@ version = "0.1.5"
 source = "test-pypi"
 
 [tool.poetry.group.dev.dependencies]
-click = "8.1.8"
+click = "8.2.1"
 pre-commit = "4.3.0"
 pyfiglet = "1.0.2"
 ping3 = "5.1.5"
