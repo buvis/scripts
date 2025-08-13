@@ -29,14 +29,14 @@ dev = ["backports.zoneinfo ; python_version < \"3.9\"", "freezegun (>=1.0,<2.0)"
 
 [[package]]
 name = "buvis-pybase"
-version = "0.1.8"
+version = "0.2.0"
 description = "Foundation of BUVIS python projects"
 optional = false
 python-versions = ">=3.12,<3.14"
 groups = ["main"]
 files = [
-    {file = "buvis_pybase-0.1.8-py3-none-any.whl", hash = "sha256:e2b277c175e1a66a1444271eba413eeb31565360e27fd91915ca7a2cbbce6606"},
-    {file = "buvis_pybase-0.1.8.tar.gz", hash = "sha256:5b8e10ad4abd6adc175a97445e9602ecccdba17f651926cdcb6ac45fa87d0feb"},
+    {file = "buvis_pybase-0.2.0-py3-none-any.whl", hash = "sha256:8b5182a3ab835c8a7265316f85d05afaf3b1a19b9c0e818e34be281dcb6d226c"},
+    {file = "buvis_pybase-0.2.0.tar.gz", hash = "sha256:36adf3433d577adb6a45ddb58a14f5a0157a7e721f31928d683d3adc26ac67a4"},
 ]
 
 [package.dependencies]
@@ -48,7 +48,7 @@ pyyaml = "6.0.2"
 rake-nltk = "1.0.6"
 rich = "14.1.0"
 torch = "2.8.0"
-transformers = "4.55.1"
+transformers = "4.55.2"
 tzlocal = "5.3.1"
 xattr = {version = "1.2.0", markers = "sys_platform != \"win32\""}
 
@@ -317,18 +317,18 @@ files = [
 
 [[package]]
 name = "doogat-core"
-version = "0.1.5"
+version = "0.1.6a1"
 description = ""
 optional = false
 python-versions = ">=3.12,<3.14"
 groups = ["main"]
 files = [
-    {file = "doogat_core-0.1.5-py3-none-any.whl", hash = "sha256:bd7cec1115c9a6436f2e2462a8c025659018fd197eacad9cf55ad9732200b10a"},
-    {file = "doogat_core-0.1.5.tar.gz", hash = "sha256:954a3a29b43c8748090bb2c71a99668708e0a61168bf40021447d9df50660704"},
+    {file = "doogat_core-0.1.6a1-py3-none-any.whl", hash = "sha256:45eabf4bb02f0e5a65231f6446e3c97cbd7586ba22d13361186d23748bca3930"},
+    {file = "doogat_core-0.1.6a1.tar.gz", hash = "sha256:f20a79c50cbc1bbacaa2e09d997d125202ea31a49323478e900d2b7d945faa18"},
 ]
 
 [package.dependencies]
-buvis-pybase = ">=0.1.8,<0.2.0"
+buvis-pybase = ">=0.2.0,<0.3.0"
 
 [package.source]
 type = "legacy"
@@ -337,18 +337,18 @@ reference = "test-pypi"
 
 [[package]]
 name = "doogat-integrations"
-version = "0.1.1a2"
+version = "0.1.1a4"
 description = ""
 optional = false
 python-versions = ">=3.12,<3.14"
 groups = ["main"]
 files = [
-    {file = "doogat_integrations-0.1.1a2-py3-none-any.whl", hash = "sha256:aded560fb9f1b96d8453b7711d56b396be8f313689f2edd8e6bc60f091640074"},
-    {file = "doogat_integrations-0.1.1a2.tar.gz", hash = "sha256:6cb6338b1775933a1d53a644da976e7200d55f37d06bd48ee82082b498f13dc7"},
+    {file = "doogat_integrations-0.1.1a4-py3-none-any.whl", hash = "sha256:e5c957dc9a311c4532fbdcdcfdcc063c1e0650ccc5c57ef82f3ee98da260b356"},
+    {file = "doogat_integrations-0.1.1a4.tar.gz", hash = "sha256:9f83437f76af6a046a52957a9bca8b920ae6420f3874cb48b95ae5ec9b3f95c3"},
 ]
 
 [package.dependencies]
-buvis-pybase = ">=0.1.6-alpha.2,<0.2.0"
+buvis-pybase = ">=0.2.0,<0.3.0"
 doogat-core = ">=0.1.4-alpha.2,<0.2.0"
 
 [package.source]
@@ -1966,14 +1966,14 @@ telegram = ["requests"]
 
 [[package]]
 name = "transformers"
-version = "4.55.1"
+version = "4.55.2"
 description = "State-of-the-art Machine Learning for JAX, PyTorch and TensorFlow"
 optional = false
 python-versions = ">=3.9.0"
 groups = ["main"]
 files = [
-    {file = "transformers-4.55.1-py3-none-any.whl", hash = "sha256:9e936d9c106924579f509f63da66aa899401e2d1fb4a4f964a3c494476b5110f"},
-    {file = "transformers-4.55.1.tar.gz", hash = "sha256:0de83246bdc4abdff6475302cd2fbd19f1c9f7ae7c1d7ec580e06df2f0ae93aa"},
+    {file = "transformers-4.55.2-py3-none-any.whl", hash = "sha256:097e3c2e2c0c9681db3da9d748d8f9d6a724c644514673d0030e8c5a1109f1f1"},
+    {file = "transformers-4.55.2.tar.gz", hash = "sha256:a45ec60c03474fd67adbce5c434685051b7608b3f4f167c25aa6aeb1cad16d4f"},
 ]
 
 [package.dependencies]
@@ -2235,4 +2235,4 @@ test = ["pytest"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.14"
-content-hash = "8820ebac060f21e64fcbe988e7a960b8298cc154f18f194c0659acb7bcef116b"
+content-hash = "3b1d01b80c3620ec4dae0c14d276b5f09745327536fe856c4cbf6fa893c31636"

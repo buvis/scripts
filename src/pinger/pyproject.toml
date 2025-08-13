@@ -9,7 +9,7 @@ readme = "README.md"
 python = "^3.12"
 click = "8.2.1"
 ping3 = "5.1.5"
-buvis-pybase = "0.1.5"
+buvis-pybase = "0.2.0"
 # buvis-pybase = {version = "0.1.4a2", source = "test-pypi"}
 # buvis-pybase = {path = "../../../buvis-pybase", develop = true}
 
