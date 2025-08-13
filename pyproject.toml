@@ -21,7 +21,7 @@ priority = "explicit"
 python = ">=3.12,<3.14"
 
 [tool.poetry.dependencies.buvis-pybase]
-version = "^0.1.6"
+version = "^0.1.7"
 source = "test-pypi"
 
 [tool.poetry.dependencies.doogat-core]
