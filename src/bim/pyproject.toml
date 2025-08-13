@@ -15,7 +15,7 @@ buvis-pybase = {version = "0.1.5a9", source = "test-pypi"}  # doogat-core from t
 doogat-core = {version = "0.1.3a33", source = "test-pypi"}
 # doogat-core = {path = "../../../../doogat/doogat-core", develop = true}
 # doogat-integrations = "0.1.0"
-doogat-integrations = {version = "0.1.0a7", source = "test-pypi"}
+doogat-integrations = {version = "0.1.0", source = "test-pypi"}
 # doogat-integrations = {path = "../../../../doogat/doogat-integrations", develop = true}
 
 [[tool.poetry.source]]
