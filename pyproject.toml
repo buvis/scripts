@@ -1,12 +1,12 @@
 [build-system]
-requires = [ "poetry-core",]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "scripts"
-version = "0.1.0"
+version = "0.1.1-alpha.1"
 description = ""
-authors = [ "Tomáš Bouška <tomas@buvis.net>",]
+authors = ["Tomáš Bouška <tomas@buvis.net>"]
 readme = "README.md"
 package-mode = false
 [[tool.poetry.source]]
@@ -15,18 +15,18 @@ url = "https://test.pypi.org/simple/"
 priority = "explicit"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = ">=3.12,<3.14"
 
 [tool.poetry.dependencies.buvis-pybase]
-version = "^0.1.6-alpha.1"
+version = "^0.1.6-alpha.2"
 source = "test-pypi"
 
 [tool.poetry.dependencies.doogat-core]
-version = "^0.1.4-alpha.1"
+version = "^0.1.4-alpha.2"
 source = "test-pypi"
 
 [tool.poetry.dependencies.doogat-integrations]
-version = "^0.1.1-alpha.1"
+version = "^0.1.1-alpha.2"
 source = "test-pypi"
 
 [tool.poetry.group.dev.dependencies]
