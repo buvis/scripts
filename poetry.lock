@@ -317,18 +317,18 @@ files = [
 
 [[package]]
 name = "doogat-core"
-version = "0.1.4a2"
+version = "0.1.5"
 description = ""
 optional = false
 python-versions = ">=3.12,<3.14"
 groups = ["main"]
 files = [
-    {file = "doogat_core-0.1.4a2-py3-none-any.whl", hash = "sha256:658d2e93961ff0067c68a74a001eb7daf69e724085f86f83414f6fd20c0ad58b"},
-    {file = "doogat_core-0.1.4a2.tar.gz", hash = "sha256:a2e4eeaa0123d1c920ce3fdfbea6cd19283e99442ffaaf481df4d499b015f5ad"},
+    {file = "doogat_core-0.1.5-py3-none-any.whl", hash = "sha256:bd7cec1115c9a6436f2e2462a8c025659018fd197eacad9cf55ad9732200b10a"},
+    {file = "doogat_core-0.1.5.tar.gz", hash = "sha256:954a3a29b43c8748090bb2c71a99668708e0a61168bf40021447d9df50660704"},
 ]
 
 [package.dependencies]
-buvis-pybase = ">=0.1.6-alpha.2,<0.2.0"
+buvis-pybase = ">=0.1.8,<0.2.0"
 
 [package.source]
 type = "legacy"
