@@ -21,10 +21,10 @@ doogat-core = {version = "0.1.3", source = "test-pypi"}
 doogat-integrations = {version = "0.1.0", source = "test-pypi"}
 
 [tool.poetry.group.dev.dependencies]
-click = "8.1.8"
-pre-commit = "4.2.0"
-pyfiglet = "1.0.2"
-ping3 = "4.0.8"
+click = "8.2.1"
+pre-commit = "4.3.0"
+pyfiglet = "1.0.3"
+ping3 = "5.1.5"
 ffmpeg-python = "0.2.0"
 
 [tool.poetry.group.test.dependencies]
