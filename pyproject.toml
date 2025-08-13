@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "scripts"
-version = "0.1.1-alpha.2"
+version = "0.1.1-alpha.3"
 description = ""
 authors = [ "Tomáš Bouška <tomas@buvis.net>",]
 readme = "README.md"
@@ -21,7 +21,7 @@ priority = "explicit"
 python = ">=3.12,<3.14"
 
 [tool.poetry.dependencies.buvis-pybase]
-version = "^0.1.7"
+version = "^0.1.8"
 source = "test-pypi"
 
 [tool.poetry.dependencies.doogat-core]
