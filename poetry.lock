@@ -337,18 +337,18 @@ reference = "test-pypi"
 
 [[package]]
 name = "doogat-integrations"
-version = "0.1.1a2"
+version = "0.1.1a3"
 description = ""
 optional = false
 python-versions = ">=3.12,<3.14"
 groups = ["main"]
 files = [
-    {file = "doogat_integrations-0.1.1a2-py3-none-any.whl", hash = "sha256:aded560fb9f1b96d8453b7711d56b396be8f313689f2edd8e6bc60f091640074"},
-    {file = "doogat_integrations-0.1.1a2.tar.gz", hash = "sha256:6cb6338b1775933a1d53a644da976e7200d55f37d06bd48ee82082b498f13dc7"},
+    {file = "doogat_integrations-0.1.1a3-py3-none-any.whl", hash = "sha256:bb54ae4d32944dc7fac01ccfdbcfe19dd0179411fb783cad827d6519d5138d06"},
+    {file = "doogat_integrations-0.1.1a3.tar.gz", hash = "sha256:0b0fb6499f549ea8310d928cecd8d91fcf25d19231ec6205b92bea03bed43f2e"},
 ]
 
 [package.dependencies]
-buvis-pybase = ">=0.1.6-alpha.2,<0.2.0"
+buvis-pybase = ">=0.1.8,<0.2.0"
 doogat-core = ">=0.1.4-alpha.2,<0.2.0"
 
 [package.source]
