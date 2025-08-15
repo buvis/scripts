@@ -1241,14 +1241,14 @@ files = [
 
 [[package]]
 name = "pyfiglet"
-version = "1.0.3"
+version = "1.0.4"
 description = "Pure-python FIGlet implementation"
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "pyfiglet-1.0.3-py3-none-any.whl", hash = "sha256:671bd101ca6a08dc2d94c6a2cda75a862c5e162b980af47d0ba4023837e36489"},
-    {file = "pyfiglet-1.0.3.tar.gz", hash = "sha256:bad3b55d2eccb30d4693ccfd94573c2a3477dd75f86a0e5465cea51bdbfe2875"},
+    {file = "pyfiglet-1.0.4-py3-none-any.whl", hash = "sha256:65b57b7a8e1dff8a67dc8e940a117238661d5e14c3e49121032bd404d9b2b39f"},
+    {file = "pyfiglet-1.0.4.tar.gz", hash = "sha256:db9c9940ed1bf3048deff534ed52ff2dafbbc2cd7610b17bb5eca1df6d4278ef"},
 ]
 
 [[package]]
@@ -2235,4 +2235,4 @@ test = ["pytest"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.14"
-content-hash = "3b1d01b80c3620ec4dae0c14d276b5f09745327536fe856c4cbf6fa893c31636"
+content-hash = "5ccfc67fc00fe9c51913b5f2a2430fa18bbeebaf1093b4a2b913a2c2784e4b6f"
