@@ -35,7 +35,7 @@ source = "test-pypi"
 [tool.poetry.group.dev.dependencies]
 click = "8.2.1"
 pre-commit = "4.3.0"
-pyfiglet = "1.0.3"
+pyfiglet = "1.0.4"
 ping3 = "5.1.5"
 ffmpeg-python = "0.2.0"
 
