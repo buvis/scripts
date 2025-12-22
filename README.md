@@ -30,7 +30,7 @@ This can be automated if you create a post-merge hook:
 
     cd ~/scripts
     echo "Updating scripts"
-    bin/update-scripts
+    uv run --reinstall-package buvis-pybase --script bin/update-scripts
     cd -
     ```
 
@@ -51,7 +51,7 @@ This can be automated if you create a post-merge hook:
     $originalLocation = Get-Location
     Set-Location $env:USERPROFILE\scripts
     Write-Host "Updating scripts"
-    python bin/update-scripts
+    uv run --reinstall-package buvis-pybase --script bin/update-scripts
     Set-Location $originalLocation
     ```
 
