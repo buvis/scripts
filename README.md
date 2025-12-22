@@ -27,6 +27,8 @@ poetry config virtualenvs.create true
 
 This can be automated if you create a post-merge hook:
 
+### Linux/macOS
+
 1. Create `post-merge` in `.git/hooks`
 
     ```bash
@@ -47,11 +49,37 @@ This can be automated if you create a post-merge hook:
     echo "Switching to project-specific operations"
     poetry config virtualenvs.create true
     echo "Updating scripts dependencies"
-    update-scripts-depencencies
+    update-scripts-dependencies
     cd -
     ```
 
 2. Make it executable: `chmod +x .git/hooks/post-merge`
+
+### Windows
+
+1. Create `post-merge` in `.git/hooks`
+
+    ```sh
+    #!/bin/sh
+    exec powershell.exe -ExecutionPolicy Bypass -File "$(dirname "$0")/post-merge.ps1"
+    ```
+
+2. Create `post-merge.ps1` in `.git/hooks`
+
+    ```powershell
+    $originalLocation = Get-Location
+    Set-Location $env:USERPROFILE\scripts
+    Write-Host "Cleaning development cache"
+    poetry cache clear test-pypi --all -q
+    Write-Host "Running poetry lock"
+    Remove-Item poetry.lock -ErrorAction SilentlyContinue
+    poetry lock
+    Write-Host "Installing dependencies"
+    poetry install --without dev,docs,test
+    Write-Host "Updating scripts dependencies"
+    poetry run python bin/update-scripts-dependencies
+    Set-Location $originalLocation
+    ```
 
 ## Use
 
@@ -71,8 +99,8 @@ It used to be done automatically by direnv, but in some cases I needed to work w
 
 1. Make sure to exit virtual environment launched by `poetry shell` previously
 2. Install latest python available:
-    - macOS: `asdf install python $(asdf latest python)`
-    - Windows:
+   - macOS: `asdf install python $(asdf latest python)`
+   - Windows:
         1. Get available versions: `pyenv install -l`
         2. Install the latest one: `pyenv install X.Y.Z`
 3. Point poetry to python you want to use: `poetry env use /usr/bin/python3`; alternatively, you can use asdf to set local python version
@@ -83,10 +111,10 @@ It used to be done automatically by direnv, but in some cases I needed to work w
 The scripts are using `buvis-pybase` and `doogat-core` which I'm also developing. Unfortunately, there is currently no easy way to use editable and non-editable packages in same `pyproject.toml` (see: <https://github.com/python-poetry/poetry/issues/8219>). So I need to modify `pyproject.toml`.
 
 1. Switch to local files:
-    - macOS: Uncomment `# buvis-pybase = {path = "../buvis-pybase", develop = true}` or `# doogat-core = {path = "../../doogat/doogat-core", develop = true}` in `pyproject.toml`
-    - Windows (there is an issue in Poetry in Windows causing it to be unable to resolve pth files):
-        + in scripts root: `pip install -e ../buvis-pybase/` or `pip install -e ..\..\doogat\doogat-core\`
-        + in script's root (like `src/bim` for example): `pip install -e ../../../buvis-pybase/` or `pip install -e ..\..\..\..\doogat\doogat-core\`
+   - macOS: Uncomment `# buvis-pybase = {path = "../buvis-pybase", develop = true}` or `# doogat-core = {path = "../../doogat/doogat-core", develop = true}` in `pyproject.toml`
+   - Windows (there is an issue in Poetry in Windows causing it to be unable to resolve pth files):
+     - in scripts root: `pip install -e ../buvis-pybase/` or `pip install -e ..\..\doogat\doogat-core\`
+     - in script's root (like `src/bim` for example): `pip install -e ../../../buvis-pybase/` or `pip install -e ..\..\..\..\doogat\doogat-core\`
 2. Update dependencies: `poetry update`
 3. Do the work in both projects
 4. When done, you push to `buvis-pybase` project first
