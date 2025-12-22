@@ -6,7 +6,7 @@ authors = [{ name = "Tomáš Bouška", email = "tomas@buvis.net" }]
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-  "click>=8.3.0",
+  "click>=8.3.1",
   "buvis-pybase>=0.3.1",
   "doogat-core>=0.2.1",
   "doogat-integrations>=0.2.3",

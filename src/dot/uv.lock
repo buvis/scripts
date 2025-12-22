@@ -5,7 +5,7 @@ requires-python = ">=3.12"
 [[package]]
 name = "buvis-pybase"
 version = "0.3.5"
-source = { editable = "../../../buvis-pybase" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "inflection" },
     { name = "jira" },
@@ -19,20 +19,9 @@ dependencies = [
     { name = "tzlocal" },
     { name = "xattr", marker = "sys_platform != 'win32'" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "inflection", specifier = ">=0.5.1,<0.6.0" },
-    { name = "jira", specifier = ">=3.10.5,<4.0.0" },
-    { name = "pexpect", specifier = ">=4.9.0,<5.0.0" },
-    { name = "pywin32", marker = "sys_platform == 'win32'", specifier = "==311" },
-    { name = "pyyaml", specifier = ">=6.0.3,<7.0.0" },
-    { name = "rake-nltk", specifier = ">=1.0.6,<2.0.0" },
-    { name = "rich", specifier = ">=14.2.0,<15.0.0" },
-    { name = "torch", specifier = ">=2.9.0,<3.0.0" },
-    { name = "transformers", specifier = ">=4.57.1,<5.0.0" },
-    { name = "tzlocal", specifier = ">=5.3.1,<6.0.0" },
-    { name = "xattr", marker = "sys_platform != 'win32'", specifier = ">=1.3.0,<2.0.0" },
+sdist = { url = "https://files.pythonhosted.org/packages/0a/d0/a7f5aa3f08bed7c24c07951f7da6136909de3ea8ee81ac5e63af526cfe7d/buvis_pybase-0.3.5.tar.gz", hash = "sha256:968c2de2ec5a36ef17ecdce10fee89ee2b2b2ea71a516748d107963763102479", size = 15302, upload-time = "2025-12-22T19:59:01.574Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d2/66/7b4a9f6f608d734d47719d7ab997ed884de4dfc337195628618c9064e180/buvis_pybase-0.3.5-py3-none-any.whl", hash = "sha256:4a9d7df7a846482525084a5531652d1acdcba659142a650ff42cf691694a7037", size = 24997, upload-time = "2025-12-22T19:59:00.524Z" },
 ]
 
 [[package]]
@@ -189,8 +178,8 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "buvis-pybase", editable = "../../../buvis-pybase" },
-    { name = "click", specifier = ">=8.3.0" },
+    { name = "buvis-pybase", specifier = ">=0.3.1" },
+    { name = "click", specifier = ">=8.3.1" },
     { name = "ffmpeg-python", specifier = ">=0.2.0" },
     { name = "pyfiglet", specifier = ">=1.0.4" },
 ]
