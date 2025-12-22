@@ -25,7 +25,7 @@ version = "^0.3.0"
 source = "test-pypi"
 
 [tool.poetry.dependencies.doogat-core]
-version = "^0.2.0"
+version = "^0.2.1"
 source = "test-pypi"
 
 [tool.poetry.dependencies.doogat-integrations]
