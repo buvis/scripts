@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "BUVIS InfoMesh CLI"
 authors = [{ name = "Tomáš Bouška", email = "tomas@buvis.net" }]
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.14.2"
 dependencies = [
   "click>=8.3.0",
   "buvis-pybase>=0.3.1",

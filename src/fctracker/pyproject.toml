@@ -5,7 +5,7 @@ version = "0.1.0"
 description = "CLI tool to manage accounts in foreign currencies"
 authors = [{ name = "Tomáš Bouška", email = "tomas@buvis.net" }]
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.14.2"
 [project.scripts]
 fctracker = "fctracker.cli:cli"
 
