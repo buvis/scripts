@@ -43,5 +43,5 @@ ffmpeg-python = "^0.2.0"
 pytest = "^9.0.1"
 
 [tool.poetry.group.docs.dependencies]
-sphinx = "^8.2.3"
+sphinx = "^9.0.4"
 sphinx-rtd-theme = "^3.0.2"
