@@ -1,26 +1,8 @@
 #!/usr/bin/env python3
+
 from pathlib import Path
 
 from buvis.pybase.adapters import PoetryAdapter
 
-
-def contains_poetry_adapter(file_path: Path) -> bool:
-    try:
-        return (
-            "from buvis.pybase.adapters import PoetryAdapter" in file_path.read_text()
-        )
-    except UnicodeDecodeError:
-        return False  # Skip files that can't be read as text
-
-
-def main():
-    current_directory = Path(__file__).parent
-
-    for file_path in current_directory.iterdir():
-        if file_path.is_file() and contains_poetry_adapter(file_path):
-            PoetryAdapter.update_script(str(file_path))
-            print(f"Updated {file_path.name}")
-
-
 if __name__ == "__main__":
-    main()
+    PoetryAdapter.update_all_scripts(Path(__file__).parent.parent)
