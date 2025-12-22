@@ -1,0 +1,187 @@
+#!/usr/bin/env bash
+# Lightroom Run Any Command plugin script - FULL PATHS VERSION
+# Processes single {FILE} from plugin or multiple files from Export Actions
+# Log: /tmp/lr-cleanup.log
+
+# Full tool paths (Apple Silicon Mac - adjust for Intel: /usr/local/opt/exiftool/bin/exiftool)
+EXIFTOOL="/opt/homebrew/opt/exiftool/bin/exiftool"
+SETFILE="/usr/bin/SetFile"
+GETFILEINFO="/usr/bin/GetFileInfo"
+
+# Verify tools exist
+if [ ! -x "$EXIFTOOL" ]; then
+  echo "ERROR: exiftool not found at $EXIFTOOL" >&2
+  echo "Run: brew install exiftool" >&2
+  exit 1
+fi
+if [ ! -x "$SETFILE" ]; then
+  echo "ERROR: SetFile not found. Run: xcode-select --install" >&2
+  exit 1
+fi
+if [ ! -x "$GETFILEINFO" ]; then
+  echo "ERROR: GetFileInfo not found. Run: xcode-select --install" >&2
+  exit 1
+fi
+
+echo "Tools verified: exiftool=$EXIFTOOL, SetFile=$SETFILE, GetFileInfo=$GETFILEINFO"
+
+function fix_date_from_exif() {
+  if [ $# -eq 0 ]; then
+    echo "Usage: fix_date_from_exif <file>..." >&2
+    return 1
+  fi
+
+  local f d failed=0
+
+  for f in "$@"; do
+    if [ ! -f "$f" ]; then
+      echo "File not found: $f" >&2
+      ((failed++))
+      continue
+    fi
+
+    d="$("$EXIFTOOL" -s3 -d '%m/%d/%Y %H:%M:%S' -DateTimeOriginal "$f")" || {
+      echo "exiftool failed for $f" >&2
+      ((failed++))
+      continue
+    }
+
+    [ -z "$d" ] && {
+      echo "No DateTimeOriginal in EXIF for $f" >&2
+      ((failed++))
+      continue
+    }
+
+    if "$SETFILE" -d "$d" "$f"; then
+      echo "Fixed $f to $d"
+    else
+      echo "SetFile failed for $f" >&2
+      ((failed++))
+    fi
+  done
+
+  [ "$failed" -gt 0 ] && return 1
+  return 0
+}
+
+function keep_copyright_only() {
+  if [ $# -eq 0 ]; then
+    echo "Usage: keep_copyright_only <file> [file ...]" >&2
+    return 1
+  fi
+
+  local f files tmp_args tmp_icc orig_created
+  files=("$@")
+
+  local valid_files=()
+  for f in "${files[@]}"; do
+    if [ -r "$f" ] && [ -f "$f" ]; then
+      valid_files+=("$f")
+    else
+      echo "Warning: Skipping '$f' - not a readable file" >&2
+    fi
+  done
+
+  if [ ${#valid_files[@]} -eq 0 ]; then
+    echo "Error: No valid files to process" >&2
+    return 1
+  fi
+
+  local failed=0
+  for f in "${valid_files[@]}"; do
+    echo "Processing: $f"
+
+    tmp_args="$(mktemp /tmp/metaargsXXXXXX)" || {
+      echo "Failed to create tmp_args for $f" >&2
+      ((failed++))
+      continue
+    }
+    tmp_icc="$(mktemp /tmp/iccXXXXXX.icc)" || {
+      echo "Failed to create tmp_icc for $f" >&2
+      rm -f "$tmp_args"
+      ((failed++))
+      continue
+    }
+
+    # Save original creation date
+    if ! orig_created="$("$GETFILEINFO" -d "$f")"; then
+      echo "Warning: Failed to get creation date for '$f'" >&2
+      rm -f "$tmp_args" "$tmp_icc"
+      ((failed++))
+      continue
+    fi
+
+    # Export tags to keep
+    if ! "$EXIFTOOL" -args \
+      -DateTimeOriginal \
+      -CreateDate \
+      -ModifyDate \
+      -Copyright \
+      -XMP-dc:Rights \
+      -IPTC:CopyrightNotice \
+      "$f" >"$tmp_args" 2>/dev/null; then
+      echo "Warning: Failed to extract metadata from '$f'" >&2
+      rm -f "$tmp_args" "$tmp_icc"
+      ((failed++))
+      continue
+    fi
+
+    # Extract ICC profile
+    "$EXIFTOOL" -icc_profile -b "$f" >"$tmp_icc" 2>/dev/null
+
+    # Remove all metadata
+    if ! "$EXIFTOOL" -overwrite_original -all= "$f" >/dev/null 2>&1; then
+      echo "Error: Failed to remove metadata from '$f'" >&2
+      rm -f "$tmp_args" "$tmp_icc"
+      ((failed++))
+      continue
+    fi
+
+    # Restore ICC profile
+    if [ -s "$tmp_icc" ]; then
+      "$EXIFTOOL" -overwrite_original "-ICC_Profile<=$tmp_icc" "$f" >/dev/null 2>&1 ||
+        echo "Warning: Failed to restore ICC profile for '$f'" >&2
+    fi
+
+    # Restore saved metadata
+    if [ -s "$tmp_args" ]; then
+      "$EXIFTOOL" -overwrite_original -@ "$tmp_args" "$f" >/dev/null 2>&1 ||
+        echo "Warning: Failed to restore metadata for '$f'" >&2
+    fi
+
+    # Restore filesystem creation date
+    if ! "$SETFILE" -d "$orig_created" "$f" 2>/dev/null; then
+      echo "Warning: Failed to restore creation date for '$f'" >&2
+    fi
+
+    rm -f "$tmp_args" "$tmp_icc"
+    echo "✓ Done: $f"
+  done
+
+  if [ $failed -gt 0 ]; then
+    echo "Completed with $failed failures out of ${#valid_files[@]} files" >&2
+    return $((failed > 0))
+  fi
+
+  echo "✓ Successfully processed ${#valid_files[@]} files"
+  return 0
+}
+
+# Main execution for Run Any Command or Export Actions
+if [ $# -eq 0 ]; then
+  echo "No files provided" >&2
+  exit 1
+fi
+
+echo "=== Phase 1: Fixing dates from EXIF ==="
+if ! fix_date_from_exif "$@"; then
+  echo "Phase 1 completed with errors, continuing..." >&2
+fi
+
+echo ""
+echo "=== Phase 2: Keeping only copyright metadata ==="
+if ! keep_copyright_only "$@"; then
+  echo "Phase 2 completed with errors" >&2
+fi
+
+echo "Processing complete at $(date)"
