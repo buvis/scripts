@@ -1,19 +1,14 @@
 [project]
-name = "dot"
+name = "readerctl"
 version = "0.1.0"
-description = "Dotfiles manager"
+description = "CLI tool to manage Reader from Readwise"
 authors = [{ name = "Tomáš Bouška", email = "tomas@buvis.net" }]
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = [
-  "click>=8.3.0",
-  "pyfiglet>=1.0.4",
-  "ffmpeg-python>=0.2.0",
-  "buvis-pybase>=0.3.1",
-]
+dependencies = ["click>=8.3.0", "requests>=2.31.0", "buvis-pybase>=0.2.0"]
 
 [project.scripts]
-dot = "dot.cli:cli"
+readerctl = "readerctl.cli:cli"
 
 [build-system]
 requires = ["hatchling"]

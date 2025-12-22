@@ -1,28 +1,20 @@
-[tool.poetry]
+[project]
 name = "bim"
 version = "0.1.0"
 description = "BUVIS InfoMesh CLI"
-authors = ["Tomáš Bouška <tomas@buvis.net>"]
+authors = [{ name = "Tomáš Bouška", email = "tomas@buvis.net" }]
 readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "click>=8.3.0",
+  "buvis-pybase>=0.3.1",
+  "doogat-core>=0.2.1",
+  "doogat-integrations>=0.2.3",
+]
 
-[tool.poetry.dependencies]
-python = "^3.12,<3.15"
-click = "^8.3.0"
-buvis-pybase = "^0.3.1"
-# buvis-pybase = { version = "0.2.0", source = "test-pypi" } # doogat-core from test-pypi won't install this
-# buvis-pybase = {path = "../../../buvis-pybase", develop = true}
-doogat-core = "^0.2.1"
-# doogat-core = { version = "0.1.5", source = "test-pypi" }
-# doogat-core = {path = "../../../../doogat/doogat-core", develop = true}
-doogat-integrations = "^0.2.3"
-# doogat-integrations = { version = "0.1.0", source = "test-pypi" }
-# doogat-integrations = {path = "../../../../doogat/doogat-integrations", develop = true}
-
-[[tool.poetry.source]]
-name = "test-pypi"
-url = "https://test.pypi.org/simple/"
-priority = "explicit"
+[project.scripts]
+bim = "bim.cli:cli"
 
 [build-system]
-requires = ["poetry-core", "pynvim"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"

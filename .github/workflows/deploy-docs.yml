@@ -13,30 +13,31 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v6
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: "3.14"
-
-      - name: Install poetry
-        uses: abatilo/actions-poetry@v4
-
-      - name: Setup a local virtual environment (if no poetry.toml file)
-        run: |
-          poetry config virtualenvs.create true --local
-          poetry config virtualenvs.in-project true --local
-
-      - uses: actions/cache@v4
-        name: Define a cache for the virtual environment based on the dependencies lock file
-        with:
-          path: ./.venv
-          key: venv-${{ hashFiles('poetry.lock') }}
-
-      - name: Install the project dependencies
-        run: poetry install
+          python-version: "3.12"
 
       - name: Build and Deploy Sphinx Documentation
-        run: poetry run sphinx-build -b html ./docs/source ./docs/build/html
+        run: |
+          uv run \
+            --with sphinx \
+            --with sphinx-rtd-theme \
+            --with src/bim \
+            --with src/dot \
+            --with src/fctracker \
+            --with src/hello_world \
+            --with src/muc \
+            --with src/outlookctl \
+            --with src/pinger \
+            --with src/readerctl \
+            --with src/zseq \
+            sphinx-build -b html ./docs/source ./docs/build/html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

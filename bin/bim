@@ -1,7 +1,10 @@
-#!/usr/bin/env python
-import sys
+#!/usr/bin/env -S uv run --script
+# /// script
+# dependencies = ["buvis-pybase"]
+# ///
 
-from buvis.pybase.adapters import PoetryAdapter
+import sys
+from buvis.pybase.adapters import UvAdapter
 
 if __name__ == "__main__":
-    PoetryAdapter.run_script(__file__, sys.argv[1:])
+    UvAdapter.run_script(__file__, sys.argv[1:])

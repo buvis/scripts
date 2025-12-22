@@ -1,8 +1,0 @@
-#!/usr/bin/env python3
-
-from pathlib import Path
-
-from buvis.pybase.adapters import PoetryAdapter
-
-if __name__ == "__main__":
-    PoetryAdapter.update_all_scripts(Path(__file__).parent.parent)

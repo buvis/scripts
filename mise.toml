@@ -1,0 +1,14 @@
+[tools]
+python = "3.12"
+uv = "latest"
+
+[env]
+_.path = ["./bin", "./dev"]
+
+[tasks.dev]
+description = "Enable local deps and clear uv cache"
+run = "python dev/devmode.py enable && rm -rf ~/.cache/uv/environments-v2/*-*"
+
+[tasks.prod]
+description = "Disable local buvis-pybase (use PyPI version)"
+run = "python dev/devmode.py disable"

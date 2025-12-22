@@ -1,15 +1,14 @@
-[tool.poetry]
+[project]
 name = "hello-world"
 version = "0.1.0"
 description = "Standard B.U.V.I.S script sample"
-authors = ["Tomáš Bouška <tomas@buvis.net>"]
+authors = [{ name = "Tomáš Bouška", email = "tomas@buvis.net" }]
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.12"
-pyfiglet = "1.0.4"
-click = "8.3.0"
+requires-python = ">=3.12"
+dependencies = ["click>=8.3.0", "pyfiglet>=1.0.4", "buvis-pybase>=0.3.1"]
+[project.scripts]
+hello-world = "hello_world.cli:cli"
 
 [build-system]
-requires = ["poetry-core", "pynvim"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"

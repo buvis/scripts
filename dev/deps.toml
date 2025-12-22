@@ -1,0 +1,7 @@
+# Local development dependencies
+# path is relative to scripts repo root
+
+[deps]
+"buvis-pybase" = "../buvis-pybase"
+"doogat-core" = "../../doogat/doogat-core"
+"doogat-integrations" = "../../doogat/doogat-integrations"

@@ -1,6 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env -S uv run --script
+# /// script
+# dependencies = ["buvis-pybase"]
+# ///
 
-from readerctl.cli import cli
+import sys
+from buvis.pybase.adapters import UvAdapter
 
 if __name__ == "__main__":
-    cli()
+    UvAdapter.run_script(__file__, sys.argv[1:])

@@ -1,19 +1,13 @@
 [project]
-name = "dot"
+dependencies = ["click>=8.3.0", "buvis-pybase>=0.2.0"]
+name = "fctracker"
 version = "0.1.0"
-description = "Dotfiles manager"
+description = "CLI tool to manage accounts in foreign currencies"
 authors = [{ name = "Tomáš Bouška", email = "tomas@buvis.net" }]
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = [
-  "click>=8.3.0",
-  "pyfiglet>=1.0.4",
-  "ffmpeg-python>=0.2.0",
-  "buvis-pybase>=0.3.1",
-]
-
 [project.scripts]
-dot = "dot.cli:cli"
+fctracker = "fctracker.cli:cli"
 
 [build-system]
 requires = ["hatchling"]

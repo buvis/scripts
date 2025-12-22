@@ -1,21 +1,13 @@
-#!/usr/bin/env bash
+#!/usr/bin/env -S uv run --script
+# /// script
+# dependencies = ["buvis-pybase"]
+# ///
 
-cd ~/scripts
-echo "Cleaning virtualenvs"
-poetry env remove --all
-echo "Switching to system-wide operations"
-poetry config virtualenvs.create false
-echo "Cleaning development cache"
-poetry cache clear test-pypi --all -q
-echo "Running poetry lock in ~/scripts"
-rm poetry.lock
-poetry lock
-echo "Installing dependencies"
-poetry install --without dev,docs,test
-echo "Switching to project-specific operations"
-poetry config virtualenvs.create true
-echo "Install system python packages"
-pip install -r ~/.default-python-packages
-echo "Updating scripts dependencies"
-update-scripts-dependencies
-cd -
+from pathlib import Path
+from buvis.pybase.adapters import UvToolManager
+
+if __name__ == "__main__":
+    scripts_root = Path(__file__).parent.parent
+    UvToolManager.install_all(scripts_root)
+    if (scripts_root / "pyproject.toml").exists():
+        UvToolManager.install_tool(scripts_root)

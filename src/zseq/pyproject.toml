@@ -1,14 +1,15 @@
-[tool.poetry]
+[project]
 name = "zseq"
 version = "0.1.0"
 description = "Utilities to work with zettelsequence"
-authors = ["Tomáš Bouška <tomas@buvis.net>"]
+authors = [{ name = "Tomáš Bouška", email = "tomas@buvis.net" }]
 readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["click>=8.3.0", "buvis-pybase>=0.3.1"]
 
-[tool.poetry.dependencies]
-python = "^3.12"
-click = "8.3.0"
+[project.scripts]
+zseq = "zseq.cli:cli"
 
 [build-system]
-requires = ["poetry-core", "pynvim"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
