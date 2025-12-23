@@ -19,7 +19,7 @@ Just make sure `uv` is installed and available in your PATH.
 
 ## Update
 
-This can be automated if you create a post-merge hook:
+This can be automated if you create a post-merge hook (assuming scripts are cloned to home directory):
 
 ### Linux/macOS
 
