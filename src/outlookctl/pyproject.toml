@@ -5,7 +5,7 @@ description = "CLI to Outlook"
 authors = [{ name = "Tomáš Bouška", email = "tomas@buvis.net" }]
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = ["click>=8.3.1", "buvis-pybase>=0.3.1"]
+dependencies = ["click>=8.3.1", "buvis-pybase>=0.5.7"]
 
 [project.scripts]
 outlookctl = "outlookctl.cli:cli"
