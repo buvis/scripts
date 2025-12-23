@@ -9,5 +9,4 @@ from buvis.pybase.adapters import UvToolManager
 if __name__ == "__main__":
     scripts_root = Path(__file__).parent.parent
     UvToolManager.install_all(scripts_root)
-    if (scripts_root / "pyproject.toml").exists():
-        UvToolManager.install_tool(scripts_root)
+    UvToolManager.update_all(scripts_root)
