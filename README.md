@@ -79,3 +79,23 @@ The scripts are using `buvis-pybase`, `doogat-core` and `doogat-integrations` wh
 To work with local versions, run `start-dev`.
 
 To switch back to released versions, run `finish-dev`.
+
+### Testing pre-release versions from test.pypi.org
+
+To test a dev version of `buvis-pybase` published to test.pypi.org, update `pyproject.toml`:
+
+```toml
+dependencies = ["buvis-pybase==0.6.0.dev0"]  # pin to dev version
+
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+explicit = true
+
+[tool.uv.sources]
+buvis-pybase = { index = "testpypi" }
+```
+
+To switch back to production, remove `[[tool.uv.index]]` and `[tool.uv.sources]` sections and use normal version spec.
+
+Run `uv sync` after switching.
