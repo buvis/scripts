@@ -4,8 +4,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-from buvis.pybase.adapters import UvToolManager
-
 
 def run(script_file: str, args: list[str] | None = None) -> None:
     """Run from local venv, project source, or installed tool."""
@@ -31,7 +29,7 @@ def run(script_file: str, args: list[str] | None = None) -> None:
 
         if project_dir.exists() and (project_dir / "pyproject.toml").exists():
             result = subprocess.run(
-                ["uv", "run", "--project", str(project_dir), tool_cmd, *args],
+                ["uv", "run", "--project", str(project_dir), "-m", pkg_name, *args],
                 check=False,
             )
             sys.exit(result.returncode)
@@ -39,5 +37,6 @@ def run(script_file: str, args: list[str] | None = None) -> None:
         print(f"No venv or project found at {project_dir}", file=sys.stderr)
         sys.exit(1)
 
-    # Production mode: use installed uv tool
-    UvToolManager.run(script_file, args)
+    # Production mode: use uv tool run (avoids PATH lookup of wrapper)
+    result = subprocess.run(["uv", "tool", "run", tool_cmd, *args], check=False)
+    sys.exit(result.returncode)
