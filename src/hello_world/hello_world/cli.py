@@ -1,3 +1,6 @@
+import re
+import sys
+from importlib.metadata import distributions, requires
 from pathlib import Path
 
 import click
@@ -45,6 +48,12 @@ DEFAULT_TEXT = "World"
     default=False,
     help="Pick random font",
 )
+@click.option(
+    "--diag",
+    is_flag=True,
+    default=False,
+    help="Print python runtime and dependency info",
+)
 @click.argument("text", default=DEFAULT_TEXT)
 def cli(
     text: str = DEFAULT_TEXT,
@@ -52,7 +61,25 @@ def cli(
     *,
     list_fonts: bool = False,
     random_font: bool = False,
+    diag: bool = False,
 ) -> None:
+    if diag:
+        print(f"Script: {Path(__file__).resolve()}")
+        print(f"Python: {sys.executable}")
+        print("\nDirect dependencies:")
+        reqs = requires("hello-world") or []
+        direct_deps = {
+            re.split(r"[<>=!~\[;]", r)[0].lower().replace("-", "_") for r in reqs
+        }
+        for dist in sorted(distributions(), key=lambda d: d.metadata["Name"].lower()):
+            name = dist.metadata["Name"]
+            normalized = name.lower().replace("-", "_")
+            if normalized in direct_deps:
+                version = dist.version
+                location = dist._path.parent if hasattr(dist, "_path") else "unknown"
+                print(f"  {name}=={version} ({location})")
+        return
+
     if list_fonts:
         print("\n".join(sorted(pyfiglet.FigletFont.getFonts())))
     else:
