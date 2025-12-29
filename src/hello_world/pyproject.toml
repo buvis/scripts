@@ -5,7 +5,7 @@ description = "Standard B.U.V.I.S script sample"
 authors = [{ name = "Tomáš Bouška", email = "tomas@buvis.net" }]
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = ["click>=8.3.0", "pyfiglet>=1.0.4", "buvis-pybase==0.6.0.dev0"]
+dependencies = ["click==8.3.1", "pyfiglet==1.0.4", "buvis-pybase==0.6.0.dev2"]
 
 [[tool.uv.index]]
 name = "testpypi"
@@ -14,6 +14,7 @@ explicit = true
 
 [tool.uv.sources]
 buvis-pybase = { index = "testpypi" }
+
 [project.scripts]
 hello-world = "hello_world.cli:cli"
 

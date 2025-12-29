@@ -4,7 +4,10 @@
 # ///
 
 import sys
-from buvis.pybase.adapters import UvAdapter
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+from script_runner import run
 
 if __name__ == "__main__":
-    UvAdapter.run_script(__file__, sys.argv[1:])
+    run(__file__)

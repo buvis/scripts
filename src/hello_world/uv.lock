@@ -4,7 +4,7 @@ requires-python = ">=3.12"
 
 [[package]]
 name = "buvis-pybase"
-version = "0.6.0.dev0"
+version = "0.6.0.dev2"
 source = { registry = "https://test.pypi.org/simple/" }
 dependencies = [
     { name = "inflection" },
@@ -19,9 +19,9 @@ dependencies = [
     { name = "tzlocal" },
     { name = "xattr", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://test-files.pythonhosted.org/packages/48/2d/6acd66ef7942d12df2c2ac0ca8e2e98c68c52adbf2019d65cb031db8f999/buvis_pybase-0.6.0.dev0.tar.gz", hash = "sha256:a3d6149a157c164416026ffeed8232d02003f437fb722540d87110adffec6450", size = 99388, upload-time = "2025-12-29T19:06:08.629Z" }
+sdist = { url = "https://test-files.pythonhosted.org/packages/8c/c4/890f4d275ed440ec561a220c7b0be10af631917e6a635fe172747003c55d/buvis_pybase-0.6.0.dev2.tar.gz", hash = "sha256:cc3168d4ab4c956c39441a9ba71d01e71473ef07ad9599108d8dfb492c2ad6c0", size = 99665, upload-time = "2025-12-29T21:02:09.179Z" }
 wheels = [
-    { url = "https://test-files.pythonhosted.org/packages/d5/d8/711a53d0aa08fe24bd21e968f8f2b90f35856348c50f1a4ad5aca2360129/buvis_pybase-0.6.0.dev0-py3-none-any.whl", hash = "sha256:ec4c3ae48d16be3437e4ff972eeadc9ad74118ff1718bac286234d82bb761e3e", size = 27636, upload-time = "2025-12-29T19:06:07.352Z" },
+    { url = "https://test-files.pythonhosted.org/packages/76/c1/ba35e6fd90ac8105a80e6608da3e376cf8caf3ffa3120aa3c61f8723d1df/buvis_pybase-0.6.0.dev2-py3-none-any.whl", hash = "sha256:447ff75c0b66ca9b67619468e5ecdadd62e0efbe6c3b01d56e637acf04e2dfb6", size = 29004, upload-time = "2025-12-29T21:02:07.734Z" },
 ]
 
 [[package]]
@@ -195,9 +195,9 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "buvis-pybase", specifier = "==0.6.0.dev0", index = "https://test.pypi.org/simple/" },
-    { name = "click", specifier = ">=8.3.0" },
-    { name = "pyfiglet", specifier = ">=1.0.4" },
+    { name = "buvis-pybase", specifier = "==0.6.0.dev2", index = "https://test.pypi.org/simple/" },
+    { name = "click", specifier = "==8.3.1" },
+    { name = "pyfiglet", specifier = "==1.0.4" },
 ]
 
 [[package]]
