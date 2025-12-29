@@ -30,6 +30,7 @@ This can be automated if you create a post-merge hook (assuming scripts are clon
 
     cd ~/scripts
     echo "Updating scripts"
+    uv cache clean buvis-pybase
     uv run --reinstall-package buvis-pybase --script bin/update-scripts
     cd -
     ```
@@ -51,6 +52,7 @@ This can be automated if you create a post-merge hook (assuming scripts are clon
     $originalLocation = Get-Location
     Set-Location $env:USERPROFILE\scripts
     Write-Host "Updating scripts"
+    uv cache clean buvis-pybase
     uv run --reinstall-package buvis-pybase --script bin/update-scripts
     Set-Location $originalLocation
     ```
