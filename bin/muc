@@ -3,11 +3,7 @@
 # dependencies = ["buvis-pybase"]
 # ///
 
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).parent))
-from script_runner import run
+from buvis.pybase.adapters.uv import UvToolManager
 
 if __name__ == "__main__":
-    run(__file__)
+    UvToolManager.run(__file__)
