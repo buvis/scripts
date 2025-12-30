@@ -1,5 +1,5 @@
 [project]
-dependencies = ["click>=8.3.0", "buvis-pybase>=0.6.0"]
+dependencies = ["click>=8.3.0", "buvis-pybase>=0.7.3"]
 name = "fctracker"
 version = "0.1.0"
 description = "CLI tool to manage accounts in foreign currencies"

@@ -9,7 +9,7 @@ dependencies = [
   "click>=8.3.0",
   "pyfiglet>=1.0.4",
   "ffmpeg-python>=0.2.0",
-  "buvis-pybase>=0.6.0",
+  "buvis-pybase>=0.7.3",
 ]
 
 [project.scripts]
