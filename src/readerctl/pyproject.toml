@@ -5,7 +5,7 @@ description = "CLI tool to manage Reader from Readwise"
 authors = [{ name = "Tomáš Bouška", email = "tomas@buvis.net" }]
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = ["click>=8.3.0", "requests>=2.31.0", "buvis-pybase>=0.2.0"]
+dependencies = ["click>=8.3.0", "requests>=2.31.0", "buvis-pybase>=0.6.0"]
 
 [project.scripts]
 readerctl = "readerctl.cli:cli"
