@@ -4,6 +4,7 @@ uv = "latest"
 
 [env]
 _.path = ["./bin", "./dev"]
+BUVIS_DEV_MODE = "1"
 
 [tasks.dev]
 description = "Enable local deps and clear uv cache"

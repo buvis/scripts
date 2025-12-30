@@ -1,9 +1,9 @@
-#!/usr/bin/env -S uv run --script
-# /// script
-# dependencies = ["buvis-pybase"]
-# ///
+#!/usr/bin/env python3
+import sys
+from pathlib import Path
 
-from buvis.pybase.adapters.uv import UvToolManager
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import _bootstrap
 
 if __name__ == "__main__":
-    UvToolManager.run(__file__)
+    _bootstrap.run(__file__)
