@@ -4,8 +4,8 @@ requires-python = ">=3.12"
 
 [[package]]
 name = "buvis-pybase"
-version = "0.3.5"
-source = { editable = "../../../buvis-pybase" }
+version = "0.6.0"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "inflection" },
     { name = "jira" },
@@ -19,20 +19,9 @@ dependencies = [
     { name = "tzlocal" },
     { name = "xattr", marker = "sys_platform != 'win32'" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "inflection", specifier = ">=0.5.1,<0.6.0" },
-    { name = "jira", specifier = ">=3.10.5,<4.0.0" },
-    { name = "pexpect", specifier = ">=4.9.0,<5.0.0" },
-    { name = "pywin32", marker = "sys_platform == 'win32'", specifier = "==311" },
-    { name = "pyyaml", specifier = ">=6.0.3,<7.0.0" },
-    { name = "rake-nltk", specifier = ">=1.0.6,<2.0.0" },
-    { name = "rich", specifier = ">=14.2.0,<15.0.0" },
-    { name = "torch", specifier = ">=2.9.0,<3.0.0" },
-    { name = "transformers", specifier = ">=4.57.1,<5.0.0" },
-    { name = "tzlocal", specifier = ">=5.3.1,<6.0.0" },
-    { name = "xattr", marker = "sys_platform != 'win32'", specifier = ">=1.3.0,<2.0.0" },
+sdist = { url = "https://files.pythonhosted.org/packages/75/83/4f560677185473ac769ab743c0f17c2a8d941d12e7c4088aa29588c81248/buvis_pybase-0.6.0.tar.gz", hash = "sha256:18a53521396f5ba452a2527fffb3a7cac7be51dce0a5868e5e6a1947b4bb1876", size = 99669, upload-time = "2025-12-29T22:32:16.037Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/db/14/a24387e4207c3e45c4dda0d5472abc38b810d5574c13be25c48c6c43c9a4/buvis_pybase-0.6.0-py3-none-any.whl", hash = "sha256:8b92b09593c2827fbd64a23db9326208ef0590ff262c536f98f1db9b23433ed2", size = 28957, upload-time = "2025-12-29T22:32:14.574Z" },
 ]
 
 [[package]]
@@ -189,7 +178,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "buvis-pybase", editable = "../../../buvis-pybase" },
+    { name = "buvis-pybase", specifier = ">=0.6.0" },
     { name = "click", specifier = ">=8.3.0" },
     { name = "ffmpeg-python", specifier = ">=0.2.0" },
     { name = "pyfiglet", specifier = ">=1.0.4" },
