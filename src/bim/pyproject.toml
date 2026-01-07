@@ -7,7 +7,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
   "click>=8.3.0",
-  "buvis-pybase>=0.7.3",
+  "buvis-pybase>=0.9.0",
   "doogat-core>=0.2.1",
   "doogat-integrations>=0.2.3",
 ]
