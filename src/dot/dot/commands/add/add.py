@@ -5,12 +5,10 @@ import os
 from pathlib import Path
 
 from buvis.pybase.adapters import ShellAdapter
-from buvis.pybase.configuration import Configuration, ConfigurationKeyNotFoundError
-from buvis.pybase.filesystem import DirTree
 
 
 class CommandAdd:
-    def __init__(self: CommandAdd, cfg: Configuration) -> None:
+    def __init__(self: CommandAdd, file_path: str | None = None) -> None:
         self.shell = ShellAdapter(suppress_logging=True)
 
         if not os.environ.get("DOTFILES_ROOT"):
@@ -23,7 +21,6 @@ class CommandAdd:
             "cfg",
             "git --git-dir=${DOTFILES_ROOT}/.buvis/ --work-tree=${DOTFILES_ROOT}",
         )
-        file_path = cfg.get_configuration_item_or_default("add_file_path", None)
 
         if file_path:
             if Path(file_path).is_file():
@@ -43,7 +40,7 @@ class CommandAdd:
             logging.info("No file specified, proceeding with cherry picking all.")
 
     def execute(self: CommandAdd) -> None:
-        command = f"cfg add -p"
+        command = "cfg add -p"
         if self.file_path:
             command = f"cfg add -p {self.file_path}"
             err, _ = self.shell.exe(

@@ -3,35 +3,22 @@ import shutil
 from pathlib import Path
 
 import ffmpeg
-from buvis.pybase.configuration import Configuration, ConfigurationKeyNotFoundError
-
-DEFAULT_LIMIT_BITRATE = 1411000
-DEFAULT_LIMIT_BIT_DEPTH = 16
-DEFAULT_LIMIT_SAMPLING_RATE = 44100
 
 
 class CommandLimit:
-    def __init__(self: "CommandLimit", cfg: Configuration) -> None:
-        self.bitrate: int = cfg.get_configuration_item_or_default(
-            "limit_flac_bitrate",
-            DEFAULT_LIMIT_BITRATE,
-        )
-        self.bit_depth: int = cfg.get_configuration_item_or_default(
-            "limit_flac_bit_depth",
-            DEFAULT_LIMIT_BIT_DEPTH,
-        )
-        self.sampling_rate: int = cfg.get_configuration_item_or_default(
-            "limit_flac_sampling_rate",
-            DEFAULT_LIMIT_SAMPLING_RATE,
-        )
-        try:
-            self.source_dir = Path(str(cfg.get_configuration_item("limit_path_source")))
-        except ConfigurationKeyNotFoundError as e:
-            raise ConfigurationKeyNotFoundError from e
-        try:
-            self.output_dir = Path(str(cfg.get_configuration_item("limit_path_output")))
-        except ConfigurationKeyNotFoundError as e:
-            raise ConfigurationKeyNotFoundError from e
+    def __init__(
+        self: "CommandLimit",
+        source_dir: Path,
+        output_dir: Path,
+        bitrate: int,
+        bit_depth: int,
+        sampling_rate: int,
+    ) -> None:
+        self.source_dir = source_dir
+        self.output_dir = output_dir
+        self.bitrate = bitrate
+        self.bit_depth = bit_depth
+        self.sampling_rate = sampling_rate
 
     def execute(self: "CommandLimit") -> None:
         for file_path in self.source_dir.rglob("*.flac"):
@@ -39,14 +26,7 @@ class CommandLimit:
                 self.transcode_flac(file_path)
 
     def transcode_flac(self: "CommandLimit", file_path: Path) -> None:
-        """
-        Processes a FLAC file by either transcoding or copying it to the output directory.
-
-        Args:
-            file_path (Path): The path to the FLAC file.
-        """
         try:
-            # Get the audio stream information
             probe = ffmpeg.probe(str(file_path), loglevel="quiet")
             audio_stream = next(
                 (
@@ -60,7 +40,6 @@ class CommandLimit:
             relative_path = file_path.relative_to(self.source_dir)
             output_path = self.output_dir / relative_path
 
-            # Create the output directory structure if it doesn't exist
             output_path.parent.mkdir(parents=True, exist_ok=True)
 
             if audio_stream:
@@ -73,7 +52,6 @@ class CommandLimit:
                     or sampling_rate > self.sampling_rate
                     or bit_depth > self.bit_depth
                 ):
-                    # Transcode the FLAC file with the specified parameters
                     stream = ffmpeg.input(str(file_path))
                     stream = ffmpeg.output(
                         stream,
@@ -87,7 +65,6 @@ class CommandLimit:
 
                     logging.info("Transcoded: %s  -> %s", file_path, output_path)
                 else:
-                    # Copy the FLAC file to the output directory
                     shutil.copy2(file_path, output_path)
                     logging.info("Copied: %s  -> %s", file_path, output_path)
             else:

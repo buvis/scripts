@@ -3,18 +3,11 @@ from __future__ import annotations
 from pathlib import Path
 
 import click
-from buvis.pybase.adapters import console, logging_to_console
-from buvis.pybase.configuration import Configuration
-from buvis.pybase.filesystem import DirTree
+from buvis.pybase.adapters import logging_to_console
+from buvis.pybase.configuration import buvis_options, get_settings
 
 from dot.commands import CommandAdd, CommandStatus
-
-path_cfg = Path(__file__, "../../config.yaml").resolve()
-
-try:
-    cfg = Configuration(path_cfg)
-except FileNotFoundError:
-    console.panic(f"Defaults configuration not found in {path_cfg}")
+from dot.settings import DotSettings
 
 
 @click.group(help="CLI for bare repo dotfiles")
@@ -23,18 +16,26 @@ def cli() -> None:
 
 
 @cli.command("status", help="Report status")
-def status() -> None:
+@buvis_options(settings_class=DotSettings)
+@click.pass_context
+def status(ctx: click.Context) -> None:
     with logging_to_console():
-        cmd = CommandStatus(cfg)
+        cmd = CommandStatus()
         cmd.execute()
 
 
 @cli.command("add", help="Add changes")
+@buvis_options(settings_class=DotSettings)
 @click.argument("file_path", required=False)
-def add(file_path: Path | None) -> None:
-    cfg.set_configuration_item("add_file_path", file_path)
+@click.pass_context
+def add(ctx: click.Context, file_path: str | None = None) -> None:
+    settings = get_settings(ctx, DotSettings)
+
+    # CLI overrides settings
+    resolved_path = file_path if file_path is not None else settings.add_file_path
+
     with logging_to_console():
-        cmd = CommandAdd(cfg)
+        cmd = CommandAdd(file_path=resolved_path)
         cmd.execute()
 
 

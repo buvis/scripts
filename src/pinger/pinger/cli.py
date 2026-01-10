@@ -1,20 +1,11 @@
 from __future__ import annotations
 
-from pathlib import Path
-
 import click
 from buvis.pybase.adapters import console
-from buvis.pybase.configuration import Configuration, ConfigurationKeyNotFoundError
+from buvis.pybase.configuration import buvis_options, get_settings
 
 from pinger.commands import CommandWait, CommandWaitTimeoutError
-
-DEFAULT_TIMEOUT = 600
-
-try:
-    cfg_path = Path(__file__, "../../config.yaml")
-    cfg = Configuration(cfg_path)
-except FileNotFoundError:
-    cfg = Configuration()
+from pinger.settings import PingerSettings
 
 
 @click.group(help="Useful tools around ICMP ping")
@@ -23,31 +14,29 @@ def cli() -> None:
 
 
 @cli.command("wait", help="Wait for host to be online")
+@buvis_options(settings_class=PingerSettings)
 @click.option(
     "-t",
     "--timeout",
+    type=int,
+    default=None,
     help="Give up waiting after xxx seconds.",
 )
 @click.argument("host")
-def wait(timeout: int | None = None, *, host: str) -> None:
-    cfg.set_configuration_item("host", host)
+@click.pass_context
+def wait(ctx: click.Context, host: str, timeout: int | None = None) -> None:
+    settings = get_settings(ctx, PingerSettings)
 
-    if timeout:
-        cfg.set_configuration_item("wait_timeout", timeout)
+    # CLI overrides settings
+    resolved_timeout = timeout if timeout is not None else settings.wait_timeout
 
-    try:
-        applied_timeout = cfg.get_configuration_item("wait_timeout")
-    except ConfigurationKeyNotFoundError as _:
-        cfg.set_configuration_item("wait_timeout", DEFAULT_TIMEOUT)
-        applied_timeout = cfg.get_configuration_item("wait_timeout")
-
-    cmd = CommandWait(cfg)
+    cmd = CommandWait(host=host, timeout=resolved_timeout)
     with console.status(
-        f"Waiting for {host} to be online (max {applied_timeout} seconds)"
+        f"Waiting for {host} to be online (max {resolved_timeout} seconds)"
     ):
         try:
             cmd.execute()
-        except CommandWaitTimeoutError as _:
+        except CommandWaitTimeoutError:
             console.panic(f"Timeout reached when waiting for {host}")
     console.success(f"{host} is now online")
 

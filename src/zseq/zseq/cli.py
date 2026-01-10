@@ -1,34 +1,19 @@
-from pathlib import Path
-
 import click
-from buvis.pybase.configuration import Configuration, ConfigurationKeyNotFoundError
+from buvis.pybase.configuration import buvis_options, get_settings
 
 from zseq.commands import CommandGetLast
-
-DEFAULT_PATH_DIR = "/Volumes/photography/photography/src/2024"
-
-try:
-    cfg = Configuration(Path(__file__, "../../config.yaml"))
-except FileNotFoundError:
-    cfg = Configuration()
-    DEFAULT_PATH_DIR = "/Volumes/photography/photography/src/2024"
-else:
-    try:
-        DEFAULT_PATH_DIR = str(cfg.get_configuration_item("path_dir", DEFAULT_PATH_DIR))
-    except ConfigurationKeyNotFoundError as _:
-        DEFAULT_PATH_DIR = "/Volumes/photography/photography/src/2024"
-
-DEFAULT_IS_REPORTING_MISNAMED = False
+from zseq.settings import ZseqSettings
 
 
 @click.group(
     help="CLI tool to work with Zettelkasten sequential file naming",
     invoke_without_command=True,
 )
+@buvis_options(settings_class=ZseqSettings)
 @click.option(
     "-p",
     "--path",
-    default=DEFAULT_PATH_DIR,
+    default=None,
     help="Path to directory containing files following Zettelkasten sequential file naming.",
 )
 @click.option(
@@ -39,15 +24,20 @@ DEFAULT_IS_REPORTING_MISNAMED = False
     default=False,
     help="Report files not following Zettelkasten sequential file naming",
 )
+@click.pass_context
 def cli(
-    path: str = DEFAULT_PATH_DIR,
+    ctx: click.Context,
+    path: str | None = None,
     *,
-    misnamed_reporting: bool = DEFAULT_IS_REPORTING_MISNAMED,
+    misnamed_reporting: bool = False,
 ) -> None:
-    cfg.set_configuration_item("path_dir", path)
-    cfg.set_configuration_item("is_reporting_misnamed", misnamed_reporting)
+    settings = get_settings(ctx, ZseqSettings)
 
-    cmd = CommandGetLast(cfg)
+    # CLI overrides settings
+    resolved_path = path if path is not None else settings.path_dir
+    resolved_misnamed = misnamed_reporting or settings.is_reporting_misnamed
+
+    cmd = CommandGetLast(path_dir=resolved_path, is_reporting_misnamed=resolved_misnamed)
     cmd.execute()
 
 

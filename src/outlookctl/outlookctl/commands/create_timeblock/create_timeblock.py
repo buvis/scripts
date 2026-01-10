@@ -1,12 +1,23 @@
-from buvis.pybase.adapters import OutlookLocalAdapter, console
+import os
+
+from buvis.pybase.adapters import console
 
 
 class CommandCreateTimeblock:
-    def __init__(self, cfg):
+    def __init__(self, duration: int) -> None:
+        self.duration = duration
+        self.outlook = None
+
+        if os.name != "nt":
+            console.warning("OutlookLocalAdapter only available on Windows")
+            return
+
         try:
+            from buvis.pybase.adapters import OutlookLocalAdapter
+
             self.outlook = OutlookLocalAdapter()
         except Exception as e:
             console.panic(e)
 
-    def execute(self):
-        print(f"Would create a timeblock")
+    def execute(self) -> None:
+        print(f"Would create a timeblock of {self.duration} minutes")

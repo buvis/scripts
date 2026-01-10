@@ -1,14 +1,8 @@
-from pathlib import Path
-
 import click
-from buvis.pybase.configuration import Configuration
+from buvis.pybase.configuration import buvis_options, get_settings
 
 from outlookctl.commands import CommandCreateTimeblock
-
-try:
-    cfg = Configuration(Path(__file__, "../../config.yaml"))
-except FileNotFoundError:
-    cfg = Configuration()
+from outlookctl.settings import OutlookctlSettings
 
 
 @click.group(help="CLI to Outlook")
@@ -17,8 +11,11 @@ def cli() -> None:
 
 
 @cli.command("create_timeblock")
-def create_timeblock() -> None:
-    cmd = CommandCreateTimeblock(cfg)
+@buvis_options(settings_class=OutlookctlSettings)
+@click.pass_context
+def create_timeblock(ctx: click.Context) -> None:
+    settings = get_settings(ctx, OutlookctlSettings)
+    cmd = CommandCreateTimeblock(duration=settings.default_timeblock_duration)
     cmd.execute()
 
 

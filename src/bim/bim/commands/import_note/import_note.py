@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from buvis.pybase.adapters import console
-from buvis.pybase.configuration import Configuration, ConfigurationKeyNotFoundError
 from buvis.pybase.formatting import StringOperator
 from doogat.core import (
     MarkdownZettelFormatter,
@@ -11,27 +10,18 @@ from doogat.core import (
 
 
 class CommandImportNote:
-    def __init__(self: "CommandImportNote", cfg: Configuration) -> None:
-        try:
-            path_note = Path(str(cfg.get_configuration_item("path_note")))
-            if not path_note.is_file():
-                raise FileNotFoundError
-            self.path_note = path_note
-        except ConfigurationKeyNotFoundError as e:
-            raise FileNotFoundError from e
-        try:
-            path_zettelkasten = (
-                Path(
-                    str(cfg.get_configuration_item("path_zettelkasten")),
-                )
-                .expanduser()
-                .resolve()
-            )
-            if not path_zettelkasten.is_dir():
-                raise FileNotFoundError
-            self.path_zettelkasten = path_zettelkasten
-        except ConfigurationKeyNotFoundError as e:
-            raise FileNotFoundError from e
+    def __init__(
+        self: "CommandImportNote",
+        path_note: Path,
+        path_zettelkasten: Path,
+    ) -> None:
+        if not path_note.is_file():
+            raise FileNotFoundError(f"Note not found: {path_note}")
+        self.path_note = path_note
+
+        if not path_zettelkasten.is_dir():
+            raise FileNotFoundError(f"Zettelkasten directory not found: {path_zettelkasten}")
+        self.path_zettelkasten = path_zettelkasten
 
     def execute(self: "CommandImportNote") -> None:
         original_content = self.path_note.read_text()

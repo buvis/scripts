@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from buvis.pybase.adapters import console
-from buvis.pybase.configuration import Configuration, ConfigurationKeyNotFoundError
 from doogat.core import (
     MarkdownZettelFormatter,
     MarkdownZettelRepository,
@@ -10,30 +9,19 @@ from doogat.core import (
 
 
 class CommandFormatNote:
-    def __init__(self: "CommandFormatNote", cfg: Configuration) -> None:
-        try:
-            path_note = Path(str(cfg.get_configuration_item("path_note")))
-            if not path_note.is_file():
-                raise FileNotFoundError
-            self.path_note = path_note
-        except ConfigurationKeyNotFoundError as e:
-            raise FileNotFoundError from e
-
-        self.is_highlighting = cfg.get_configuration_item_or_default(
-            "is_highlighting_requested",
-            default=False,
-        )
-        self.is_printing_diff = cfg.get_configuration_item_or_default(
-            "is_diff_requested",
-            default=False,
-        )
-
-        try:
-            self.path_output = Path(
-                str(cfg.get_configuration_item("path_output")),
-            ).resolve()
-        except ConfigurationKeyNotFoundError as _:
-            self.path_output = None
+    def __init__(
+        self: "CommandFormatNote",
+        path_note: Path,
+        is_highlighting_requested: bool = False,
+        is_diff_requested: bool = False,
+        path_output: Path | None = None,
+    ) -> None:
+        if not path_note.is_file():
+            raise FileNotFoundError(f"Note not found: {path_note}")
+        self.path_note = path_note
+        self.is_highlighting = is_highlighting_requested
+        self.is_printing_diff = is_diff_requested
+        self.path_output = path_output.resolve() if path_output else None
 
     def execute(self: "CommandFormatNote") -> None:
         original_content = self.path_note.read_text()

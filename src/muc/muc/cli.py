@@ -2,20 +2,14 @@ from pathlib import Path
 
 import click
 from buvis.pybase.adapters import console, logging_to_console
-from buvis.pybase.configuration import Configuration
+from buvis.pybase.configuration import buvis_options, get_settings
 from buvis.pybase.filesystem import DirTree
 
 from muc.commands import CommandLimit, CommandTidy
+from muc.settings import MucSettings
 
 ALERT_FILE_COUNT = 100
 ALERT_DIR_DEPTH = 3
-
-path_cfg = Path(__file__, "../../config.yaml").resolve()
-
-try:
-    cfg = Configuration(path_cfg)
-except FileNotFoundError:
-    console.panic(f"Defaults configuration not found in {path_cfg}")
 
 
 @click.group(help="Tools for music collection management")
@@ -24,38 +18,45 @@ def cli() -> None:
 
 
 @cli.command("limit", help="Limit audio file")
+@buvis_options(settings_class=MucSettings)
 @click.option(
     "-o",
     "--output",
-    default=Path(Path.cwd() / "transcoded"),
+    default=None,
     help="Transcoded files output directory.",
 )
 @click.argument("source_directory")
-def limit(source_directory: Path, output: Path) -> None:
-    path_source = Path(source_directory).resolve()
+@click.pass_context
+def limit(ctx: click.Context, source_directory: str, output: str | None = None) -> None:
+    settings = get_settings(ctx, MucSettings)
 
-    if path_source.is_dir():
-        cfg.set_configuration_item("limit_path_source", path_source)
-    else:
+    path_source = Path(source_directory).resolve()
+    if not path_source.is_dir():
         console.panic(f"{source_directory} isn't a directory")
 
-    path_output = Path(output).resolve()
+    path_output = Path(output).resolve() if output else Path.cwd() / "transcoded"
     path_output.mkdir(exist_ok=True)
-    cfg.set_configuration_item("limit_path_output", path_output)
 
     with logging_to_console():
-        cmd = CommandLimit(cfg)
+        cmd = CommandLimit(
+            source_dir=path_source,
+            output_dir=path_output,
+            bitrate=settings.limit_flac_bitrate,
+            bit_depth=settings.limit_flac_bit_depth,
+            sampling_rate=settings.limit_flac_sampling_rate,
+        )
         cmd.execute()
 
 
 @cli.command("tidy", help="Tidy directory")
+@buvis_options(settings_class=MucSettings)
 @click.argument("directory")
-def tidy(directory: Path) -> None:
-    path_directory = Path(directory).resolve()
+@click.pass_context
+def tidy(ctx: click.Context, directory: str) -> None:
+    settings = get_settings(ctx, MucSettings)
 
-    if path_directory.is_dir():
-        cfg.set_configuration_item("tidy_directory", path_directory)
-    else:
+    path_directory = Path(directory).resolve()
+    if not path_directory.is_dir():
         console.panic(f"{path_directory} isn't a directory")
 
     file_count = DirTree.count_files(path_directory)
@@ -71,19 +72,14 @@ def tidy(directory: Path) -> None:
             console.panic("Operation cancelled by user.")
 
     with logging_to_console():
-        cmd = CommandTidy(cfg)
+        cmd = CommandTidy(
+            directory=path_directory,
+            junk_extensions=settings.tidy_junk_extensions,
+        )
         cmd.execute()
 
 
 def user_confirmation(message: str) -> bool:
-    """
-    Ask for user confirmation.
-
-    :param message: Message to display to the user
-    :type message: str
-    :return: True if user confirms, False otherwise
-    :rtype: bool
-    """
     while True:
         response = input(f"{message} (y/n): ").lower().strip()
         if response in ["y", "yes"]:

@@ -5,12 +5,10 @@ import os
 from pathlib import Path
 
 from buvis.pybase.adapters import ShellAdapter
-from buvis.pybase.configuration import Configuration, ConfigurationKeyNotFoundError
-from buvis.pybase.filesystem import DirTree
 
 
 class CommandStatus:
-    def __init__(self: "CommandStatus", cfg: Configuration) -> None:
+    def __init__(self: "CommandStatus") -> None:
         self.shell = ShellAdapter(suppress_logging=True)
 
         if not os.environ.get("DOTFILES_ROOT"):
@@ -60,7 +58,6 @@ def get_git_modified_files(git_output: str, relative_to: Path) -> list[str]:
             parts = clean_line.split("modified:")
             if len(parts) > 1:
                 file_path = parts[1].strip()
-                # Resolve the path relative to the given directory
                 absolute_path = Path(relative_to).joinpath(file_path).resolve()
                 modified_files.append(absolute_path)
     return modified_files

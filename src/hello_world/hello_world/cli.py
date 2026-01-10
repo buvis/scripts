@@ -5,31 +5,18 @@ from pathlib import Path
 
 import click
 import pyfiglet
-from buvis.pybase.configuration import Configuration, ConfigurationKeyNotFoundError
+from buvis.pybase.configuration import buvis_options, get_settings
 
 from hello_world.commands import CommandPrintFiglet
-
-DEFAULT_FONT = "doom"
-
-try:
-    cfg = Configuration(Path(__file__, "../../config.yaml"))
-except FileNotFoundError:
-    cfg = Configuration()
-    DEFAULT_FONT = "doom"
-else:
-    try:
-        DEFAULT_FONT = str(cfg.get_configuration_item("figlet_font", DEFAULT_FONT))
-    except ConfigurationKeyNotFoundError as _:
-        DEFAULT_FONT = "doom"
-
-DEFAULT_TEXT = "World"
+from hello_world.settings import HelloWorldSettings
 
 
 @click.group(help="CLI tool as script proof of concept", invoke_without_command=True)
+@buvis_options(settings_class=HelloWorldSettings)
 @click.option(
     "-f",
     "--font",
-    default=DEFAULT_FONT,
+    default=None,
     help="Font to use for stylized printing.",
 )
 @click.option(
@@ -54,15 +41,19 @@ DEFAULT_TEXT = "World"
     default=False,
     help="Print python runtime and dependency info",
 )
-@click.argument("text", default=DEFAULT_TEXT)
+@click.argument("text", default=None, required=False)
+@click.pass_context
 def cli(
-    text: str = DEFAULT_TEXT,
-    font: str = DEFAULT_FONT,
+    ctx: click.Context,
+    text: str | None,
+    font: str | None,
     *,
     list_fonts: bool = False,
     random_font: bool = False,
     diag: bool = False,
 ) -> None:
+    settings = get_settings(ctx, HelloWorldSettings)
+
     if diag:
         print(f"Script: {Path(__file__).resolve()}")
         print(f"Python: {sys.executable}")
@@ -82,22 +73,24 @@ def cli(
 
     if list_fonts:
         print("\n".join(sorted(pyfiglet.FigletFont.getFonts())))
-    else:
-        if random_font:
-            import random
+        return
 
-            font = random.choice(pyfiglet.FigletFont.getFonts())  # noqa: S311
-            print(f"Random font selected: {font}")
+    # Resolve font: CLI > settings
+    resolved_font = font if font is not None else settings.font
+    if random_font:
+        import random
 
-        if font in pyfiglet.FigletFont.getFonts():
-            cfg.set_configuration_item("font", font)
-        else:
-            cfg.set_configuration_item("font", DEFAULT_FONT)
+        resolved_font = random.choice(pyfiglet.FigletFont.getFonts())  # noqa: S311
+        print(f"Random font selected: {resolved_font}")
 
-        cfg.set_configuration_item("text", text)
+    if resolved_font not in pyfiglet.FigletFont.getFonts():
+        resolved_font = settings.font
 
-        cmd = CommandPrintFiglet(cfg)
-        cmd.execute()
+    # Resolve text: CLI > settings
+    resolved_text = text if text is not None else settings.text
+
+    cmd = CommandPrintFiglet(font=resolved_font, text=resolved_text)
+    cmd.execute()
 
 
 if __name__ == "__main__":

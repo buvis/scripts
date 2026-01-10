@@ -7,35 +7,46 @@ from readerctl.commands import CommandAdd, CommandLogin
 
 
 @click.group(help="CLI tool to manage Reader from Readwise")
-def cli():
-    pass
+@click.pass_context
+def cli(ctx: click.Context) -> None:
+    ctx.ensure_object(dict)
+    ctx.obj["token"] = None
 
 
 @cli.command("login")
-def login():
+@click.pass_context
+def login(ctx: click.Context) -> None:
     cmd = CommandLogin()
-    cmd.execute()
+    token = cmd.execute()
+    ctx.obj["token"] = token
 
 
 @cli.command("add")
 @click.option("-u", "--url", default="NONE", help="URL to add to Reader")
 @click.option("-f", "--file", default="NONE", help="File with URLs to add to Reader")
-def add(url, file):
-    if url or file:
-        cmd = CommandLogin()
-        cmd.execute()
+@click.pass_context
+def add(ctx: click.Context, url: str, file: str) -> None:
+    if url != "NONE" or file != "NONE":
+        cmd_login = CommandLogin()
+        token = cmd_login.execute()
+        ctx.obj["token"] = token
+
+    token = ctx.obj.get("token")
+    if not token:
+        console.panic("Not logged in. Run 'readerctl login' first.")
+        return
 
     if url != "NONE":
-        cmd = CommandAdd()
+        cmd = CommandAdd(token=token)
         cmd.execute(url)
     elif file != "NONE":
         if Path(file).is_file():
-            cmd = CommandAdd()
-            with open(Path(file), "r") as f:
+            cmd = CommandAdd(token=token)
+            with Path(file).open() as f:
                 urls = f.readlines()
 
-            for url in urls:
-                cmd.execute(url)
+            for u in urls:
+                cmd.execute(u.strip())
         else:
             console.panic(f"File {file} not found")
 

@@ -1,63 +1,44 @@
+from functools import lru_cache
 from pathlib import Path
 
-from buvis.pybase.configuration import Configuration, ConfigurationKeyNotFoundError
+from fctracker.settings import FctrackerSettings
+
+
+@lru_cache
+def get_settings() -> FctrackerSettings:
+    """Lazy-load settings on first access."""
+    return FctrackerSettings()
 
 
 class FCTrackerConfig:
-    def __init__(
-        self: "FCTrackerConfig",
-        file_path=Path.joinpath(Path.home(), ".config/fctracker/config.yml"),
-    ) -> None:
-        self._config = Configuration(file_path)
+    """Wrapper providing dict-style access to settings for backwards compatibility."""
 
     @property
     def local_currency(self: "FCTrackerConfig") -> dict:
-        try:
-            local_currency_config = self._config.get_configuration_item(
-                "local_currency"
-            )
-        except ConfigurationKeyNotFoundError as _:
-            local_currency_config = {}
-
-        local_currency_dict = {"code": "CZK", "symbol": "Kč", "precision": 2}
-
-        for key_val in local_currency_config:
-            for key, val in key_val.items():
-                local_currency_dict[key] = val
-
-        return local_currency_dict
+        settings = get_settings()
+        return {
+            "code": settings.local_currency.code,
+            "symbol": settings.local_currency.symbol,
+            "precision": settings.local_currency.precision,
+        }
 
     @property
     def currency(self: "FCTrackerConfig") -> dict:
-        try:
-            currencies_config = self._config.get_configuration_item(
-                "foreign_currencies"
-            )
-        except ConfigurationKeyNotFoundError as _:
-            currencies_config = {}
-
-        currency_dict = {}
-
-        for currency in currencies_config:
-            for currency_code, props in currency.items():
-                currency_dict[currency_code] = {}
-
-                for key_val in props:
-                    for key, val in key_val.items():
-                        currency_dict[currency_code][key] = val
-
-        return currency_dict
+        settings = get_settings()
+        return {
+            code: {
+                "symbol": fc.symbol,
+                "precision": fc.precision,
+            }
+            for code, fc in settings.foreign_currencies.items()
+        }
 
     @property
     def transactions_dir(self: "FCTrackerConfig") -> Path:
-        try:
-            transactions_dir = str(
-                self._config.get_configuration_item("transactions_dir"),
-            )
-        except ConfigurationKeyNotFoundError as e:
-            raise FileNotFoundError from e
-        else:
-            return Path(transactions_dir.replace("~", f"{Path.home()}"))
+        settings = get_settings()
+        if not settings.transactions_dir:
+            raise FileNotFoundError("transactions_dir not configured")
+        return Path(settings.transactions_dir).expanduser().resolve()
 
 
 cfg = FCTrackerConfig()

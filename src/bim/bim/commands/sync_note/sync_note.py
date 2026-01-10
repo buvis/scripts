@@ -1,41 +1,84 @@
-import tzlocal
-
-from pathlib import Path
+import importlib.util
 from datetime import datetime
-from buvis.pybase.adapters import (
-    console,
-)
-from buvis.pybase.configuration import Configuration, ConfigurationKeyNotFoundError
+from pathlib import Path
+from typing import Any
+
+import tzlocal
+from buvis.pybase.adapters import JiraAdapter, console
 from doogat.core import (
     MarkdownZettelFormatter,
     MarkdownZettelRepository,
     ReadDoogatUseCase,
 )
 from doogat.core.domain.entities import ProjectZettel
-from doogat.integrations.jira import (
-    JiraAdapter,
-)
+
+
+def _get_assembler_class():
+    """Load assembler directly to avoid doogat.integrations.jira.__init__ which needs old Configuration."""
+    import doogat
+
+    doogat_path = Path(doogat.__file__).parent
+    assembler_path = doogat_path / "integrations" / "jira" / "assemblers" / "project_zettel_jira_issue.py"
+
+    spec = importlib.util.spec_from_file_location("_assembler", assembler_path)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Cannot load {assembler_path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.ProjectZettelJiraIssueDTOAssembler
 
 DEFAULT_JIRA_IGNORE_US_LABEL = "do-not-track"
 
 
-class CommandSyncNote:
-    def __init__(self: "CommandSyncNote", cfg: Configuration) -> None:
-        try:
-            path_note = Path(str(cfg.get_configuration_item("path_note")))
-            if not path_note.is_file():
-                raise FileNotFoundError
-            self.path_note = path_note
-        except ConfigurationKeyNotFoundError as e:
-            raise FileNotFoundError from e
+class DictConfig:
+    """Shim providing Configuration-like interface over a dict."""
 
-        match cfg.get_configuration_item("target_system"):
-            case "jira":
-                jira_cfg = cfg.copy("jira_adapter")
-                self._target = JiraAdapter(jira_cfg)
-            case _:
-                raise NotImplementedError
+    def __init__(self, data: dict[str, Any]) -> None:
+        self._data = data
+
+    def get_configuration_item(self, key: str) -> Any:
+        return self._data[key]
+
+    def get_configuration_item_or_default(self, key: str, default: Any = None) -> Any:
+        return self._data.get(key, default)
+
+
+class DoogatJiraAdapter(JiraAdapter):
+    """JiraAdapter that can create issues from ProjectZettel."""
+
+    def __init__(self, cfg: DictConfig) -> None:
+        super().__init__(cfg)
         self._cfg = cfg
+
+    def create_from_project(self, project: ProjectZettel):
+        defaults = self._cfg.get_configuration_item("defaults")
+        if not isinstance(defaults, dict):
+            msg = f"Can't get the defaults from:\n{defaults}"
+            raise ValueError(msg)
+        assembler_cls = _get_assembler_class()
+        assembler = assembler_cls(defaults=defaults.copy())
+        dto = assembler.to_dto(project)
+        return self.create(dto)
+
+
+class CommandSyncNote:
+    def __init__(
+        self: "CommandSyncNote",
+        path_note: Path,
+        target_system: str,
+        jira_adapter_config: dict[str, Any],
+    ) -> None:
+        if not path_note.is_file():
+            raise FileNotFoundError(f"Note not found: {path_note}")
+        self.path_note = path_note
+        self.jira_adapter_config = jira_adapter_config
+
+        match target_system:
+            case "jira":
+                jira_cfg = DictConfig(jira_adapter_config)
+                self._target = DoogatJiraAdapter(jira_cfg)
+            case _:
+                raise NotImplementedError(f"Target system '{target_system}' not supported")
 
     def execute(self: "CommandSyncNote") -> None:
         repo = MarkdownZettelRepository()
@@ -49,16 +92,7 @@ class CommandSyncNote:
             console.failure(f"{self.path_note} is not a project")
             return
 
-        cfg_jira_adapter = self._cfg.get_configuration_item("jira_adapter")
-
-        if isinstance(cfg_jira_adapter, dict):
-            cfg_dict_jira_adapter = cfg_jira_adapter.copy()
-            ignore_flag = cfg_dict_jira_adapter.get(
-                "ignore",
-                DEFAULT_JIRA_IGNORE_US_LABEL,
-            )
-        else:
-            ignore_flag = DEFAULT_JIRA_IGNORE_US_LABEL
+        ignore_flag = self.jira_adapter_config.get("ignore", DEFAULT_JIRA_IGNORE_US_LABEL)
 
         if not hasattr(project, "us") or not project.us:
             new_issue = self._target.create_from_project(project)
