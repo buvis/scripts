@@ -8,7 +8,7 @@ BUVIS_DEV_MODE = "1"
 
 [tasks.dev]
 description = "Enable local deps and clear uv cache"
-run = "python dev/devmode.py enable && rm -rf ~/.cache/uv/environments-v2/*-*"
+run = "python dev/devmode.py enable"
 
 [tasks.prod]
 description = "Disable local buvis-pybase (use PyPI version)"

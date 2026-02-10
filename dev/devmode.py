@@ -1,12 +1,28 @@
 #!/usr/bin/env python3
 """Toggle local development dependencies."""
 import re
+import shutil
 import sys
 import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
 CONFIG = Path(__file__).parent / "deps.toml"
+
+
+def _clean_envs():
+    """Remove stale project venvs, lockfiles, and uv ephemeral caches."""
+    for venv in (ROOT / "src").glob("*/.venv"):
+        shutil.rmtree(venv)
+        print(f"  rm {venv.parent.name}/.venv")
+    for lock in (ROOT / "src").glob("*/uv.lock"):
+        lock.unlink()
+        print(f"  rm {lock.parent.name}/uv.lock")
+    cache_dir = Path.home() / ".cache" / "uv" / "environments-v2"
+    if cache_dir.exists():
+        for p in cache_dir.glob("*-*"):
+            shutil.rmtree(p) if p.is_dir() else p.unlink()
+    print("Cleaned stale envs")
 
 
 def load_deps():
@@ -68,6 +84,7 @@ def enable():
             f.write_text(content)
             print(f"+ {f.parent.name}/pyproject.toml")
 
+    _clean_envs()
     print("Dev mode enabled")
 
 
@@ -99,6 +116,7 @@ def disable():
             f.write_text(content)
             print(f"- {f.parent.name}/pyproject.toml")
 
+    _clean_envs()
     print("Prod mode enabled")
 
 
