@@ -51,6 +51,7 @@ jobs:
           fi
 
       - name: Pin dependencies from lockfile
+        if: steps.pkg.outputs.dir != 'scripts'
         run: python dev/pin_deps.py src/${{ steps.pkg.outputs.dir }}
 
       - name: Build package

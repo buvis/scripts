@@ -29,7 +29,7 @@ class CommandLogin:
                 )
                 return None
         else:
-            token = console.input_password("Enter Readwise API token: ")
+            token = str(console.input_password("Enter Readwise API token: "))
             TOKEN_FILE.parent.mkdir(parents=True, exist_ok=True)
             TOKEN_FILE.write_text(token)
             token_check = ReaderAPIAdapter.check_token(token)

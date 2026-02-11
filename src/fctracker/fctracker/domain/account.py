@@ -3,7 +3,6 @@ from __future__ import annotations
 import datetime
 from decimal import Decimal
 
-from fctracker.adapters.config.config import cfg
 from fctracker.domain.deposit import Deposit
 from fctracker.domain.quantified_queue import QuantifiedQueue
 from fctracker.domain.withdrawal import Withdrawal
@@ -36,6 +35,8 @@ class Account:
         return withdrawal_transaction
 
     def get_balance(self) -> Decimal:
+        from fctracker.adapters.config.config import cfg
+
         balance = Decimal("0")
 
         for deposit in self._store:
@@ -44,6 +45,8 @@ class Account:
         return Decimal(f"{balance:.{cfg.currency[self.currency]['precision']}f}")
 
     def get_balance_local(self) -> Decimal:
+        from fctracker.adapters.config.config import cfg
+
         balance = Decimal("0")
 
         for deposit in self._store:
@@ -52,6 +55,8 @@ class Account:
         return Decimal(f"{balance:.{cfg.local_currency['precision']}f}")
 
     def __repr__(self) -> str:
+        from fctracker.adapters.config.config import cfg
+
         bal = self.get_balance()
         cur_sym = cfg.currency[self.currency]["symbol"]
         bal_local = self.get_balance_local()
