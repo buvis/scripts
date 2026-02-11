@@ -5,6 +5,7 @@ from pathlib import Path
 
 import click
 import pyfiglet
+from buvis.pybase.adapters import console
 from buvis.pybase.configuration import buvis_options, get_settings
 
 from hello_world.commands import CommandPrintFiglet
@@ -55,9 +56,9 @@ def cli(
     settings = get_settings(ctx, HelloWorldSettings)
 
     if diag:
-        print(f"Script: {Path(__file__).resolve()}")
-        print(f"Python: {sys.executable}")
-        print("\nDirect dependencies:")
+        console.print(f"Script: {Path(__file__).resolve()}", mode="raw")
+        console.print(f"Python: {sys.executable}", mode="raw")
+        console.print("\nDirect dependencies:", mode="raw")
         reqs = requires("hello-world") or []
         direct_deps = {
             re.split(r"[<>=!~\[;]", r)[0].lower().replace("-", "_") for r in reqs
@@ -68,11 +69,11 @@ def cli(
             if normalized in direct_deps:
                 version = dist.version
                 location = dist._path.parent if hasattr(dist, "_path") else "unknown"
-                print(f"  {name}=={version} ({location})")
+                console.print(f"  {name}=={version} ({location})", mode="raw")
         return
 
     if list_fonts:
-        print("\n".join(sorted(pyfiglet.FigletFont.getFonts())))
+        console.print("\n".join(sorted(pyfiglet.FigletFont.getFonts())), mode="raw")
         return
 
     # Resolve font: CLI > settings
@@ -81,7 +82,7 @@ def cli(
         import random
 
         resolved_font = random.choice(pyfiglet.FigletFont.getFonts())  # noqa: S311
-        print(f"Random font selected: {resolved_font}")
+        console.print(f"Random font selected: {resolved_font}", mode="raw")
 
     if resolved_font not in pyfiglet.FigletFont.getFonts():
         resolved_font = settings.font

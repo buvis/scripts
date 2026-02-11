@@ -1,3 +1,6 @@
+from buvis.pybase.adapters import console
+
+
 class CommandPrintFiglet:
     def __init__(self: "CommandPrintFiglet", font: str, text: str) -> None:
         self.font = font
@@ -11,9 +14,9 @@ class CommandPrintFiglet:
         except ImportError:
             f = None
 
-        print("\n")
+        console.nl()
 
         if f is None:
-            print(f"Hello {self.text}!\n\n")
+            console.print(f"Hello {self.text}!\n\n", mode="raw")
         else:
-            print(f.renderText(f"Hello {self.text}!"))
+            console.print(f.renderText(f"Hello {self.text}!"), mode="raw")
