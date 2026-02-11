@@ -24,6 +24,9 @@ Repository = "https://github.com/buvis/scripts"
 [project.scripts]
 dot = "dot.cli:cli"
 
+[tool.hatch.build.targets.wheel]
+packages = ["dot"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

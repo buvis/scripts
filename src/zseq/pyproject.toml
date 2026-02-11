@@ -19,6 +19,9 @@ Repository = "https://github.com/buvis/scripts"
 [project.scripts]
 zseq = "zseq.cli:cli"
 
+[tool.hatch.build.targets.wheel]
+packages = ["zseq"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

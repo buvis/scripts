@@ -19,6 +19,9 @@ Repository = "https://github.com/buvis/scripts"
 [project.scripts]
 pinger = "pinger.cli:cli"
 
+[tool.hatch.build.targets.wheel]
+packages = ["pinger"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

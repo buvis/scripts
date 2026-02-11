@@ -19,6 +19,9 @@ Repository = "https://github.com/buvis/scripts"
 [project.scripts]
 readerctl = "readerctl.cli:cli"
 
+[tool.hatch.build.targets.wheel]
+packages = ["readerctl"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

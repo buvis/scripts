@@ -19,6 +19,9 @@ Repository = "https://github.com/buvis/scripts"
 [project.scripts]
 outlookctl = "outlookctl.cli:cli"
 
+[tool.hatch.build.targets.wheel]
+packages = ["outlookctl"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

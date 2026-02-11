@@ -19,6 +19,9 @@ Repository = "https://github.com/buvis/scripts"
 [project.scripts]
 fctracker = "fctracker.cli:cli"
 
+[tool.hatch.build.targets.wheel]
+packages = ["fctracker"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

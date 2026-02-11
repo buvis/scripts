@@ -19,6 +19,9 @@ Repository = "https://github.com/buvis/scripts"
 [project.scripts]
 hello-world = "hello_world.cli:cli"
 
+[tool.hatch.build.targets.wheel]
+packages = ["hello_world"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
