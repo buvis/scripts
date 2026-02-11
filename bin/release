@@ -28,7 +28,7 @@ read_version() {
 
 write_version() {
   local file="$1" old="$2" new="$3"
-  sed -i '' "s/$old/$new/" "$file"
+  sed -i.bak "s/$old/$new/" "$file" && rm -f "$file.bak"
 }
 
 read_pypi_name() {
@@ -85,7 +85,7 @@ release_bundle() {
     pypi_name=$(read_pypi_name "$pkg_pyproject")
     ver=$(read_version "$pkg_pyproject")
     # Update the dep line in meta pyproject
-    sed -i '' "s/\"${pypi_name}==.*\"/\"${pypi_name}==${ver}\"/" "$meta_pyproject"
+    sed -i.bak "s/\"${pypi_name}==.*\"/\"${pypi_name}==${ver}\"/" "$meta_pyproject" && rm -f "$meta_pyproject.bak"
   done
 
   # Bump meta-package version
