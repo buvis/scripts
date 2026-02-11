@@ -84,6 +84,21 @@ class TestMyCommand:
     def test_execute_succeeds(self, command): ...
 ```
 
+## Installation (end users)
+
+```bash
+uv tool install buvis-scripts              # all tools
+uv tool install buvis-readerctl            # single tool
+```
+
+Update:
+```bash
+uv tool upgrade buvis-scripts              # all tools (pinned coherent set)
+uv tool upgrade buvis-readerctl            # single tool
+```
+
+The meta-package (`buvis-scripts`) pins exact sub-package versions, so upgrading it always gets a coherent set released together.
+
 ## Release
 
 Tag-based via `bin/release`. CI pins deps before publishing to PyPI.
@@ -92,6 +107,8 @@ Tag-based via `bin/release`. CI pins deps before publishing to PyPI.
 bin/release <pkg> patch|minor|major     # individual package
 bin/release bundle patch|minor|major    # meta-package (buvis-scripts)
 ```
+
+Typical flow: release individual packages first, then `bin/release bundle patch` to publish a `buvis-scripts` that pins those versions.
 
 **What `bin/release` does** (individual):
 1. Bumps version in `pyproject.toml` + `__init__.py`
