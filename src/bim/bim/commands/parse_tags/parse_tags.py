@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+from buvis.pybase.adapters import console
+
 
 class CommandParseTags:
     def __init__(
@@ -21,4 +23,4 @@ class CommandParseTags:
         if self.path_output:
             self.path_output.write_text("\n".join(unique_sorted_tags))
         else:
-            print("\n".join(unique_sorted_tags))
+            console.print("\n".join(unique_sorted_tags), mode="raw")
