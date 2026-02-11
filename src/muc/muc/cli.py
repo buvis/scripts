@@ -86,7 +86,7 @@ def user_confirmation(message: str) -> bool:
             return True
         if response in ["n", "no"]:
             return False
-        print("Please answer with 'y' or 'n'.")
+        console.warning("Please answer with 'y' or 'n'.")
 
 
 if __name__ == "__main__":
