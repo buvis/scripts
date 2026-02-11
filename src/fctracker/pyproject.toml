@@ -1,13 +1,26 @@
 [project]
-dependencies = ["click>=8.3.1", "buvis-pybase>=0.9.0"]
-name = "fctracker"
+name = "buvis-fctracker"
 version = "0.1.0"
 description = "CLI tool to manage accounts in foreign currencies"
-authors = [{ name = "Tomáš Bouška", email = "tomas@buvis.net" }]
+authors = [{ name = "Tomas Bouska", email = "tomas@buvis.net" }]
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.12"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Environment :: Console",
+]
+dependencies = ["click>=8.3.1", "buvis-pybase>=0.9.0"]
+
+[project.urls]
+Repository = "https://github.com/buvis/scripts"
+
 [project.scripts]
 fctracker = "fctracker.cli:cli"
+
+[tool.hatch.build.targets.wheel]
+packages = ["fctracker"]
 
 [build-system]
 requires = ["hatchling"]

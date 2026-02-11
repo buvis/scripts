@@ -1,14 +1,26 @@
 [project]
-name = "zseq"
+name = "buvis-zseq"
 version = "0.1.0"
 description = "Utilities to work with zettelsequence"
-authors = [{ name = "Tomáš Bouška", email = "tomas@buvis.net" }]
+authors = [{ name = "Tomas Bouska", email = "tomas@buvis.net" }]
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.12"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Environment :: Console",
+]
 dependencies = ["click>=8.3.1", "buvis-pybase>=0.9.0"]
+
+[project.urls]
+Repository = "https://github.com/buvis/scripts"
 
 [project.scripts]
 zseq = "zseq.cli:cli"
+
+[tool.hatch.build.targets.wheel]
+packages = ["zseq"]
 
 [build-system]
 requires = ["hatchling"]
