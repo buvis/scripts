@@ -1,8 +1,9 @@
 import queue
-import pytest
 from datetime import datetime
 from decimal import Decimal
-from fctracker.domain import QuantifiedQueue, Deposit
+
+import pytest
+from fctracker.domain import Deposit, QuantifiedQueue
 
 
 def test_get_full():
@@ -79,12 +80,11 @@ def test_print():
     qq.put(Deposit(now, 10.42, "EUR", 24.4988))
     qq.put(Deposit(now, 207.63, "EUR", 24.5847))
     qq.get(200)
-    assert (
-        f"{qq}" ==
-        f"[Added 18.05 € per 24.5847 Kč/€ (total 443.75 Kč) on {now.strftime('%Y-%m-%d')}]"
-    )
+    assert f"{qq}" == f"[Added 18.05 € per 24.5847 Kč/€ (total 443.75 Kč) on {now.strftime('%Y-%m-%d')}]"
     qq.put(Deposit(now, 18.05, "EUR", 24.6368))
-    assert (
-        f"{qq}" ==
-        f"[Added 18.05 € per 24.5847 Kč/€ (total 443.75 Kč) on {now.strftime('%Y-%m-%d')}, Added 18.05 € per 24.6368 Kč/€ (total 444.69 Kč) on {now.strftime('%Y-%m-%d')}]"
+    d = now.strftime("%Y-%m-%d")
+    expected = (
+        f"[Added 18.05 € per 24.5847 Kč/€ (total 443.75 Kč) on {d}, "
+        f"Added 18.05 € per 24.6368 Kč/€ (total 444.69 Kč) on {d}]"
     )
+    assert f"{qq}" == expected

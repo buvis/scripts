@@ -17,7 +17,7 @@ class MucSettings(GlobalSettings):
     limit_flac_sampling_rate: int = 44100
 
     # Tidy command settings
-    tidy_junk_extensions: list[str] = [
+    tidy_junk_extensions: list[str] = [  # noqa: RUF012 - pydantic field
         ".cue",
         ".db",
         ".jpg",

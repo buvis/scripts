@@ -1,1 +1,1 @@
-from .reader_api.reader_api import ReaderAPIAdapter
+from .reader_api.reader_api import ReaderAPIAdapter as ReaderAPIAdapter

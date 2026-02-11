@@ -29,11 +29,7 @@ class CommandLimit:
         try:
             probe = ffmpeg.probe(str(file_path), loglevel="quiet")
             audio_stream = next(
-                (
-                    stream
-                    for stream in probe["streams"]
-                    if stream["codec_type"] == "audio"
-                ),
+                (stream for stream in probe["streams"] if stream["codec_type"] == "audio"),
                 None,
             )
 
@@ -47,11 +43,7 @@ class CommandLimit:
                 sampling_rate = int(audio_stream.get("sample_rate", 0))
                 bit_depth = int(audio_stream.get("bits_per_sample", 0))
 
-                if (
-                    bitrate > self.bitrate
-                    or sampling_rate > self.sampling_rate
-                    or bit_depth > self.bit_depth
-                ):
+                if bitrate > self.bitrate or sampling_rate > self.sampling_rate or bit_depth > self.bit_depth:
                     stream = ffmpeg.input(str(file_path))
                     stream = ffmpeg.output(
                         stream,

@@ -1,1 +1,1 @@
-from .add import CommandAdd
+from .add import CommandAdd as CommandAdd

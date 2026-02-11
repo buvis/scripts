@@ -1,6 +1,6 @@
-from .account import Account
-from .deposit import Deposit
-from .quantified_item import QuantifiedItem
-from .quantified_queue import QuantifiedQueue
-from .transaction import Transaction
-from .withdrawal import Withdrawal
+from .account import Account as Account
+from .deposit import Deposit as Deposit
+from .quantified_item import QuantifiedItem as QuantifiedItem
+from .quantified_queue import QuantifiedQueue as QuantifiedQueue
+from .transaction import Transaction as Transaction
+from .withdrawal import Withdrawal as Withdrawal

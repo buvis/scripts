@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import importlib.util
 from datetime import datetime
 from pathlib import Path
@@ -13,7 +15,7 @@ from doogat.core import (
 from doogat.core.domain.entities import ProjectZettel
 
 
-def _get_assembler_class():
+def _get_assembler_class() -> type:
     """Load assembler directly to avoid doogat.integrations.jira.__init__ which needs old Configuration."""
     import doogat
 
@@ -26,6 +28,7 @@ def _get_assembler_class():
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module.ProjectZettelJiraIssueDTOAssembler
+
 
 DEFAULT_JIRA_IGNORE_US_LABEL = "do-not-track"
 
@@ -50,7 +53,7 @@ class DoogatJiraAdapter(JiraAdapter):
         super().__init__(cfg)
         self._cfg = cfg
 
-    def create_from_project(self, project: ProjectZettel):
+    def create_from_project(self, project: ProjectZettel) -> Any:
         defaults = self._cfg.get_configuration_item("defaults")
         if not isinstance(defaults, dict):
             msg = f"Can't get the defaults from:\n{defaults}"
@@ -63,7 +66,7 @@ class DoogatJiraAdapter(JiraAdapter):
 
 class CommandSyncNote:
     def __init__(
-        self: "CommandSyncNote",
+        self,
         path_note: Path,
         target_system: str,
         jira_adapter_config: dict[str, Any],
@@ -80,7 +83,7 @@ class CommandSyncNote:
             case _:
                 raise NotImplementedError(f"Target system '{target_system}' not supported")
 
-    def execute(self: "CommandSyncNote") -> None:
+    def execute(self) -> None:
         repo = MarkdownZettelRepository()
         reader = ReadDoogatUseCase(repo)
         formatter = MarkdownZettelFormatter()
@@ -98,8 +101,9 @@ class CommandSyncNote:
             new_issue = self._target.create_from_project(project)
             md_style_link = f"[{new_issue.id}]({new_issue.link})"
             project.us = md_style_link
+            timestamp = datetime.now(tzlocal.get_localzone()).strftime("%Y-%m-%d %H:%M")
             project.add_log_entry(
-                f"- [i] {datetime.now(tzlocal.get_localzone()).strftime("%Y-%m-%d %H:%M")} - Jira Issue created: {md_style_link}",
+                f"- [i] {timestamp} - Jira Issue created: {md_style_link}",
             )
             formatted_content = formatter.format(project.get_data())
             self.path_note.write_bytes(formatted_content.encode("utf-8"))

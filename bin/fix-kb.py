@@ -1,3 +1,3 @@
 import pyautogui
 
-pyautogui.press('f13')
+pyautogui.press("f13")

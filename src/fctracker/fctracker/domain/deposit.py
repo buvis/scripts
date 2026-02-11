@@ -1,28 +1,36 @@
+from __future__ import annotations
+
+import datetime
 from decimal import Decimal
+
+from fctracker.adapters.config.config import cfg
+
 from .quantified_item import QuantifiedItem
 from .transaction import Transaction
-from fctracker.adapters.config.config import cfg
 
 
 class Deposit(Transaction, QuantifiedItem):
-
-    def __init__(self, date, amount, currency, rate):
-        Transaction.__init__(self, date, Decimal(f"{amount}"), currency,
-                             Decimal(f"{rate}"))
+    def __init__(self, date: datetime.date, amount: Decimal, currency: str, rate: Decimal) -> None:
+        Transaction.__init__(self, date, Decimal(f"{amount}"), currency, Decimal(f"{rate}"))
         self.currency_symbol = cfg.currency[currency]["symbol"]
 
-    def _get_quantity(self):
+    def get_quantity(self) -> Decimal:
         return self.amount
 
-    def _set_quantity(self, value):
+    def set_quantity(self, value: Decimal) -> None:
         self.amount = value
 
-    def __copy__(self):
+    def __copy__(self) -> Deposit:
         return type(self)(self.date, self.amount, self.currency, self.rate)
 
-    def __repr__(self):
-        return f"Added {self.amount} {self.currency_symbol} per {self.rate:.{cfg.local_currency['precision'] *2}f} {cfg.local_currency['symbol']}/{self.currency_symbol} (total {self.get_local_cost()} {cfg.local_currency['symbol']}) on {self.date.strftime('%Y-%m-%d')}"
+    def __repr__(self) -> str:
+        precision = cfg.local_currency["precision"]
+        local_sym = cfg.local_currency["symbol"]
+        rate_str = f"{self.rate:.{precision * 2}f} {local_sym}/{self.currency_symbol}"
+        return (
+            f"Added {self.amount} {self.currency_symbol} per {rate_str} "
+            f"(total {self.get_local_cost()} {local_sym}) on {self.date.strftime('%Y-%m-%d')}"
+        )
 
-    def get_local_cost(self):
-        return Decimal(
-            f"{(self.amount * self.rate):.{cfg.local_currency['precision']}f}")
+    def get_local_cost(self) -> Decimal:
+        return Decimal(f"{(self.amount * self.rate):.{cfg.local_currency['precision']}f}")

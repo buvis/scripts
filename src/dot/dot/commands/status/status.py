@@ -8,7 +8,7 @@ from buvis.pybase.adapters import ShellAdapter
 
 
 class CommandStatus:
-    def __init__(self: "CommandStatus") -> None:
+    def __init__(self: CommandStatus) -> None:
         self.shell = ShellAdapter(suppress_logging=True)
 
         if not os.environ.get("DOTFILES_ROOT"):

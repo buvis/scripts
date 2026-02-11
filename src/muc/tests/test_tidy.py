@@ -7,8 +7,6 @@ Imports:
     remove_music_junk: The module we're testing.
 """
 
-from pathlib import Path
-
 import pytest
 from buvis.pybase.filesystem import DirTree
 

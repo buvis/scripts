@@ -1,19 +1,19 @@
 import queue
-import pytest
 from decimal import Decimal
-from fctracker.domain import QuantifiedQueue, QuantifiedItem
+
+import pytest
+from fctracker.domain import QuantifiedItem, QuantifiedQueue
 
 
 class NumberedItem(QuantifiedItem):
-
     def __init__(self, quantity, number):
         self.quantity = Decimal(f"{quantity}")
         self.number = number
 
-    def _get_quantity(self):
+    def get_quantity(self):
         return self.quantity
 
-    def _set_quantity(self, value):
+    def set_quantity(self, value):
         self.quantity = value
 
     def __copy__(self):

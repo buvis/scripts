@@ -3,8 +3,6 @@ from pathlib import Path
 import click
 from buvis.pybase.adapters import console
 
-from readerctl.commands import CommandAdd, CommandLogin
-
 
 @click.group(help="CLI tool to manage Reader from Readwise")
 @click.pass_context
@@ -16,6 +14,8 @@ def cli(ctx: click.Context) -> None:
 @cli.command("login")
 @click.pass_context
 def login(ctx: click.Context) -> None:
+    from readerctl.commands.login.login import CommandLogin
+
     cmd = CommandLogin()
     token = cmd.execute()
     ctx.obj["token"] = token
@@ -26,6 +26,9 @@ def login(ctx: click.Context) -> None:
 @click.option("-f", "--file", default="NONE", help="File with URLs to add to Reader")
 @click.pass_context
 def add(ctx: click.Context, url: str, file: str) -> None:
+    from readerctl.commands.add.add import CommandAdd
+    from readerctl.commands.login.login import CommandLogin
+
     if url != "NONE" or file != "NONE":
         cmd_login = CommandLogin()
         token = cmd_login.execute()

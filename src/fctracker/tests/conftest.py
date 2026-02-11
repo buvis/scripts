@@ -1,5 +1,3 @@
-import os
-
 import pytest
 
 
@@ -15,6 +13,7 @@ def fctracker_env(monkeypatch):
     )
     # Clear the lru_cache so settings are re-read with new env vars
     from fctracker.adapters.config.config import get_settings
+
     get_settings.cache_clear()
     yield
     get_settings.cache_clear()

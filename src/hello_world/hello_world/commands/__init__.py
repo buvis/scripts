@@ -1,1 +1,1 @@
-from .print_figlet.print_figlet import CommandPrintFiglet
+from .print_figlet.print_figlet import CommandPrintFiglet as CommandPrintFiglet

@@ -1,10 +1,11 @@
-from decimal import Decimal
+from __future__ import annotations
+
 import datetime
+from decimal import Decimal
 
 
 class Transaction:
-
-    def __init__(self, date, amount, currency, rate):
+    def __init__(self, date: datetime.date | str, amount: Decimal, currency: str, rate: Decimal) -> None:
         if isinstance(date, datetime.date):
             self.date = date
         else:
@@ -13,8 +14,8 @@ class Transaction:
         self.currency = currency
         self.rate = Decimal(f"{rate}")
 
-    def is_in_month(self, month):
+    def is_in_month(self, month: str) -> bool:
         """Check if transaction's date falls to given month [YYYY-MM]"""
-        month = datetime.datetime.strptime(month, "%Y-%m")
+        parsed = datetime.datetime.strptime(month, "%Y-%m")
 
-        return self.date.year == month.year and self.date.month == month.month
+        return self.date.year == parsed.year and self.date.month == parsed.month

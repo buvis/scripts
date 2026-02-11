@@ -4,7 +4,6 @@ import click
 from buvis.pybase.adapters import console
 from buvis.pybase.configuration import buvis_options, get_settings
 
-from pinger.commands import CommandWait, CommandWaitTimeoutError
 from pinger.settings import PingerSettings
 
 
@@ -30,10 +29,11 @@ def wait(ctx: click.Context, host: str, timeout: int | None = None) -> None:
     # CLI overrides settings
     resolved_timeout = timeout if timeout is not None else settings.wait_timeout
 
+    from pinger.commands.wait.exceptions import CommandWaitTimeoutError
+    from pinger.commands.wait.wait import CommandWait
+
     cmd = CommandWait(host=host, timeout=resolved_timeout)
-    with console.status(
-        f"Waiting for {host} to be online (max {resolved_timeout} seconds)"
-    ):
+    with console.status(f"Waiting for {host} to be online (max {resolved_timeout} seconds)"):
         try:
             cmd.execute()
         except CommandWaitTimeoutError:

@@ -2,8 +2,7 @@ from fctracker.adapters.config.config import cfg
 
 
 class TransactionsDirScanner:
-
-    def __init__(self):
+    def __init__(self) -> None:
         self._dir_path = cfg.transactions_dir
         self.accounts = {}
 

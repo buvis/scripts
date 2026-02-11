@@ -1,7 +1,6 @@
 import time
 
 from ping3 import ping
-
 from pinger.commands.wait.exceptions import CommandWaitTimeoutError
 
 

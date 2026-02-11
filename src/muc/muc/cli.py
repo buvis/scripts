@@ -5,7 +5,6 @@ from buvis.pybase.adapters import console, logging_to_console
 from buvis.pybase.configuration import buvis_options, get_settings
 from buvis.pybase.filesystem import DirTree
 
-from muc.commands import CommandLimit, CommandTidy
 from muc.settings import MucSettings
 
 ALERT_FILE_COUNT = 100
@@ -36,6 +35,8 @@ def limit(ctx: click.Context, source_directory: str, output: str | None = None) 
 
     path_output = Path(output).resolve() if output else Path.cwd() / "transcoded"
     path_output.mkdir(exist_ok=True)
+
+    from muc.commands.limit.limit import CommandLimit
 
     with logging_to_console():
         cmd = CommandLimit(
@@ -70,6 +71,8 @@ def tidy(ctx: click.Context, directory: str) -> None:
         )
         if not user_confirmation(message):
             console.panic("Operation cancelled by user.")
+
+    from muc.commands.tidy.tidy import CommandTidy
 
     with logging_to_console():
         cmd = CommandTidy(

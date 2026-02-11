@@ -1,7 +1,5 @@
 import click
 
-from fctracker.commands import CommandBalance, CommandTransactions
-
 
 @click.group(help="CLI tool to manage accounts in foreign currencies")
 def cli() -> None:
@@ -11,6 +9,8 @@ def cli() -> None:
 @cli.command("balance")
 def balance() -> None:
     """Print current balance of all accounts and currencies"""
+    from fctracker.commands.balance.balance import CommandBalance
+
     cmd = CommandBalance()
     cmd.execute()
 
@@ -36,6 +36,8 @@ def balance() -> None:
 )
 def transactions(account: str = "", currency: str = "", month: str = "") -> None:
     """Print transactions"""
+    from fctracker.commands.transactions.transactions import CommandTransactions
+
     cmd = CommandTransactions(account, currency, month)
     cmd.execute()
 

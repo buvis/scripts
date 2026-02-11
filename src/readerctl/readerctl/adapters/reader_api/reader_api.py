@@ -9,9 +9,11 @@ BASE_URL = "https://readwise.io/api"
 
 class ReaderAPIAdapter:
     @classmethod
-    def check_token(cls, token):
+    def check_token(cls, token: str) -> AdapterResponse:
         res = requests.get(
-            url=f"{BASE_URL}/v2/auth/", headers={"Authorization": f"Token {token}"}
+            url=f"{BASE_URL}/v2/auth/",
+            headers={"Authorization": f"Token {token}"},
+            timeout=30,
         )
 
         if res.status_code == 204:
@@ -19,16 +21,17 @@ class ReaderAPIAdapter:
         else:
             return AdapterResponse(code=res.status_code, message=res.text)
 
-    def __init__(self, token):
+    def __init__(self, token: str) -> None:
         self.token = token
 
-    def add_url(self, url):
+    def add_url(self, url: str) -> AdapterResponse:
         reader_url = url
 
         res = requests.post(
             url=f"{BASE_URL}/v3/save/",
             headers={"Authorization": f"Token {self.token}"},
             json={"url": url},
+            timeout=30,
         )
 
         if res.status_code == 429:  # this endpoint is rate limited

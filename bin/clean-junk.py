@@ -5,6 +5,7 @@ def clean_folder(path):
     for filename in os.listdir(path):
         os.remove(os.path.join(path, filename))
 
+
 clean_folder(r"C:\Users\Public\Desktop")
 clean_folder(r"C:\Users\tbouska\OneDrive - Automatic Data Processing Inc\Desktop")
 

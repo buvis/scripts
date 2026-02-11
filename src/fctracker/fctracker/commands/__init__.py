@@ -1,2 +1,2 @@
-from .balance.balance import CommandBalance
-from .transactions.transactions import CommandTransactions
+from .balance.balance import CommandBalance as CommandBalance
+from .transactions.transactions import CommandTransactions as CommandTransactions

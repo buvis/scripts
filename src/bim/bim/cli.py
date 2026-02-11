@@ -7,7 +7,6 @@ import click
 from buvis.pybase.adapters import console
 from buvis.pybase.configuration import GlobalSettings, buvis_options, get_settings
 
-from bim.commands import CommandFormatNote, CommandImportNote, CommandParseTags, CommandSyncNote
 from bim.settings import BimSettings
 
 
@@ -26,6 +25,8 @@ def import_note(
     path_to_note: Path,
 ) -> None:
     if Path(path_to_note).is_file():
+        from bim.commands.import_note.import_note import CommandImportNote
+
         settings = get_settings(ctx, BimSettings)
         cmd = CommandImportNote(
             path_note=Path(path_to_note),
@@ -67,6 +68,8 @@ def format_note(
     output: None | Path,
 ) -> None:
     if Path(path_to_note).is_file():
+        from bim.commands.format_note.format_note import CommandFormatNote
+
         cmd = CommandFormatNote(
             path_note=Path(path_to_note),
             is_highlighting_requested=highlight,
@@ -88,6 +91,8 @@ def sync_note(
     target_system: str,
 ) -> None:
     if Path(path_to_note).is_file():
+        from bim.commands.sync_note.sync_note import CommandSyncNote
+
         global_settings = get_settings(ctx, GlobalSettings)
         jira_adapter: dict[str, Any] = global_settings.model_extra.get("jira_adapter", {})
         cmd = CommandSyncNote(
@@ -113,6 +118,8 @@ def parse_tags(
     output: None | Path,
 ) -> None:
     if Path(path_to_tags_json).is_file():
+        from bim.commands.parse_tags.parse_tags import CommandParseTags
+
         cmd = CommandParseTags(
             path_tags_json=Path(path_to_tags_json),
             path_output=Path(output) if output else None,

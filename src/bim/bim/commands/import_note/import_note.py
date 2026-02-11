@@ -23,6 +23,37 @@ class CommandImportNote:
             raise FileNotFoundError(f"Zettelkasten directory not found: {path_zettelkasten}")
         self.path_zettelkasten = path_zettelkasten
 
+    def _resolve_output_path(self: "CommandImportNote", note: object, path_output: Path) -> Path:
+        overwrite_confirmed = False
+
+        while path_output.is_file() and not overwrite_confirmed:
+            console.failure(f"{path_output} already exists")
+            console.nl()
+            console.print(path_output.read_text(), mode="raw")
+            console.nl()
+            overwrite_file = console.confirm("Overwrite file?")
+
+            if overwrite_file:
+                overwrite_confirmed = True
+            else:
+                alternative_note_id = note.id + 1
+                alternative_path_output = self.path_zettelkasten / f"{alternative_note_id}.md"
+
+                while alternative_path_output.is_file():
+                    alternative_note_id = note.id + 1
+                    alternative_path_output = self.path_zettelkasten / f"{alternative_note_id}.md"
+
+                accept_alternative_id = console.confirm(
+                    f"Change ID to {alternative_note_id}?",
+                )
+
+                if accept_alternative_id:
+                    path_output = alternative_path_output
+                else:
+                    console.panic(f"Can't import {self.path_note}")
+
+        return path_output
+
     def execute(self: "CommandImportNote") -> None:
         original_content = self.path_note.read_text()
         repo = MarkdownZettelRepository()
@@ -31,7 +62,7 @@ class CommandImportNote:
         note = reader.execute(str(self.path_note))
 
         if note.type == "project":
-            note._data.metadata["resources"] = (
+            note._data.metadata["resources"] = (  # noqa: SLF001
                 f"[project resources]({self.path_note.parent.resolve().as_uri()})"
             )
 
@@ -57,37 +88,7 @@ class CommandImportNote:
             console.warning("Import cancelled by user")
             return
 
-        overwrite_confirmed = False
-
-        while path_output.is_file() and not overwrite_confirmed:
-            console.failure(f"{path_output} already exists")
-            console.nl()
-            console.print(path_output.read_text(), mode="raw")
-            console.nl()
-            overwrite_file = console.confirm("Overwrite file?")
-
-            if overwrite_file:
-                overwrite_confirmed = True
-            else:
-                alternative_note_id = note.id + 1
-                alternative_path_output = (
-                    self.path_zettelkasten / f"{alternative_note_id}.md"
-                )
-
-                while alternative_path_output.is_file():
-                    alternative_note_id = note.id + 1
-                    alternative_path_output = (
-                        self.path_zettelkasten / f"{alternative_note_id}.md"
-                    )
-
-                accept_alternative_id = console.confirm(
-                    f"Change ID to {alternative_note_id}?",
-                )
-
-                if accept_alternative_id:
-                    path_output = alternative_path_output
-                else:
-                    console.panic(f"Can't import {self.path_note}")
+        path_output = self._resolve_output_path(note, path_output)
 
         if not note.tags:
             console.nl()

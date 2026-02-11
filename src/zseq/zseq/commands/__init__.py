@@ -1,1 +1,1 @@
-from .get_last.get_last import CommandGetLast
+from .get_last.get_last import CommandGetLast as CommandGetLast

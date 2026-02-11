@@ -1,14 +1,16 @@
-from decimal import Decimal
+from __future__ import annotations
+
 import csv
-from pathlib import Path
 from datetime import datetime
+from decimal import Decimal
+from pathlib import Path
 
 from fctracker.adapters.config.config import cfg
+from fctracker.domain.account import Account
 
 
 class TransactionsReader:
-
-    def __init__(self, account):
+    def __init__(self, account: Account) -> None:
         self.file_path = Path(
             cfg.transactions_dir,
             account.name.lower(),
@@ -16,8 +18,8 @@ class TransactionsReader:
         )
         self.account = account
 
-    def get_transactions(self):
-        with open(self.file_path, "r") as csvfile:
+    def get_transactions(self) -> None:
+        with open(self.file_path) as csvfile:
             reader = csv.DictReader(csvfile, skipinitialspace=True)
 
             rows = []
@@ -30,9 +32,7 @@ class TransactionsReader:
                 date = datetime.strptime(row["date"], "%Y-%m-%d")
 
                 if amount > 0:
-                    self.account.deposit(date=date,
-                                         amount=amount,
-                                         rate=Decimal(f"{row['rate']}"))
+                    self.account.deposit(date=date, amount=amount, rate=Decimal(f"{row['rate']}"))
                 else:
                     self.account.withdraw(
                         date=date,

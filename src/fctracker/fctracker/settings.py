@@ -25,4 +25,4 @@ class FctrackerSettings(GlobalSettings):
 
     transactions_dir: str = ""
     local_currency: LocalCurrencyConfig = LocalCurrencyConfig()
-    foreign_currencies: dict[str, ForeignCurrencyConfig] = {}
+    foreign_currencies: dict[str, ForeignCurrencyConfig] = {}  # noqa: RUF012 - pydantic field

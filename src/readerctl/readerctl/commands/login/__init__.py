@@ -1,1 +1,1 @@
-from .login import CommandLogin
+from .login import CommandLogin as CommandLogin

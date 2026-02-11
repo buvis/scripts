@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Toggle local development dependencies."""
+
 import re
 import shutil
 import sys
@@ -42,22 +43,17 @@ def enable():
                 if dep in content and f"# {dep} = " not in content:
                     # Path from bin/ to dep (one level up from root)
                     bin_path = f"../{path}"
-                    source_line = f"\n#\n# [tool.uv.sources]\n# {dep} = {{ path = \"{bin_path}\" }}"
-                    content = content.replace(
-                        f'# dependencies = ["{dep}"]',
-                        f'# dependencies = ["{dep}"]{source_line}'
-                    )
+                    source_line = f'\n#\n# [tool.uv.sources]\n# {dep} = {{ path = "{bin_path}" }}'
+                    content = content.replace(f'# dependencies = ["{dep}"]', f'# dependencies = ["{dep}"]{source_line}')
                     # For existing [tool.uv.sources], add new dep
                     if "[tool.uv.sources]" in content and f"# {dep} = " not in content:
                         content = re.sub(
-                            r'(# \[tool\.uv\.sources\])',
-                            f'\\1\n# {dep} = {{ path = "{bin_path}" }}',
-                            content
+                            r"(# \[tool\.uv\.sources\])", f'\\1\n# {dep} = {{ path = "{bin_path}" }}', content
                         )
                     updated = True
             if updated:
                 # Ensure closing tag is correct
-                content = re.sub(r'\n# ///\n', '\n# ///\n', content)
+                content = re.sub(r"\n# ///\n", "\n# ///\n", content)
                 f.write_text(content)
                 print(f"+ {f.name}")
 
@@ -71,9 +67,9 @@ def enable():
                 if "[tool.uv.sources]" in content:
                     # Add to existing section
                     content = re.sub(
-                        r'(\[tool\.uv\.sources\])',
+                        r"(\[tool\.uv\.sources\])",
                         f'\\1\n"{dep}" = {{ path = "{src_path}", editable = true }}',
-                        content
+                        content,
                     )
                 else:
                     # Create new section before [project.scripts]
@@ -89,17 +85,13 @@ def enable():
 
 
 def disable():
-    deps = load_deps()
-
     for f in (ROOT / "bin").iterdir():
         if f.is_file() and not f.suffix:
             content = f.read_text()
             if "[tool.uv.sources]" in content:
                 # Remove entire [tool.uv.sources] block from inline script metadata
                 content = re.sub(
-                    r'\n#\n# \[tool\.uv\.sources\]\n(# [^\n]+ = \{ path = "[^"]*" \}\n)+# ///',
-                    '\n# ///',
-                    content
+                    r'\n#\n# \[tool\.uv\.sources\]\n(# [^\n]+ = \{ path = "[^"]*" \}\n)+# ///', "\n# ///", content
                 )
                 f.write_text(content)
                 print(f"- {f.name}")
@@ -109,9 +101,7 @@ def disable():
         if "[tool.uv.sources]" in content:
             # Remove entire [tool.uv.sources] section
             content = re.sub(
-                r'\[tool\.uv\.sources\]\n("[^"]*" = \{ path = "[^"]*", editable = true \}\n)+\n',
-                '',
-                content
+                r'\[tool\.uv\.sources\]\n("[^"]*" = \{ path = "[^"]*", editable = true \}\n)+\n', "", content
             )
             f.write_text(content)
             print(f"- {f.parent.name}/pyproject.toml")

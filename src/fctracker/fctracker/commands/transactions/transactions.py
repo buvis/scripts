@@ -5,18 +5,18 @@ from rich.table import Table
 
 
 class CommandTransactions:
-    def __init__(self, account="", currency="", month="") -> None:
+    def __init__(self, account: str = "", currency: str = "", month: str = "") -> None:
         self.account = account.capitalize()
         self.currency = currency.upper()
         self.month = month
 
-    def execute(self):
+    def execute(self) -> None:
         scanner = TransactionsDirScanner()
 
         for account_name, currencies in scanner.accounts.items():
-            if self.account == "" or (self.account == account_name):
+            if self.account in ("", account_name):
                 for currency in currencies:
-                    if self.currency == "" or (self.currency == currency):
+                    if self.currency in ("", currency):
                         account = Account(account_name, currency)
                         reader = TransactionsReader(account)
                         reader.get_transactions()
@@ -36,16 +36,10 @@ class CommandTransactions:
                         table.add_column("Seq.", style="italic #6c71c4")
                         table.add_column("Date", style="bold #839496")
                         table.add_column("Description")
-                        table.add_column(
-                            "Amount", justify="right", style="bold #2aa198"
-                        )
+                        table.add_column("Amount", justify="right", style="bold #2aa198")
                         table.add_column("Rate", justify="right", style="italic")
-                        table.add_column(
-                            "Outflow", justify="right", style="bold #dc322f"
-                        )
-                        table.add_column(
-                            "Inflow", justify="right", style="bold #859900"
-                        )
+                        table.add_column("Outflow", justify="right", style="bold #dc322f")
+                        table.add_column("Inflow", justify="right", style="bold #859900")
 
                         index = len(filtered_transactions)
 
@@ -59,12 +53,15 @@ class CommandTransactions:
                                 description = transaction.description
                                 outflow = f"{transaction.get_local_cost()} {cfg.local_currency['symbol']}"
                                 inflow = ""
+                            precision = cfg.local_currency["precision"] * 2
+                            local_sym = cfg.local_currency["symbol"]
+                            rate_str = f"{transaction.rate:.{precision}f} {local_sym}/{transaction.currency_symbol}"
                             table.add_row(
                                 f"{index}",
                                 transaction.date.strftime("%Y-%m-%d"),
                                 description,
                                 f"{transaction.amount} {transaction.currency_symbol}",
-                                f"{transaction.rate:.{cfg.local_currency['precision'] *2}f} {cfg.local_currency['symbol']}/{transaction.currency_symbol}",
+                                rate_str,
                                 outflow,
                                 inflow,
                             )

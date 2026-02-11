@@ -4,7 +4,6 @@ import click
 from buvis.pybase.adapters import logging_to_console
 from buvis.pybase.configuration import buvis_options, get_settings
 
-from dot.commands import CommandAdd, CommandStatus
 from dot.settings import DotSettings
 
 
@@ -16,7 +15,9 @@ def cli() -> None:
 @cli.command("status", help="Report status")
 @buvis_options(settings_class=DotSettings)
 @click.pass_context
-def status(ctx: click.Context) -> None:
+def status(_ctx: click.Context) -> None:
+    from dot.commands.status.status import CommandStatus
+
     with logging_to_console():
         cmd = CommandStatus()
         cmd.execute()
@@ -31,6 +32,8 @@ def add(ctx: click.Context, file_path: str | None = None) -> None:
 
     # CLI overrides settings
     resolved_path = file_path if file_path is not None else settings.add_file_path
+
+    from dot.commands.add.add import CommandAdd
 
     with logging_to_console():
         cmd = CommandAdd(file_path=resolved_path)

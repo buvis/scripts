@@ -1,2 +1,2 @@
-from .add.add import CommandAdd
-from .login.login import CommandLogin
+from .add.add import CommandAdd as CommandAdd
+from .login.login import CommandLogin as CommandLogin

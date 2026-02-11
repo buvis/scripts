@@ -1,7 +1,6 @@
 import click
 from buvis.pybase.configuration import buvis_options, get_settings
 
-from zseq.commands import CommandGetLast
 from zseq.settings import ZseqSettings
 
 
@@ -36,6 +35,8 @@ def cli(
     # CLI overrides settings
     resolved_path = path if path is not None else settings.path_dir
     resolved_misnamed = misnamed_reporting or settings.is_reporting_misnamed
+
+    from zseq.commands.get_last.get_last import CommandGetLast
 
     cmd = CommandGetLast(path_dir=resolved_path, is_reporting_misnamed=resolved_misnamed)
     cmd.execute()

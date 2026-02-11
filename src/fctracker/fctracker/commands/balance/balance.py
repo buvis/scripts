@@ -7,7 +7,7 @@ class CommandBalance:
     def __init__(self) -> None:
         pass
 
-    def execute(self):
+    def execute(self) -> None:
         scanner = TransactionsDirScanner()
 
         for account_name, currencies in scanner.accounts.items():
