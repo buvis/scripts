@@ -1,0 +1,58 @@
+name: Publish Package to PyPI
+
+on:
+  push:
+    tags:
+      - "*-v*" # e.g. bim-v0.1.0, readerctl-v1.2.3
+  workflow_dispatch:
+    inputs:
+      package:
+        description: "Package directory name under src/ (e.g. bim, readerctl)"
+        required: true
+        type: choice
+        options:
+          - bim
+          - dot
+          - fctracker
+          - hello_world
+          - muc
+          - outlookctl
+          - pinger
+          - readerctl
+          - zseq
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Determine package
+        id: pkg
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "dir=${{ inputs.package }}" >> "$GITHUB_OUTPUT"
+          else
+            TAG="${GITHUB_REF#refs/tags/}"
+            PKG="${TAG%-v*}"
+            echo "dir=${PKG}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build package
+        run: uv build src/${{ steps.pkg.outputs.dir }}
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
