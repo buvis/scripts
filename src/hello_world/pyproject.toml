@@ -1,19 +1,20 @@
 [project]
-name = "hello-world"
+name = "buvis-hello-world"
 version = "0.1.0"
 description = "Standard B.U.V.I.S script sample"
-authors = [{ name = "Tomáš Bouška", email = "tomas@buvis.net" }]
+authors = [{ name = "Tomas Bouska", email = "tomas@buvis.net" }]
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.12"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Environment :: Console",
+]
 dependencies = ["click>=8.3.1", "pyfiglet>=1.0.4", "buvis-pybase>=0.9.0"]
 
-[[tool.uv.index]]
-name = "testpypi"
-url = "https://test.pypi.org/simple/"
-explicit = true
-
-[tool.uv.sources]
-buvis-pybase = { index = "testpypi" }
+[project.urls]
+Repository = "https://github.com/buvis/scripts"
 
 [project.scripts]
 hello-world = "hello_world.cli:cli"
