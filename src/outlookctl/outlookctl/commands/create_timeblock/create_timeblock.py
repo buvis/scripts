@@ -20,4 +20,4 @@ class CommandCreateTimeblock:
             console.panic(e)
 
     def execute(self) -> None:
-        print(f"Would create a timeblock of {self.duration} minutes")
+        console.print(f"Would create a timeblock of {self.duration} minutes", mode="raw")
