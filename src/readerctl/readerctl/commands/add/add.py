@@ -11,6 +11,6 @@ class CommandAdd:
         res = self.api.add_url(url)
 
         if res.is_ok():
-            console.success(res.payload)
+            console.success(res.message)
         else:
-            console.failure(res.payload)
+            console.failure(res.message)
