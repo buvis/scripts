@@ -20,6 +20,7 @@ on:
           - pinger
           - readerctl
           - zseq
+          - scripts
 
 jobs:
   publish:
@@ -48,6 +49,9 @@ jobs:
             PKG="${TAG%-v*}"
             echo "dir=${PKG}" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Pin dependencies from lockfile
+        run: python dev/pin_deps.py src/${{ steps.pkg.outputs.dir }}
 
       - name: Build package
         run: uv build src/${{ steps.pkg.outputs.dir }}

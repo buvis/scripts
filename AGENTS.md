@@ -23,10 +23,12 @@ src/
 ├── outlookctl/         # Outlook CLI
 ├── pinger/             # ICMP ping utilities
 ├── readerctl/          # Readwise Reader CLI
+├── scripts/            # Meta-package (installs all tools)
 └── zseq/               # Zettelsequence utilities
 dev/
 ├── devmode.py          # Toggle local dependency mode
 ├── deps.toml           # Local dependency mappings
+├── pin_deps.py         # Pin/unpin deps from uv.lock
 ├── finish-dev          # Switch back to PyPI deps
 └── start-dev           # Switch to local deps
 ```
@@ -84,4 +86,27 @@ class TestMyCommand:
 
 ## Release
 
-Tag-based: push a git tag to trigger release workflow. No semantic-release.
+Tag-based via `bin/release`. CI pins deps before publishing to PyPI.
+
+```bash
+bin/release <pkg> patch|minor|major     # individual package
+bin/release bundle patch|minor|major    # meta-package (buvis-scripts)
+```
+
+**What `bin/release` does** (individual):
+1. Bumps version in `pyproject.toml` + `__init__.py`
+2. Runs `uv lock`
+3. Commits, tags `<pkg>-v<new>`, pushes
+
+**Bundle release** updates `src/scripts/pyproject.toml` deps to match current package versions, then bumps + tags.
+
+**CI publish workflow** (`.github/workflows/publish.yml`):
+- Triggers on `*-v*` tags or manual dispatch
+- Runs `dev/pin_deps.py` to rewrite range deps to exact pins before build
+- Publishes wheel to PyPI with trusted publishing
+
+**Dep pinning** (`dev/pin_deps.py`):
+```bash
+python dev/pin_deps.py src/readerctl          # pin from uv.lock
+python dev/pin_deps.py src/readerctl --unpin  # restore ranges
+```

@@ -1,0 +1,132 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+PACKAGES=(bim dot fctracker hello_world muc outlookctl pinger readerctl zseq)
+
+usage() {
+  echo "Usage: release <pkg|bundle> <patch|minor|major>"
+  exit 1
+}
+
+die() { echo "error: $1" >&2; exit 1; }
+
+bump_version() {
+  local ver="$1" part="$2"
+  IFS='.' read -r major minor patch <<< "$ver"
+  case "$part" in
+    major) echo "$((major + 1)).0.0" ;;
+    minor) echo "$major.$((minor + 1)).0" ;;
+    patch) echo "$major.$minor.$((patch + 1))" ;;
+  esac
+}
+
+read_version() {
+  local pyproject="$1"
+  grep '^version' "$pyproject" | head -1 | sed 's/.*"\(.*\)".*/\1/'
+}
+
+write_version() {
+  local file="$1" old="$2" new="$3"
+  sed -i '' "s/$old/$new/" "$file"
+}
+
+read_pypi_name() {
+  local pyproject="$1"
+  grep '^name' "$pyproject" | head -1 | sed 's/.*"\(.*\)".*/\1/'
+}
+
+release_individual() {
+  local pkg="$1" part="$2"
+  local pkg_dir="$ROOT/src/$pkg"
+  local pyproject="$pkg_dir/pyproject.toml"
+
+  [[ -d "$pkg_dir" ]] || die "package $pkg not found"
+
+  # Determine inner package dir (matches [tool.hatch.build.targets.wheel] packages)
+  local inner_pkg
+  inner_pkg=$(grep -A1 '\[tool.hatch.build.targets.wheel\]' "$pyproject" | grep packages | sed 's/.*\["\(.*\)"\].*/\1/')
+  local init_py="$pkg_dir/$inner_pkg/__init__.py"
+
+  local old_ver new_ver
+  old_ver=$(read_version "$pyproject")
+  new_ver=$(bump_version "$old_ver" "$part")
+
+  # Check for existing tag
+  local tag="${pkg}-v${new_ver}"
+  git tag -l "$tag" | grep -q . && die "tag $tag already exists"
+
+  # Bump version
+  write_version "$pyproject" "version = \"$old_ver\"" "version = \"$new_ver\""
+  write_version "$init_py" "__version__ = \"$old_ver\"" "__version__ = \"$new_ver\""
+
+  # Re-lock
+  uv lock --directory "$pkg_dir" || die "uv lock failed"
+
+  # Commit, tag, push
+  git add "$pyproject" "$init_py" "$pkg_dir/uv.lock"
+  git commit -m "build($pkg): bump to v$new_ver"
+  git tag "$tag"
+  git push origin HEAD --tags
+
+  echo "Released $pkg v$new_ver"
+}
+
+release_bundle() {
+  local part="$1"
+  local meta_dir="$ROOT/src/scripts"
+  local meta_pyproject="$meta_dir/pyproject.toml"
+  local meta_init="$meta_dir/scripts/__init__.py"
+
+  # Update meta-package deps to match current individual package versions
+  for pkg in "${PACKAGES[@]}"; do
+    local pkg_pyproject="$ROOT/src/$pkg/pyproject.toml"
+    local pypi_name ver
+    pypi_name=$(read_pypi_name "$pkg_pyproject")
+    ver=$(read_version "$pkg_pyproject")
+    # Update the dep line in meta pyproject
+    sed -i '' "s/\"${pypi_name}==.*\"/\"${pypi_name}==${ver}\"/" "$meta_pyproject"
+  done
+
+  # Bump meta-package version
+  local old_ver new_ver
+  old_ver=$(read_version "$meta_pyproject")
+  new_ver=$(bump_version "$old_ver" "$part")
+
+  local tag="scripts-v${new_ver}"
+  git tag -l "$tag" | grep -q . && die "tag $tag already exists"
+
+  write_version "$meta_pyproject" "version = \"$old_ver\"" "version = \"$new_ver\""
+  write_version "$meta_init" "__version__ = \"$old_ver\"" "__version__ = \"$new_ver\""
+
+  # Lock (may fail if packages not yet on PyPI — that's ok, skip)
+  uv lock --directory "$meta_dir" 2>/dev/null || echo "warning: uv lock skipped (deps not yet published?)"
+
+  # Commit, tag, push
+  local files=("$meta_pyproject" "$meta_init")
+  [[ -f "$meta_dir/uv.lock" ]] && files+=("$meta_dir/uv.lock")
+  git add "${files[@]}"
+  git commit -m "build(scripts): bump to v$new_ver"
+  git tag "$tag"
+  git push origin HEAD --tags
+
+  echo "Released scripts v$new_ver"
+}
+
+# --- main ---
+
+[[ $# -eq 2 ]] || usage
+
+pkg="$1"
+part="$2"
+
+[[ "$part" =~ ^(patch|minor|major)$ ]] || usage
+
+# Safety: clean working tree
+[[ -z "$(git status --porcelain)" ]] || die "working tree is dirty"
+
+if [[ "$pkg" == "bundle" ]]; then
+  release_bundle "$part"
+else
+  release_individual "$pkg" "$part"
+fi
