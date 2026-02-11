@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from pathlib import Path
-
 import click
 from buvis.pybase.adapters import logging_to_console
 from buvis.pybase.configuration import buvis_options, get_settings
