@@ -1,6 +1,6 @@
 [project]
 name = "buvis-scripts"
-version = "0.1.0"
+version = "0.2.0"
 description = "Meta-package that installs all BUVIS CLI tools"
 authors = [{ name = "Tomas Bouska", email = "tomas@buvis.net" }]
 readme = "README.md"
