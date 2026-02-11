@@ -4,7 +4,7 @@ from fctracker.adapters.config.config import cfg
 class TransactionsDirScanner:
     def __init__(self) -> None:
         self._dir_path = cfg.transactions_dir
-        self.accounts = {}
+        self.accounts: dict[str, list[str]] = {}
 
         for account_dir in self._dir_path.iterdir():
             account_name = f"{account_dir.name}".capitalize()

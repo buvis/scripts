@@ -22,7 +22,7 @@ class TransactionsReader:
         with open(self.file_path) as csvfile:
             reader = csv.DictReader(csvfile, skipinitialspace=True)
 
-            rows = []
+            rows: list[dict[str, str]] = []
 
             for row in reader:
                 rows.insert(0, row)

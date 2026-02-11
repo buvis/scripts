@@ -74,7 +74,8 @@ def cli(
     from hello_world.commands.print_figlet.print_figlet import CommandPrintFiglet
 
     if list_fonts:
-        console.print("\n".join(sorted(pyfiglet.FigletFont.getFonts())), mode="raw")
+        fonts: list[str] = pyfiglet.FigletFont.getFonts()  # type: ignore[no-untyped-call]
+        console.print("\n".join(sorted(fonts)), mode="raw")
         return
 
     # Resolve font: CLI > settings
@@ -82,10 +83,12 @@ def cli(
     if random_font:
         import random
 
-        resolved_font = random.choice(pyfiglet.FigletFont.getFonts())  # noqa: S311
+        all_fonts: list[str] = pyfiglet.FigletFont.getFonts()  # type: ignore[no-untyped-call]
+        resolved_font = random.choice(all_fonts)  # noqa: S311
         console.print(f"Random font selected: {resolved_font}", mode="raw")
 
-    if resolved_font not in pyfiglet.FigletFont.getFonts():
+    available_fonts: list[str] = pyfiglet.FigletFont.getFonts()  # type: ignore[no-untyped-call]
+    if resolved_font not in available_fonts:
         resolved_font = settings.font
 
     # Resolve text: CLI > settings

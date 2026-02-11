@@ -14,7 +14,7 @@ class FCTrackerConfig:
     """Wrapper providing dict-style access to settings for backwards compatibility."""
 
     @property
-    def local_currency(self: "FCTrackerConfig") -> dict:
+    def local_currency(self: "FCTrackerConfig") -> dict[str, str | int]:
         settings = get_settings()
         return {
             "code": settings.local_currency.code,
@@ -23,7 +23,7 @@ class FCTrackerConfig:
         }
 
     @property
-    def currency(self: "FCTrackerConfig") -> dict:
+    def currency(self: "FCTrackerConfig") -> dict[str, dict[str, str | int]]:
         settings = get_settings()
         return {
             code: {

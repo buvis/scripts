@@ -12,7 +12,7 @@ class Account:
     def __init__(self, name: str, currency: str) -> None:
         self.name = name
         self.currency = currency
-        self._store = QuantifiedQueue()
+        self._store: QuantifiedQueue[Deposit] = QuantifiedQueue()
         self.transactions: list[Deposit | Withdrawal] = []
 
     def deposit(self, date: datetime.date, amount: Decimal, rate: Decimal) -> None:
