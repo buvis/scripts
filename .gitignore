@@ -1,214 +1,33 @@
-# =============================================================================
 # OS
-# =============================================================================
 .DS_Store
 Thumbs.db
 
-# =============================================================================
 # Editors & IDEs
-# =============================================================================
-
-# JetBrains
 .idea/
-
-# VS Code
 .vscode/
-
-# Vim/Neovim
 *.sw?
 
-# Visual Studio
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-
-# Rope (Python refactoring)
-.ropeproject/
-
-# Spyder
-.spyderproject
-.spyproject
-
-# =============================================================================
-# Python - Bytecode & Runtime
-# =============================================================================
+# Python runtime
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
 
-# =============================================================================
-# Python - Packaging & Distribution
-# =============================================================================
-build/
-dist/
-sdist/
-wheels/
-*.egg
-*.egg-info/
-.eggs/
-eggs/
-develop-eggs/
-downloads/
-lib/
-lib64/
-parts/
-var/
-share/python-wheels/
-.installed.cfg
-MANIFEST
-__pypackages__/
-
-# PyInstaller
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# =============================================================================
-# Python - Testing & Coverage
-# =============================================================================
-.pytest_cache/
-.tox/
-.nox/
-.hypothesis/
-.cache
-htmlcov/
-cover/
-.coverage
-.coverage.*
-coverage.xml
-nosetests.xml
-*.cover
-*.py,cover
+# Scratch
 test-area/
 
-# =============================================================================
-# Python - Type Checkers & Linters
-# =============================================================================
-.mypy_cache/
-.dmypy.json
-dmypy.json
-.pyre/
-.pytype/
-.ruff_cache/
-cython_debug/
-
-# =============================================================================
-# Python - Package Managers
-# =============================================================================
-# Poetry
-poetry.lock
-
-# PDM
-.pdm.toml
-.pdm-python
-.pdm-build/
-
-# uv.lock committed for reproducibility
-
-# =============================================================================
-# Python - Virtual Environments
-# =============================================================================
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# =============================================================================
-# Python - Frameworks (legacy/template patterns)
-# =============================================================================
-# Django
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask
-instance/
-.webassets-cache
-
-# Scrapy
-.scrapy
-
-# Celery
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath
-*.sage.py
-
-# PyBuilder
-.pybuilder/
-target/
-
-# =============================================================================
-# Python - Notebooks & Interactive
-# =============================================================================
-.ipynb_checkpoints
-profile_default/
-ipython_config.py
-
-# =============================================================================
-# Python - i18n
-# =============================================================================
-*.mo
-*.pot
-
-# =============================================================================
-# Documentation
-# =============================================================================
-docs/_build/
-/site
-
-# =============================================================================
-# Node.js (for tooling)
-# =============================================================================
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# =============================================================================
 # Logs
-# =============================================================================
-logs/
-dev-debug.log
+*.log
 
-# =============================================================================
-# AI Tooling - Claude Code
-# =============================================================================
+# AI tooling
 .claude/settings.local.json
 .claude/cache/
 .claude/tmp/
 .claude/hooks/notify.log
 .devcontainer/.claude/
 .devcontainer/.codex/
-
-# =============================================================================
-# AI Tooling - MCP (Model Context Protocol)
-# =============================================================================
 .mcp.json
 .serena/
+.taskmaster/
 
-# =============================================================================
-# AI Tooling - Task Master
-# =============================================================================
-.taskmaster/state.json
-.taskmaster/config.json
-.taskmaster/reports/
-.taskmaster/docs/
-.taskmaster/tasks/
-
-# =============================================================================
-# Project-specific
-# =============================================================================
+# Project
 plan.md
 .direnv

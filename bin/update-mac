@@ -35,7 +35,7 @@ tmux new-session -d -s $SESSION -n cfg
 tmux send-keys -t '='$SESSION':=cfg' 'cfgl; '
 tmux send-keys -t '='$SESSION':=cfg' '[ $(tmux list-windows | wc -l | xargs) -gt 1 ] && printf "Check other windows for progress or errors"; '
 tmux send-keys -t '='$SESSION':=cfg' 'while [ $(tmux list-windows | wc -l | xargs) -gt 1 ]; '
-tmux send-keys -t '='$SESSION':=cfg' 'do printf "."; sleep 10; done; printf "\n"; update-scripts; cfgapa'
+tmux send-keys -t '='$SESSION':=cfg' 'do printf "."; sleep 10; done; printf "\n"; cfgapa'
 tmux send-keys -t '='$SESSION':=cfg' Enter
 
 # Update alacritty terminfo
