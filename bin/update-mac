@@ -7,26 +7,26 @@ set -euC
 cd ~
 
 attach() {
-    [ -n "${TMUX:-}" ] &&
-        tmux switch-client -t '='$SESSION ||
-        tmux attach-session -t '='$SESSION
+  [ -n "${TMUX:-}" ] &&
+    tmux switch-client -t '='$SESSION ||
+    tmux attach-session -t '='$SESSION
 }
 
 runwait() {
-    win_name=$1
-    cmd=$2"; [ $? -eq 0 ] && exit"
-    tmux new-window -d -t '='$SESSION -n $win_name
-    tmux send-keys -t '='$SESSION':'$win_name "$cmd" Enter
+  win_name=$1
+  cmd=$2"; [ $? -eq 0 ] && exit"
+  tmux new-window -d -t '='$SESSION -n $win_name
+  tmux send-keys -t '='$SESSION':'$win_name "$cmd" Enter
 }
 
 runnowait() {
-    cmd=$1
-    tmux new-window -d -t '='$SESSION $cmd
+  cmd=$1
+  tmux new-window -d -t '='$SESSION $cmd
 }
 
-if tmux has-session -t '='$SESSION 2> /dev/null; then
-    attach
-    exit 0
+if tmux has-session -t '='$SESSION 2>/dev/null; then
+  attach
+  exit 0
 fi
 
 tmux new-session -d -s $SESSION -n cfg
@@ -49,6 +49,9 @@ runwait "brew" "brew update; brew upgrade; brew upgrade --cask; brew update; bre
 
 # Update system tools
 runwait "mise-tools" "mise upgrade"
+
+# Update uv tools
+runwait "uv-tools" "uv tools upgrade --all"
 
 # Update helm repos
 runwait "helm" "helm repo update"
